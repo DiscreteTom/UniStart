@@ -4,6 +4,7 @@
 
 - Feat: Add `IIoCC.TryGet`.
 - Fix: CBC can't get core.
+- Fix: `ComposableBehaviour.GetOrAddComponent` can't get component.
 
 ## v1.0.2
 
