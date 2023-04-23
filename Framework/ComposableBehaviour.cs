@@ -1,5 +1,6 @@
 using DT.UniStart.Composable;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace DT.UniStart {
   public class ComposableBehaviour : MonoBehaviour {
@@ -9,6 +10,47 @@ namespace DT.UniStart {
         component = this.gameObject.AddComponent<T>();
       }
       return component;
+    }
+
+    /// <summary>
+    /// Watch a watchable for changes.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public UnityAction Watch(IWatchable watchable, UnityAction action) {
+      var cb = watchable.AddListener(action);
+      return this.onDestroy.AddListener(() => watchable.RemoveListener(cb));
+    }
+    /// <summary>
+    /// Watch a watchable for changes.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public UnityAction Watch<T0>(IWatchable<T0> watchable, UnityAction<T0> action) {
+      var cb = watchable.AddListener(action);
+      return this.onDestroy.AddListener(() => watchable.RemoveListener(cb));
+    }
+    /// <summary>
+    /// Watch a watchable for changes.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public UnityAction Watch<T0, T1>(IWatchable<T0, T1> watchable, UnityAction<T0, T1> action) {
+      var cb = watchable.AddListener(action);
+      return this.onDestroy.AddListener(() => watchable.RemoveListener(cb));
+    }
+    /// <summary>
+    /// Watch a watchable for changes.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public UnityAction Watch<T0, T1, T2>(IWatchable<T0, T1, T2> watchable, UnityAction<T0, T1, T2> action) {
+      var cb = watchable.AddListener(action);
+      return this.onDestroy.AddListener(() => watchable.RemoveListener(cb));
+    }
+    /// <summary>
+    /// Watch a watchable for changes.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public UnityAction Watch<T0, T1, T2, T3>(IWatchable<T0, T1, T2, T3> watchable, UnityAction<T0, T1, T2, T3> action) {
+      var cb = watchable.AddListener(action);
+      return this.onDestroy.AddListener(() => watchable.RemoveListener(cb));
     }
 
     #region Composable Events without Cache
