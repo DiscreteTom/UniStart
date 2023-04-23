@@ -8,7 +8,7 @@ namespace DT.UniStart {
   /// <summary>
   /// Watch a list-like type for changes.
   /// </summary>
-  public class WatchIList<L, T> : WatchRef<L>, IList<T>, IWatchable where L : IList<T> {
+  public class WatchIList<L, T> : WatchRef<L>, IList<T>, IWatchable, IWatchable<ReadOnlyCollection<T>> where L : IList<T> {
     LazyComputed<ReadOnlyCollection<T>> readOnlyList;
     CascadeEvent<ReadOnlyCollection<T>> onChange;
 
@@ -79,7 +79,7 @@ namespace DT.UniStart {
   /// <summary>
   /// Watch a dictionary-like type for changes.
   /// </summary>
-  public class WatchIDictionary<D, K, V> : WatchRef<D>, IDictionary<K, V>, IWatchable where D : IDictionary<K, V> {
+  public class WatchIDictionary<D, K, V> : WatchRef<D>, IDictionary<K, V>, IWatchable, IWatchable<ReadOnlyDictionary<K, V>> where D : IDictionary<K, V> {
     LazyComputed<ReadOnlyDictionary<K, V>> readOnlyDictionary;
     CascadeEvent<ReadOnlyDictionary<K, V>> onChange;
 
@@ -160,7 +160,7 @@ namespace DT.UniStart {
   /// <summary>
   /// Watch a list for changes.
   /// </summary>
-  public class WatchList<T> : WatchIList<List<T>, T>, IWatchable {
+  public class WatchList<T> : WatchIList<List<T>, T>, IWatchable, IWatchable<ReadOnlyCollection<T>> {
     public WatchList() : base(new List<T>()) { }
     public WatchList(List<T> value) : base(value) { }
 
@@ -173,7 +173,7 @@ namespace DT.UniStart {
   /// <summary>
   /// Watch an array for changes.
   /// </summary>
-  public class WatchArray<T> : WatchIList<T[], T>, IWatchable {
+  public class WatchArray<T> : WatchIList<T[], T>, IWatchable, IWatchable<ReadOnlyCollection<T>> {
     public WatchArray(int n) : base(new T[n]) { }
     public WatchArray(T[] value) : base(value) { }
 
@@ -186,7 +186,7 @@ namespace DT.UniStart {
   /// <summary>
   /// Watch a dictionary for changes.
   /// </summary>
-  public class WatchDictionary<K, V> : WatchIDictionary<Dictionary<K, V>, K, V>, IWatchable {
+  public class WatchDictionary<K, V> : WatchIDictionary<Dictionary<K, V>, K, V>, IWatchable, IWatchable<ReadOnlyDictionary<K, V>> {
     public WatchDictionary() : base(new Dictionary<K, V>()) { }
     public WatchDictionary(Dictionary<K, V> value) : base(value) { }
   }

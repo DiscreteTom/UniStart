@@ -6,7 +6,7 @@ namespace DT.UniStart {
   /// Watch a **value** type for changes.
   /// This class should be used for immutable types (int, float, bool, string, etc) only.
   /// </summary>
-  public class Watch<T> : IWatchable {
+  public class Watch<T> : IWatchable, IWatchable<T>, IWatchable<T, T> {
     protected T value;
     CascadeEvent onChange0;
     CascadeEvent<T> onChange1;
@@ -52,7 +52,7 @@ namespace DT.UniStart {
   /// <summary>
   /// Watch a **reference** type for changes.
   /// </summary>
-  public class WatchRef<T> : IWatchable {
+  public class WatchRef<T> : IWatchable, IWatchable<WatchRef<T>> {
     protected T value;
     CascadeEvent onChange0;
     CascadeEvent<WatchRef<T>> onChange;
@@ -126,7 +126,7 @@ namespace DT.UniStart {
   /// Immediately calculate a value when a watchable changes.
   /// The result should be immutable.
   /// </summary>
-  public class Computed<T> : Watch<T>, IWatchable {
+  public class Computed<T> : Watch<T>, IWatchable, IWatchable<T>, IWatchable<T, T> {
     Func<T> compute;
 
     public new T Value {
