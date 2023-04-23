@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using UnityEngine.Events;
 
 namespace DT.UniStart {
   /// <summary>
@@ -9,15 +10,26 @@ namespace DT.UniStart {
   /// </summary>
   public class WatchIList<L, T> : WatchRef<L>, IList<T>, IWatchable where L : IList<T> {
     LazyComputed<ReadOnlyCollection<T>> readOnlyList;
+    CascadeEvent<ReadOnlyCollection<T>> onChange;
+
 
     public WatchIList(L value) : base(value) {
       this.readOnlyList = new LazyComputed<ReadOnlyCollection<T>>(() => new ReadOnlyCollection<T>(this.value)).Watch(this);
+      this.onChange = new CascadeEvent<ReadOnlyCollection<T>>();
     }
 
     /// <summary>
     /// Get the list as a read-only list and cache it for future calls.
     /// </summary>
     public ReadOnlyCollection<T> Value => this.readOnlyList.Value;
+
+    public UnityAction<ReadOnlyCollection<T>> AddListener(UnityAction<ReadOnlyCollection<T>> f) => this.onChange.AddListener(f);
+    public UnityAction<ReadOnlyCollection<T>> RemoveListener(UnityAction<ReadOnlyCollection<T>> f) => this.onChange.RemoveListener(f);
+
+    protected new void InvokeEvent() {
+      base.InvokeEvent();
+      this.onChange.Invoke(this.Value);
+    }
 
     #region re-expose methods from the list interface
     public void Add(T item) {
@@ -69,15 +81,24 @@ namespace DT.UniStart {
   /// </summary>
   public class WatchIDictionary<D, K, V> : WatchRef<D>, IDictionary<K, V>, IWatchable where D : IDictionary<K, V> {
     LazyComputed<ReadOnlyDictionary<K, V>> readOnlyDictionary;
+    CascadeEvent<ReadOnlyDictionary<K, V>> onChange;
 
     public WatchIDictionary(D value) : base(value) {
       this.readOnlyDictionary = new LazyComputed<ReadOnlyDictionary<K, V>>(() => new ReadOnlyDictionary<K, V>(this.value)).Watch(this);
+      this.onChange = new CascadeEvent<ReadOnlyDictionary<K, V>>();
     }
 
     /// <summary>
     /// Get the dictionary as a read-only dictionary and cache it for future calls.
     /// </summary>
     public ReadOnlyDictionary<K, V> Value => this.readOnlyDictionary.Value;
+
+    public UnityAction<ReadOnlyDictionary<K, V>> AddListener(UnityAction<ReadOnlyDictionary<K, V>> f) => this.onChange.AddListener(f);
+    public UnityAction<ReadOnlyDictionary<K, V>> RemoveListener(UnityAction<ReadOnlyDictionary<K, V>> f) => this.onChange.RemoveListener(f);
+    protected new void InvokeEvent() {
+      base.InvokeEvent();
+      this.onChange.Invoke(this.Value);
+    }
 
     #region re-expose methods from the dictionary interface
     public void Add(K key, V value) {
