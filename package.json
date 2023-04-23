@@ -11,5 +11,7 @@
   "author": {
     "name": "DiscreteTom",
     "url": "https://github.com/DiscreteTom"
-  }
+  },
+  "changelogUrl": "https://github.com/DiscreteTom/UniStart/blob/main/CHANGELOG.md",
+  "documentationUrl": "https://github.com/DiscreteTom/UniStart"
 }
