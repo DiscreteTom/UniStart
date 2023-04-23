@@ -4,7 +4,7 @@ namespace DT.UniStart {
   /// <summary>
   /// UnityEvent which will return the action passed in when adding or removing a listener.
   /// </summary>
-  public class CascadeEvent : UnityEvent {
+  public class CascadeEvent : UnityEvent, IWatchable {
     /// <summary>
     /// Add a listener to the event.
     /// Return the action passed in so that it can be used in a cascade.
@@ -27,7 +27,7 @@ namespace DT.UniStart {
   /// <summary>
   /// UnityEvent which will return the action passed in when adding or removing a listener.
   /// </summary>
-  public class CascadeEvent<T0> : UnityEvent<T0> {
+  public class CascadeEvent<T0> : UnityEvent<T0>, IWatchable<T0> {
     /// <summary>
     /// Add a listener to the event.
     /// Return the action passed in so that it can be used in a cascade.
@@ -50,7 +50,7 @@ namespace DT.UniStart {
   /// <summary>
   /// UnityEvent which will return the action passed in when adding or removing a listener.
   /// </summary>
-  public class CascadeEvent<T0, T1> : UnityEvent<T0, T1> {
+  public class CascadeEvent<T0, T1> : UnityEvent<T0, T1>, IWatchable<T0, T1> {
     /// <summary>
     /// Add a listener to the event.
     /// Return the action passed in so that it can be used in a cascade.
@@ -73,7 +73,7 @@ namespace DT.UniStart {
   /// <summary>
   /// UnityEvent which will return the action passed in when adding or removing a listener.
   /// </summary>
-  public class CascadeEvent<T0, T1, T2> : UnityEvent<T0, T1, T2> {
+  public class CascadeEvent<T0, T1, T2> : UnityEvent<T0, T1, T2>, IWatchable<T0, T1, T2> {
     /// <summary>
     /// Add a listener to the event.
     /// Return the action passed in so that it can be used in a cascade.
@@ -96,7 +96,7 @@ namespace DT.UniStart {
   /// <summary>
   /// UnityEvent which will return the action passed in when adding or removing a listener.
   /// </summary>
-  public class CascadeEvent<T0, T1, T2, T3> : UnityEvent<T0, T1, T2, T3> {
+  public class CascadeEvent<T0, T1, T2, T3> : UnityEvent<T0, T1, T2, T3>, IWatchable<T0, T1, T2, T3> {
     /// <summary>
     /// Add a listener to the event.
     /// Return the action passed in so that it can be used in a cascade.
