@@ -2,6 +2,8 @@
 
 An experimental Unity3D framework which can boost your development speed several times over.
 
+_Progressive, responsive, decoupled, and functional._
+
 ## Get Started
 
 ### Composables and Closures
@@ -40,7 +42,9 @@ public class Test : ComposableBehaviour {
 }
 ```
 
-By using these events and closures, you can write your logic _at the same place_, instead of writing your logic in many different locations like `Start`(to initialize), `Update`, and some other functions you defined. This is inspired by [Vue Composition API](https://vuejs.org/guide/extras/composition-api-faq.html#more-flexible-code-organization).
+By using these events and closures, you can write your logic _at the same place_, instead of writing your logic in many different locations like `Start`(to initialize), `Update`, and some other functions you defined.
+
+> This is inspired by [Vue Composition API](https://vuejs.org/guide/extras/composition-api-faq.html#more-flexible-code-organization).
 
 Another thing to mention is that, during your development with this framework, your `Start` function will get bigger and bigger, so you may need to split it into multiple modules when you are ready. This is a progressive process, and you can do it at any time.
 
@@ -98,9 +102,9 @@ public class WithContext : CBC {
 
 With this design, you will have an explicit place to initialize your context, instead of using singletons or other static variables.
 
-This is inspired by [QFramework](https://github.com/liangxiegame/QFramework)'s IoC container, and [jackutea](https://github.com/jackutea)'s deterministic lifecycle management
+> This is inspired by [QFramework](https://github.com/liangxiegame/QFramework)'s IoC container, and [jackutea](https://github.com/jackutea)'s deterministic lifecycle management.
 
-### Responsive Containers and EventBus
+### Responsive Containers
 
 In UniStart, we have many built-in responsive containers/collections:
 
@@ -117,6 +121,109 @@ public class Model {
     this.List = new WatchList<int>(); // init an empty list
     this.Array = new WatchArray<bool>(10); // init an array with 10 elements
     this.Dictionary = new WatchDictionary<string, int>(); // init an empty dictionary
+  }
+}
+```
+
+Then we can `AddListener` to those responsive containers, and they will be called when the value changes.
+
+```cs
+// CBC: ComposableBehaviour with Core injected.
+public class WithContext : CBC {
+  void Start() {
+    // Retrieve the instance of Model from the app.
+    var model = this.Get<Model>();
+
+    // For value types, there are 3 AddListener overloads:
+    model.Count.AddListener(() => print("WithContext: " + model.Count.Value));
+    model.Count.AddListener((value) => print("WithContext: " + value));
+    model.Count.AddListener((value, oldValue) => print("WithContext: " + value + ", " + oldValue));
+
+    // For collections, there are 2 AddListener overloads:
+    model.List.AddListener(() => print("WithContext: " + model.List.Value));
+    model.List.AddListener((value) => print("WithContext: " + value));
+
+    // Trigger the events for value types.
+    model.Count.Value = 2;
+
+    // Trigger the events for collections.
+    model.List.Add(1); // built-in methods are supported
+    model.List.Contains(1); // readonly methods won't trigger events
+  }
+}
+```
+
+> This is inspired by [QFramework](https://github.com/liangxiegame/QFramework)'s `BindableProperty`.
+
+### EventBus
+
+Responsive containers can help you to write your logic in a more declarative way. But sometimes you may want to use this idea in your own logic. In this case, you can use the `EventBus` class.
+
+```cs
+public class App : Entry {
+  // Use Awake instead of Start to initialize your app.
+  void Awake() {
+    // Register the EventBus as IEventBus.
+    var eb = this.Add<IEventBus>(new EventBus());
+
+    // AddListener, the 1st parameter is the event name, the 2nd parameter is the callback.
+    // You can use anything as the event name, since the event name is just an object.
+    eb.AddListener("Test", () => print("Test"));
+    eb.AddListener(123, () => print("123"));
+    eb.AddListener(SomeEnum.EnumValue, () => print("EnumValue"));
+    // And with parameters.
+    eb.AddListener("Param", (int i) => print("Param: " + i));
+
+    // Trigger the events.
+    eb.Invoke("Test");
+    eb.Invoke(123);
+    eb.Invoke(SomeEnum.EnumValue);
+    // And with parameters.
+    eb.Invoke("Test", 1);
+
+    // You can also create typed EventBus.
+    this.Add<IEventBus<int>>(new EventBus<int>());
+    this.Add<IEventBus<SomeEnum>>(new EventBus<SomeEnum>());
+
+    // We also provide some EventBus wrappers to enhance the usage.
+    // DebugEventBus will print the event name and parameters.
+    // You can replace the EventBus with DebugEventBus to debug your events.
+    // Since it also implements IEventBus, you don't need to change your code.
+    this.Add<IEventBus>(new DebugEventBus());
+    // Typed EventBus.
+    this.Add<IEventBus<int>>(new DebugEventBus<int>());
+    // Even with your own EventBus type.
+    this.Add<IEventBus<int>>(new DebugEventBus<MyEventBus, int>(new MyEventBus()));
+
+    // DelayedEventBus will delay the event invocation, until you call InvokeDelayed.
+    var deb = new DelayedEventBus(); // store as DelayedEventBus
+    this.Add<IEventBus>(deb); // but register as IEventBus
+    this.onLateUpdate.AddListener(deb.InvokeDelayed); // invoke all delayed events
+    // Generic DelayedEventBus.
+    this.Add<IEventBus<int>>(new DelayedEventBus<int>());
+    this.Add<IEventBus<int>>(new DelayedEventBus<MyEventBus, int>(new MyEventBus()));
+  }
+}
+```
+
+> This is inspired by [QFramework](https://github.com/liangxiegame/QFramework)'s event system.
+
+## FAQ
+
+### RemoveListener OnDestroy
+
+```cs
+// CBC: ComposableBehaviour with Core injected.
+public class WithContext : CBC {
+  void Start() {
+    var model = this.Get<Model>();
+    // This function will capture `this` in a closure,
+    // we need to remove the listener when the object is destroyed.
+    var cb = model.Count.AddListener((count) => print(this));
+    this.onDestroy.AddListener(() => model.Count.RemoveListener(cb));
+
+    // Shorter version.
+    this.onDestroy.AddListener(() => model.Count.RemoveListener(model.Count.AddListener((count) => print(this))));
   }
 }
 ```
