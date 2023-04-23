@@ -12,46 +12,103 @@ namespace DT.UniStart {
       return component;
     }
 
+    // TODO: cache onDestroy?
+
+    #region Helper Methods for IWatchable
     /// <summary>
     /// Watch a watchable for changes.
     /// Remove the listener when the object is destroyed.
     /// </summary>
     public UnityAction Watch(IWatchable watchable, UnityAction action) {
-      var cb = watchable.AddListener(action);
-      return this.onDestroy.AddListener(() => watchable.RemoveListener(cb));
+      watchable.AddListener(action);
+      this.onDestroy.AddListener(() => watchable.RemoveListener(action));
+      return action;
     }
     /// <summary>
     /// Watch a watchable for changes.
     /// Remove the listener when the object is destroyed.
     /// </summary>
-    public UnityAction Watch<T0>(IWatchable<T0> watchable, UnityAction<T0> action) {
-      var cb = watchable.AddListener(action);
-      return this.onDestroy.AddListener(() => watchable.RemoveListener(cb));
+    public UnityAction<T0> Watch<T0>(IWatchable<T0> watchable, UnityAction<T0> action) {
+      watchable.AddListener(action);
+      this.onDestroy.AddListener(() => watchable.RemoveListener(action));
+      return action;
     }
     /// <summary>
     /// Watch a watchable for changes.
     /// Remove the listener when the object is destroyed.
     /// </summary>
-    public UnityAction Watch<T0, T1>(IWatchable<T0, T1> watchable, UnityAction<T0, T1> action) {
-      var cb = watchable.AddListener(action);
-      return this.onDestroy.AddListener(() => watchable.RemoveListener(cb));
+    public UnityAction<T0, T1> Watch<T0, T1>(IWatchable<T0, T1> watchable, UnityAction<T0, T1> action) {
+      watchable.AddListener(action);
+      this.onDestroy.AddListener(() => watchable.RemoveListener(action));
+      return action;
     }
     /// <summary>
     /// Watch a watchable for changes.
     /// Remove the listener when the object is destroyed.
     /// </summary>
-    public UnityAction Watch<T0, T1, T2>(IWatchable<T0, T1, T2> watchable, UnityAction<T0, T1, T2> action) {
-      var cb = watchable.AddListener(action);
-      return this.onDestroy.AddListener(() => watchable.RemoveListener(cb));
+    public UnityAction<T0, T1, T2> Watch<T0, T1, T2>(IWatchable<T0, T1, T2> watchable, UnityAction<T0, T1, T2> action) {
+      watchable.AddListener(action);
+      this.onDestroy.AddListener(() => watchable.RemoveListener(action));
+      return action;
     }
     /// <summary>
     /// Watch a watchable for changes.
     /// Remove the listener when the object is destroyed.
     /// </summary>
-    public UnityAction Watch<T0, T1, T2, T3>(IWatchable<T0, T1, T2, T3> watchable, UnityAction<T0, T1, T2, T3> action) {
-      var cb = watchable.AddListener(action);
-      return this.onDestroy.AddListener(() => watchable.RemoveListener(cb));
+    public UnityAction<T0, T1, T2, T3> Watch<T0, T1, T2, T3>(IWatchable<T0, T1, T2, T3> watchable, UnityAction<T0, T1, T2, T3> action) {
+      watchable.AddListener(action);
+      this.onDestroy.AddListener(() => watchable.RemoveListener(action));
+      return action;
     }
+    #endregion
+
+    #region Helper Methods for IEventBus
+    /// <summary>
+    /// Watch an event bus for events.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public UnityAction Watch(IEventBus eventBus, object key, UnityAction action) {
+      eventBus.AddListener(key, action);
+      this.onDestroy.AddListener(() => eventBus.RemoveListener(key, action));
+      return action;
+    }
+    /// <summary>
+    /// Watch an event bus for events.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public UnityAction<T0> Watch<T0>(IEventBus eventBus, object key, UnityAction<T0> action) {
+      eventBus.AddListener(key, action);
+      this.onDestroy.AddListener(() => eventBus.RemoveListener(key, action));
+      return action;
+    }
+    /// <summary>
+    /// Watch an event bus for events.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public UnityAction<T0, T1> Watch<T0, T1>(IEventBus eventBus, object key, UnityAction<T0, T1> action) {
+      eventBus.AddListener(key, action);
+      this.onDestroy.AddListener(() => eventBus.RemoveListener(key, action));
+      return action;
+    }
+    /// <summary>
+    /// Watch an event bus for events.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public UnityAction<T0, T1, T2> Watch<T0, T1, T2>(IEventBus eventBus, object key, UnityAction<T0, T1, T2> action) {
+      eventBus.AddListener(key, action);
+      this.onDestroy.AddListener(() => eventBus.RemoveListener(key, action));
+      return action;
+    }
+    /// <summary>
+    /// Watch an event bus for events.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public UnityAction<T0, T1, T2, T3> Watch<T0, T1, T2, T3>(IEventBus eventBus, object key, UnityAction<T0, T1, T2, T3> action) {
+      eventBus.AddListener(key, action);
+      this.onDestroy.AddListener(() => eventBus.RemoveListener(key, action));
+      return action;
+    }
+    #endregion
 
     #region Composable Events without Cache
     public CascadeEvent<int> onAnimatorIK => this.GetOrAddComponent<ComposableAnimatorIK>().@event;
