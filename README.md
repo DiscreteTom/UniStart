@@ -115,12 +115,19 @@ public class Model {
   public WatchArray<bool> Array { get; private set; }
   public WatchDictionary<string, int> Dictionary { get; private set; }
 
+  public Computed<int> Computed { get; private set; }
+  public LazyComputed<int> LazyComputed { get; private set; }
+
   public Model(int count) {
     // set the initial value
     this.Count = new Watch<int>(count);
     this.List = new WatchList<int>(); // init an empty list
     this.Array = new WatchArray<bool>(10); // init an array with 10 elements
     this.Dictionary = new WatchDictionary<string, int>(); // init an empty dictionary
+
+    // For computed values, we need to watch the values that are used to compute the value.
+    this.Computed = new Computed<int>(() => this.Count.Value * 2).Watch(this.Count);
+    this.LazyComputed = new LazyComputed<int>(() => this.Count.Value * 2).Watch(this.Count);
   }
 }
 ```
