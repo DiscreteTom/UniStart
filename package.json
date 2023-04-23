@@ -1,7 +1,7 @@
 {
   "name": "com.discretetom.unistart",
   "displayName": "UniStart",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "unity": "2018.4",
   "description": "A Unity3D framework which can boost your development speed several times over.",
   "keywords": [
