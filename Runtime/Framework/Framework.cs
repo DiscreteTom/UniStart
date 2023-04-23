@@ -28,7 +28,21 @@ namespace DT.UniStart {
     public IIoCC core { get; private set; } = new IoCC();
 
     public static IIoCC GetCore(GameObject obj) {
-      return Entry<IIoCC>.GetCore(obj);
+      IIoCC core = null;
+      // first, try to find the core in the root object
+      core = obj.transform.root.GetComponent<Entry>()?.core;
+      if (core != null) return core;
+
+      // second, try to find the core in the parent object
+      core = obj.GetComponentInParent<Entry>()?.core;
+      if (core != null) return core;
+
+      // finally, try to find the core in the whole scene
+      core = GameObject.FindObjectOfType<Entry>()?.core;
+      if (core != null) return core;
+
+      // if we can't find the core, throw an error
+      throw new System.Exception("Can't find core in the scene!");
     }
 
     #region re-expose IIoCC methods
@@ -55,7 +69,7 @@ namespace DT.UniStart {
     T _core = null;
     protected T core {
       get {
-        if (this._core != null)
+        if (this._core == null)
           this._core = Entry<T>.GetCore(this.gameObject);
         return this._core;
       }
@@ -70,7 +84,7 @@ namespace DT.UniStart {
     IIoCC _core = null;
     protected IIoCC core {
       get {
-        if (this._core != null)
+        if (this._core == null)
           this._core = Entry.GetCore(this.gameObject);
         return this._core;
       }
