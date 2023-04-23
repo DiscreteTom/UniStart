@@ -21,6 +21,12 @@ namespace DT.UniStart {
     /// Get the instance of a type.
     /// </summary>
     T Get<T>();
+
+    /// <summary>
+    /// Try to get the instance of a type.
+    /// If the type is not registered, return `default(T)`.
+    /// </summary>
+    T TryGet<T>();
   }
 
   /// <summary>
@@ -53,6 +59,18 @@ namespace DT.UniStart {
     /// </summary>
     public T Get<T>() {
       return (T)this.dict[typeof(T)];
+    }
+
+    /// <summary>
+    /// Try to get the instance of a type.
+    /// If the type is not registered, return `default(T)`.
+    /// </summary>
+    public T TryGet<T>() {
+      if (this.dict.TryGetValue(typeof(T), out object value)) {
+        return (T)value;
+      } else {
+        return default(T);
+      }
     }
   }
 }
