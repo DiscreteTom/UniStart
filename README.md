@@ -4,6 +4,14 @@ An experimental Unity3D framework which can boost your development speed several
 
 _Progressive, responsive, decoupled, and functional._
 
+## Installation
+
+Add package from git URL:
+
+```
+https://github.com/DiscreteTom/UniStart.git
+```
+
 ## Get Started
 
 ### Composables and Closures
