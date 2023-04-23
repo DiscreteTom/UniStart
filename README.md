@@ -1,6 +1,6 @@
 # UniStart
 
-A Unity3D framework which can boost your development speed several times over.
+An experimental Unity3D framework which can boost your development speed several times over.
 
 _Progressive, responsive, decoupled, and functional._
 
