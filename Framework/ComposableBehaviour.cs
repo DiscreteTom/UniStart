@@ -4,15 +4,16 @@ using UnityEngine.Events;
 
 namespace DT.UniStart {
   public class ComposableBehaviour : MonoBehaviour {
-    public T GetOrAddComponent<T>() where T : Component {
-      T component = this.GetComponent<T>();
-      if (component == null) {
-        component = this.gameObject.AddComponent<T>();
-      }
-      return component;
-    }
+    IoCC ioc = new IoCC(); // cache for components
 
-    // TODO: cache onDestroy?
+    /// <summary>
+    /// Try to get a component from the cache.
+    /// If it doesn't exist, try to get it from the game object.
+    /// If it still doesn't exist, add it to the game object and cache it.
+    /// </summary>
+    public T GetOrAddComponent<T>() where T : Component {
+      return this.ioc.Get<T>() ?? this.ioc.Add<T>(this.gameObject.GetComponent<T>() ?? this.gameObject.AddComponent<T>());
+    }
 
     #region Helper Methods for IWatchable
     /// <summary>
@@ -110,7 +111,7 @@ namespace DT.UniStart {
     }
     #endregion
 
-    #region Composable Events without Cache
+    #region Composable Events
     public CascadeEvent<int> onAnimatorIK => this.GetOrAddComponent<ComposableAnimatorIK>().@event;
     public CascadeEvent onAnimatorMove => this.GetOrAddComponent<ComposableAnimatorMove>().@event;
     public CascadeEvent<bool> onApplicationFocus => this.GetOrAddComponent<ComposableApplicationFocus>().@event;
