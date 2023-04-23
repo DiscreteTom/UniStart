@@ -215,22 +215,29 @@ public class App : Entry {
 
 > This is inspired by [QFramework](https://github.com/liangxiegame/QFramework)'s event system.
 
-## FAQ
-
-### RemoveListener OnDestroy
+### RemoveListener on Destroy
 
 ```cs
 // CBC: ComposableBehaviour with Core injected.
 public class WithContext : CBC {
   void Start() {
     var model = this.Get<Model>();
+    var eb = this.Get<IEventBus>();
+
     // This function will capture `this` in a closure,
     // we need to remove the listener when the object is destroyed.
     var cb = model.Count.AddListener((count) => print(this));
     this.onDestroy.AddListener(() => model.Count.RemoveListener(cb));
 
-    // Shorter version.
-    this.onDestroy.AddListener(() => model.Count.RemoveListener(model.Count.AddListener((count) => print(this))));
+    // Helper function. Listener will be removed when the object is destroyed.
+    this.Watch(model.Count, (count) => print(this));
+
+    // You can watch other watchable objects.
+    this.Watch(model.List, () => print(this));
+    // Invoke your listener immediately.
+    this.Watch(model.List, () => print(this)).Invoke();
+    // Including IEventBus
+    this.Watch(eb, "event name", () => print(this));
   }
 }
 ```
