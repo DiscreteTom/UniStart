@@ -15,6 +15,12 @@ Add package from git URL:
 https://github.com/DiscreteTom/UniStart.git
 ```
 
+Include this package:
+
+```cs
+using DT.UniStart;
+```
+
 ## Get Started
 
 ### Composables and Closures
@@ -252,5 +258,10 @@ public class WithContext : CBC {
   }
 }
 ```
+
+## Related
+
+- [UniUtils](https://github.com/DiscreteTom/UniUtils.git) - A set of utils in Unity3D.
+- [CannonVsMosquito](https://github.com/DiscreteTom/CannonVsMosquito) - A demo game.
 
 ## [CHANGELOG](https://github.com/DiscreteTom/UniStart/blob/main/CHANGELOG.md)
