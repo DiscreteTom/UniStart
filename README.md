@@ -2,6 +2,7 @@
 
 ![](https://img.shields.io/badge/dynamic/json?style=flat-square&color=blue&label=version&query=%24.version&url=https%3A%2F%2Fgithub.com%2FDiscreteTom%2FUniStart%2Fraw%2Fmain%2Fpackage.json)
 ![GitHub](https://img.shields.io/github/license/DiscreteTom/UniStart?style=flat-square)
+![Built for Unity3D](https://img.shields.io/badge/Built%20for-Unity3D-lightgrey?style=flat-square)
 
 An experimental Unity3D framework which can boost your development speed several times over.
 
