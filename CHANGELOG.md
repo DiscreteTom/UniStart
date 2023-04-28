@@ -5,6 +5,7 @@
 - Feat: IoC container can accept `object` as key. #1
   - **Breaking Change**: new `IIoCC.Add/Get/TryGet`.
 - Fix: `ComposableBehaviour.GetOrAddComponent` can't add some component (like `Rigidbody2D`).
+- Perf: optimize `EventBus` runtime performance.
 
 ## v1.0.3
 

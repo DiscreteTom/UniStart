@@ -10,96 +10,126 @@ namespace DT.UniStart {
     }
 
     public UnityAction AddListener(T key, UnityAction action) {
-      if (!this.dict.ContainsKey(key)) {
-        this.dict.Add(key, new CascadeEvent());
+      this.dict.TryGetValue(key, out object o);
+      if (o == null) {
+        var e = new CascadeEvent();
+        e.AddListener(action);
+        this.dict.Add(key, e);
+        return action;
       }
-      return ((CascadeEvent)this.dict[key]).AddListener(action);
+      return ((CascadeEvent)o).AddListener(action);
     }
     public UnityAction<T0> AddListener<T0>(T key, UnityAction<T0> action) {
-      if (!this.dict.ContainsKey(key)) {
-        this.dict.Add(key, new CascadeEvent<T0>());
+      this.dict.TryGetValue(key, out object o);
+      if (o == null) {
+        var e = new CascadeEvent<T0>();
+        e.AddListener(action);
+        this.dict.Add(key, e);
+        return action;
       }
-      return ((CascadeEvent<T0>)this.dict[key]).AddListener(action);
+      return ((CascadeEvent<T0>)o).AddListener(action);
     }
     public UnityAction<T0, T1> AddListener<T0, T1>(T key, UnityAction<T0, T1> action) {
-      if (!this.dict.ContainsKey(key)) {
-        this.dict.Add(key, new CascadeEvent<T0, T1>());
+      this.dict.TryGetValue(key, out object o);
+      if (o == null) {
+        var e = new CascadeEvent<T0, T1>();
+        e.AddListener(action);
+        this.dict.Add(key, e);
+        return action;
       }
-      return ((CascadeEvent<T0, T1>)this.dict[key]).AddListener(action);
+      return ((CascadeEvent<T0, T1>)o).AddListener(action);
     }
     public UnityAction<T0, T1, T2> AddListener<T0, T1, T2>(T key, UnityAction<T0, T1, T2> action) {
-      if (!this.dict.ContainsKey(key)) {
-        this.dict.Add(key, new CascadeEvent<T0, T1, T2>());
+      this.dict.TryGetValue(key, out object o);
+      if (o == null) {
+        var e = new CascadeEvent<T0, T1, T2>();
+        e.AddListener(action);
+        this.dict.Add(key, e);
+        return action;
       }
-      return ((CascadeEvent<T0, T1, T2>)this.dict[key]).AddListener(action);
+      return ((CascadeEvent<T0, T1, T2>)o).AddListener(action);
     }
     public UnityAction<T0, T1, T2, T3> AddListener<T0, T1, T2, T3>(T key, UnityAction<T0, T1, T2, T3> action) {
-      if (!this.dict.ContainsKey(key)) {
-        this.dict.Add(key, new CascadeEvent<T0, T1, T2, T3>());
+      this.dict.TryGetValue(key, out object o);
+      if (o == null) {
+        var e = new CascadeEvent<T0, T1, T2, T3>();
+        e.AddListener(action);
+        this.dict.Add(key, e);
+        return action;
       }
-      return ((CascadeEvent<T0, T1, T2, T3>)this.dict[key]).AddListener(action);
+      return ((CascadeEvent<T0, T1, T2, T3>)o).AddListener(action);
     }
 
     public UnityAction RemoveListener(T key, UnityAction action) {
-      if (!this.dict.ContainsKey(key)) {
+      this.dict.TryGetValue(key, out object o);
+      if (o == null) {
         return null;
       }
-      return ((CascadeEvent)this.dict[key]).RemoveListener(action);
+      return ((CascadeEvent)o).RemoveListener(action);
     }
     public UnityAction<T0> RemoveListener<T0>(T key, UnityAction<T0> action) {
-      if (!this.dict.ContainsKey(key)) {
+      this.dict.TryGetValue(key, out object o);
+      if (o == null) {
         return null;
       }
-      return ((CascadeEvent<T0>)this.dict[key]).RemoveListener(action);
+      return ((CascadeEvent<T0>)o).RemoveListener(action);
     }
     public UnityAction<T0, T1> RemoveListener<T0, T1>(T key, UnityAction<T0, T1> action) {
-      if (!this.dict.ContainsKey(key)) {
+      this.dict.TryGetValue(key, out object o);
+      if (o == null) {
         return null;
       }
-      return ((CascadeEvent<T0, T1>)this.dict[key]).RemoveListener(action);
+      return ((CascadeEvent<T0, T1>)o).RemoveListener(action);
     }
     public UnityAction<T0, T1, T2> RemoveListener<T0, T1, T2>(T key, UnityAction<T0, T1, T2> action) {
-      if (!this.dict.ContainsKey(key)) {
+      this.dict.TryGetValue(key, out object o);
+      if (o == null) {
         return null;
       }
-      return ((CascadeEvent<T0, T1, T2>)this.dict[key]).RemoveListener(action);
+      return ((CascadeEvent<T0, T1, T2>)o).RemoveListener(action);
     }
     public UnityAction<T0, T1, T2, T3> RemoveListener<T0, T1, T2, T3>(T key, UnityAction<T0, T1, T2, T3> action) {
-      if (!this.dict.ContainsKey(key)) {
+      this.dict.TryGetValue(key, out object o);
+      if (o == null) {
         return null;
       }
-      return ((CascadeEvent<T0, T1, T2, T3>)this.dict[key]).RemoveListener(action);
+      return ((CascadeEvent<T0, T1, T2, T3>)o).RemoveListener(action);
     }
 
     public void Invoke(T key) {
-      if (!this.dict.ContainsKey(key)) {
+      this.dict.TryGetValue(key, out object o);
+      if (o == null) {
         return;
       }
-      ((CascadeEvent)this.dict[key]).Invoke();
+      ((CascadeEvent)o).Invoke();
     }
     public void Invoke<T0>(T key, T0 arg0) {
-      if (!this.dict.ContainsKey(key)) {
+      this.dict.TryGetValue(key, out object o);
+      if (o == null) {
         return;
       }
-      ((CascadeEvent<T0>)this.dict[key]).Invoke(arg0);
+      ((CascadeEvent<T0>)o).Invoke(arg0);
     }
     public void Invoke<T0, T1>(T key, T0 arg0, T1 arg1) {
-      if (!this.dict.ContainsKey(key)) {
+      this.dict.TryGetValue(key, out object o);
+      if (o == null) {
         return;
       }
-      ((CascadeEvent<T0, T1>)this.dict[key]).Invoke(arg0, arg1);
+      ((CascadeEvent<T0, T1>)o).Invoke(arg0, arg1);
     }
     public void Invoke<T0, T1, T2>(T key, T0 arg0, T1 arg1, T2 arg2) {
-      if (!this.dict.ContainsKey(key)) {
+      this.dict.TryGetValue(key, out object o);
+      if (o == null) {
         return;
       }
-      ((CascadeEvent<T0, T1, T2>)this.dict[key]).Invoke(arg0, arg1, arg2);
+      ((CascadeEvent<T0, T1, T2>)o).Invoke(arg0, arg1, arg2);
     }
     public void Invoke<T0, T1, T2, T3>(T key, T0 arg0, T1 arg1, T2 arg2, T3 arg3) {
-      if (!this.dict.ContainsKey(key)) {
+      this.dict.TryGetValue(key, out object o);
+      if (o == null) {
         return;
       }
-      ((CascadeEvent<T0, T1, T2, T3>)this.dict[key]).Invoke(arg0, arg1, arg2, arg3);
+      ((CascadeEvent<T0, T1, T2, T3>)o).Invoke(arg0, arg1, arg2, arg3);
     }
   }
 
