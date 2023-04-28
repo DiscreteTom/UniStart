@@ -12,7 +12,12 @@ namespace DT.UniStart {
     /// If it still doesn't exist, add it to the game object and cache it.
     /// </summary>
     public T GetOrAddComponent<T>() where T : Component {
-      return this.ioc.TryGet<T>() ?? this.ioc.Add<T>(this.gameObject.GetComponent<T>() ?? this.gameObject.AddComponent<T>());
+      // IMPORTANT: don't use `??` to check for null, because Unity overrides the == operator
+      T res = this.ioc.TryGet<T>();
+      if (res != null) return res;
+      res = this.gameObject.GetComponent<T>();
+      if (res != null) return this.ioc.Add<T>(res);
+      return this.ioc.Add<T>(this.gameObject.AddComponent<T>());
     }
 
     #region Helper Methods for IWatchable

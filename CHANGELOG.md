@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v1.0.4
+
+- Fix: `ComposableBehaviour.GetOrAddComponent` can't add some component (like `Rigidbody2D`).
+
 ## v1.0.3
 
 - Feat: Add `IIoCC.TryGet`.
