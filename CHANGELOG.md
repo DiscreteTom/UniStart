@@ -1,7 +1,9 @@
 # CHANGELOG
 
-## v1.0.4
+## v2.0.0
 
+- Feat: IoC container can accept `object` as key. #1
+  - **Breaking Change**: new `IIoCC.Add/Get/TryGet`.
 - Fix: `ComposableBehaviour.GetOrAddComponent` can't add some component (like `Rigidbody2D`).
 
 ## v1.0.3

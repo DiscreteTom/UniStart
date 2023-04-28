@@ -47,17 +47,39 @@ namespace DT.UniStart {
 
     #region re-expose IIoCC methods
     /// <summary>
+    /// Register a type with an existing instance and a key.
+    /// </summary>
+    public T Add<T>(object key, T instance) => this.core.Add<T>(key, instance);
+    /// <summary>
     /// Register a type with an existing instance.
     /// </summary>
     public T Add<T>(T instance) => this.core.Add<T>(instance);
+    /// <summary>
+    /// Register a type with a key, and auto create an instance.
+    /// </summary>
+    public T Add<T>(object key) where T : new() => this.core.Add<T>(key);
     /// <summary>
     /// Register a type and auto create an instance.
     /// </summary>
     public T Add<T>() where T : new() => this.core.Add<T>();
     /// <summary>
+    /// Get the instance of a type by key.
+    /// </summary>
+    public T Get<T>(object key) => this.core.Get<T>(key);
+    /// <summary>
     /// Get the instance of a type.
     /// </summary>
     public T Get<T>() => this.core.Get<T>();
+    /// <summary>
+    /// Try to get the instance of a type with a key.
+    /// If the type is not registered, return `default(T)`.
+    /// </summary>
+    public T TryGet<T>(object key) => this.core.TryGet<T>(key);
+    /// <summary>
+    /// Try to get the instance of a type.
+    /// If the type is not registered, return `default(T)`.
+    /// </summary>
+    public T TryGet<T>() => this.core.TryGet<T>();
     #endregion
   }
 
@@ -93,17 +115,39 @@ namespace DT.UniStart {
 
     #region re-expose IIoCC methods
     /// <summary>
+    /// Register a type with an existing instance and a key.
+    /// </summary>
+    public T Add<T>(object key, T instance) => this.core.Add<T>(key, instance);
+    /// <summary>
     /// Register a type with an existing instance.
     /// </summary>
     public T Add<T>(T instance) => this.core.Add<T>(instance);
+    /// <summary>
+    /// Register a type with a key, and auto create an instance.
+    /// </summary>
+    public T Add<T>(object key) where T : new() => this.core.Add<T>(key);
     /// <summary>
     /// Register a type and auto create an instance.
     /// </summary>
     public T Add<T>() where T : new() => this.core.Add<T>();
     /// <summary>
+    /// Get the instance of a type by key.
+    /// </summary>
+    public T Get<T>(object key) => this.core.Get<T>(key);
+    /// <summary>
     /// Get the instance of a type.
     /// </summary>
     public T Get<T>() => this.core.Get<T>();
+    /// <summary>
+    /// Try to get the instance of a type with a key.
+    /// If the type is not registered, return `default(T)`.
+    /// </summary>
+    public T TryGet<T>(object key) => this.core.TryGet<T>(key);
+    /// <summary>
+    /// Try to get the instance of a type.
+    /// If the type is not registered, return `default(T)`.
+    /// </summary>
+    public T TryGet<T>() => this.core.TryGet<T>();
     #endregion
   }
 }
