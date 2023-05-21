@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v3.0.0
+
+- Feat: Add `FnHelper.Fn`.
+
 ## v2.0.0
 
 - Feat: IoC container can accept `object` as key. #1
