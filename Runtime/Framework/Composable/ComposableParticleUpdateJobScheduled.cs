@@ -5,7 +5,7 @@ namespace DT.UniStart.Composable {
     /// <summary>
     /// Called every time when OnParticleUpdateJobScheduled is called.
     /// </summary>
-    public CascadeEvent @event { get; } = new CascadeEvent();
+    public AdvancedEvent @event { get; } = new AdvancedEvent();
 
     void OnParticleUpdateJobScheduled() {
       this.@event.Invoke();

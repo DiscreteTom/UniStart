@@ -2,6 +2,7 @@
 
 ## v3.0.0
 
+- **_Breaking Change_**: add `AdvancedEvent`, remove `CascadeEvent`.
 - Feat: Add `FnHelper.Fn`.
 
 ## v2.0.0

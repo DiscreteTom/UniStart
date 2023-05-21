@@ -5,7 +5,7 @@ namespace DT.UniStart.Composable {
     /// <summary>
     /// Called every time when OnApplicationQuit is called.
     /// </summary>
-    public CascadeEvent @event { get; } = new CascadeEvent();
+    public AdvancedEvent @event { get; } = new AdvancedEvent();
 
     void OnApplicationQuit() {
       this.@event.Invoke();

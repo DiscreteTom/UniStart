@@ -8,15 +8,15 @@ namespace DT.UniStart {
   /// </summary>
   public class Watch<T> : IWatchable, IWatchable<T>, IWatchable<T, T> {
     protected T value;
-    CascadeEvent onChange0;
-    CascadeEvent<T> onChange1;
-    CascadeEvent<T, T> onChange2;
+    AdvancedEvent onChange0;
+    AdvancedEvent<T> onChange1;
+    AdvancedEvent<T, T> onChange2;
 
     public Watch(T value) {
       this.value = value;
-      this.onChange0 = new CascadeEvent();
-      this.onChange1 = new CascadeEvent<T>();
-      this.onChange2 = new CascadeEvent<T, T>();
+      this.onChange0 = new AdvancedEvent();
+      this.onChange1 = new AdvancedEvent<T>();
+      this.onChange2 = new AdvancedEvent<T, T>();
     }
 
     public T Value {
@@ -54,13 +54,13 @@ namespace DT.UniStart {
   /// </summary>
   public class WatchRef<T> : IWatchable, IWatchable<WatchRef<T>> {
     protected T value;
-    CascadeEvent onChange0;
-    CascadeEvent<WatchRef<T>> onChange;
+    AdvancedEvent onChange0;
+    AdvancedEvent<WatchRef<T>> onChange;
 
     public WatchRef(T value) {
       this.value = value;
-      this.onChange0 = new CascadeEvent();
-      this.onChange = new CascadeEvent<WatchRef<T>>();
+      this.onChange0 = new AdvancedEvent();
+      this.onChange = new AdvancedEvent<WatchRef<T>>();
     }
 
     /// <summary>

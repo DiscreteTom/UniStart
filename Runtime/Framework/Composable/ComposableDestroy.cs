@@ -5,7 +5,7 @@ namespace DT.UniStart.Composable {
     /// <summary>
     /// Called when the game object is destroyed.
     /// </summary>
-    public CascadeEvent @event { get; } = new CascadeEvent();
+    public AdvancedEvent @event { get; } = new AdvancedEvent();
 
     void OnDestroy() {
       this.@event.Invoke();

@@ -5,7 +5,7 @@ namespace DT.UniStart.Composable {
     /// <summary>
     /// Called every time when OnControllerColliderHit is called.
     /// </summary>
-    public CascadeEvent<ControllerColliderHit> @event { get; } = new CascadeEvent<ControllerColliderHit>();
+    public AdvancedEvent<ControllerColliderHit> @event { get; } = new AdvancedEvent<ControllerColliderHit>();
 
     void OnControllerColliderHit(ControllerColliderHit arg0) {
       this.@event.Invoke(arg0);

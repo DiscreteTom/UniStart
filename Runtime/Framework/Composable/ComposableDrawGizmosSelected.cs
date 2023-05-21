@@ -5,7 +5,7 @@ namespace DT.UniStart.Composable {
     /// <summary>
     /// Called every time when OnDrawGizmosSelected is called.
     /// </summary>
-    public CascadeEvent @event { get; } = new CascadeEvent();
+    public AdvancedEvent @event { get; } = new AdvancedEvent();
 
     void OnDrawGizmosSelected() {
       this.@event.Invoke();

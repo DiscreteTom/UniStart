@@ -5,7 +5,7 @@ namespace DT.UniStart.Composable {
     /// <summary>
     /// Called every time when OnAudioFilterRead is called.
     /// </summary>
-    public CascadeEvent<float[], int> @event { get; } = new CascadeEvent<float[], int>();
+    public AdvancedEvent<float[], int> @event { get; } = new AdvancedEvent<float[], int>();
 
     void OnAudioFilterRead(float[] arg0, int arg1) {
       this.@event.Invoke(arg0, arg1);

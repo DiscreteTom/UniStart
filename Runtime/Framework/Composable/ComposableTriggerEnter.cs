@@ -5,7 +5,7 @@ namespace DT.UniStart.Composable {
     /// <summary>
     /// Called every time when OnTriggerEnter is called.
     /// </summary>
-    public CascadeEvent<Collider> @event { get; } = new CascadeEvent<Collider>();
+    public AdvancedEvent<Collider> @event { get; } = new AdvancedEvent<Collider>();
 
     void OnTriggerEnter(Collider arg0) {
       this.@event.Invoke(arg0);

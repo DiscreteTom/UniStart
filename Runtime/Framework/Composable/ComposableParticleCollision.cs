@@ -5,7 +5,7 @@ namespace DT.UniStart.Composable {
     /// <summary>
     /// Called every time when OnParticleCollision is called.
     /// </summary>
-    public CascadeEvent<GameObject> @event { get; } = new CascadeEvent<GameObject>();
+    public AdvancedEvent<GameObject> @event { get; } = new AdvancedEvent<GameObject>();
 
     void OnParticleCollision(GameObject arg0) {
       this.@event.Invoke(arg0);

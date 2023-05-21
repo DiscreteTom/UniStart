@@ -5,7 +5,7 @@ namespace DT.UniStart.Composable {
     /// <summary>
     /// Called every time when OnCollisionExit is called.
     /// </summary>
-    public CascadeEvent<Collision> @event { get; } = new CascadeEvent<Collision>();
+    public AdvancedEvent<Collision> @event { get; } = new AdvancedEvent<Collision>();
 
     void OnCollisionExit(Collision arg0) {
       this.@event.Invoke(arg0);

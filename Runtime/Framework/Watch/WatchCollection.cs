@@ -10,12 +10,12 @@ namespace DT.UniStart {
   /// </summary>
   public class WatchIList<L, T> : WatchRef<L>, IList<T>, IWatchable, IWatchable<ReadOnlyCollection<T>> where L : IList<T> {
     LazyComputed<ReadOnlyCollection<T>> readOnlyList;
-    CascadeEvent<ReadOnlyCollection<T>> onChange;
+    AdvancedEvent<ReadOnlyCollection<T>> onChange;
 
 
     public WatchIList(L value) : base(value) {
       this.readOnlyList = new LazyComputed<ReadOnlyCollection<T>>(() => new ReadOnlyCollection<T>(this.value)).Watch(this);
-      this.onChange = new CascadeEvent<ReadOnlyCollection<T>>();
+      this.onChange = new AdvancedEvent<ReadOnlyCollection<T>>();
     }
 
     /// <summary>
@@ -81,11 +81,11 @@ namespace DT.UniStart {
   /// </summary>
   public class WatchIDictionary<D, K, V> : WatchRef<D>, IDictionary<K, V>, IWatchable, IWatchable<ReadOnlyDictionary<K, V>> where D : IDictionary<K, V> {
     LazyComputed<ReadOnlyDictionary<K, V>> readOnlyDictionary;
-    CascadeEvent<ReadOnlyDictionary<K, V>> onChange;
+    AdvancedEvent<ReadOnlyDictionary<K, V>> onChange;
 
     public WatchIDictionary(D value) : base(value) {
       this.readOnlyDictionary = new LazyComputed<ReadOnlyDictionary<K, V>>(() => new ReadOnlyDictionary<K, V>(this.value)).Watch(this);
-      this.onChange = new CascadeEvent<ReadOnlyDictionary<K, V>>();
+      this.onChange = new AdvancedEvent<ReadOnlyDictionary<K, V>>();
     }
 
     /// <summary>
