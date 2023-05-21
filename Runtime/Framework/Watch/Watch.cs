@@ -8,13 +8,11 @@ namespace DT.UniStart {
   /// </summary>
   public class Watch<T> : IWatchable, IWatchable<T>, IWatchable<T, T> {
     protected T value;
-    AdvancedEvent onChange0;
     AdvancedEvent<T> onChange1;
     AdvancedEvent<T, T> onChange2;
 
     public Watch(T value) {
       this.value = value;
-      this.onChange0 = new AdvancedEvent();
       this.onChange1 = new AdvancedEvent<T>();
       this.onChange2 = new AdvancedEvent<T, T>();
     }
@@ -24,7 +22,6 @@ namespace DT.UniStart {
       set {
         var previous = this.value;
         this.value = value;
-        this.onChange0.Invoke();
         this.onChange1.Invoke(value);
         this.onChange2.Invoke(value, previous);
       }
@@ -33,8 +30,8 @@ namespace DT.UniStart {
     /// <summary>
     /// Add a listener that will be called when the value changes.
     /// </summary>
-    public UnityAction AddListener(UnityAction f) => this.onChange0.AddListener(f);
-    public UnityAction RemoveListener(UnityAction f) => this.onChange0.RemoveListener(f);
+    public UnityAction AddListener(UnityAction f) => this.onChange1.AddListener(f);
+    public UnityAction RemoveListener(UnityAction f) => this.onChange1.RemoveListener(f);
     /// <summary>
     /// Add a listener that will be called when the value changes.
     /// The parameter is the new value.
@@ -54,12 +51,10 @@ namespace DT.UniStart {
   /// </summary>
   public class WatchRef<T> : IWatchable, IWatchable<WatchRef<T>> {
     protected T value;
-    AdvancedEvent onChange0;
     AdvancedEvent<WatchRef<T>> onChange;
 
     public WatchRef(T value) {
       this.value = value;
-      this.onChange0 = new AdvancedEvent();
       this.onChange = new AdvancedEvent<WatchRef<T>>();
     }
 
@@ -110,14 +105,13 @@ namespace DT.UniStart {
     /// <summary>
     /// Add a listener that will be called when the value changes.
     /// </summary>
-    public UnityAction AddListener(UnityAction f) => this.onChange0.AddListener(f);
-    public UnityAction RemoveListener(UnityAction f) => this.onChange0.RemoveListener(f);
+    public UnityAction AddListener(UnityAction f) => this.onChange.AddListener(f);
+    public UnityAction RemoveListener(UnityAction f) => this.onChange.RemoveListener(f);
 
     /// <summary>
     /// Invoke all events.
     /// </summary>
     protected void InvokeEvent() {
-      this.onChange0.Invoke();
       this.onChange.Invoke(this);
     }
   }
