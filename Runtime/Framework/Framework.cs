@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace DT.UniStart {
 
@@ -22,6 +23,24 @@ namespace DT.UniStart {
       // if we can't find the core, throw an error
       throw new System.Exception("Can't find core in the scene!");
     }
+
+    #region re-expose Fn methods
+    public static UnityAction Fn(UnityAction action) {
+      return action;
+    }
+    public static UnityAction<T0> Fn<T0>(UnityAction<T0> action) {
+      return action;
+    }
+    public static UnityAction<T0, T1> Fn<T0, T1>(UnityAction<T0, T1> action) {
+      return action;
+    }
+    public static UnityAction<T0, T1, T2> Fn<T0, T1, T2>(UnityAction<T0, T1, T2> action) {
+      return action;
+    }
+    public static UnityAction<T0, T1, T2, T3> Fn<T0, T1, T2, T3>(UnityAction<T0, T1, T2, T3> action) {
+      return action;
+    }
+    #endregion
   }
 
   public class Entry : ComposableBehaviour {
@@ -81,6 +100,24 @@ namespace DT.UniStart {
     /// </summary>
     public T TryGet<T>() => this.core.TryGet<T>();
     #endregion
+
+    #region re-expose Fn methods
+    public static UnityAction Fn(UnityAction action) {
+      return action;
+    }
+    public static UnityAction<T0> Fn<T0>(UnityAction<T0> action) {
+      return action;
+    }
+    public static UnityAction<T0, T1> Fn<T0, T1>(UnityAction<T0, T1> action) {
+      return action;
+    }
+    public static UnityAction<T0, T1, T2> Fn<T0, T1, T2>(UnityAction<T0, T1, T2> action) {
+      return action;
+    }
+    public static UnityAction<T0, T1, T2, T3> Fn<T0, T1, T2, T3>(UnityAction<T0, T1, T2, T3> action) {
+      return action;
+    }
+    #endregion
   }
 
   /// <summary>
@@ -97,6 +134,24 @@ namespace DT.UniStart {
       }
       set => this._core = value;
     }
+
+    #region re-expose Fn methods
+    public static UnityAction Fn(UnityAction action) {
+      return action;
+    }
+    public static UnityAction<T0> Fn<T0>(UnityAction<T0> action) {
+      return action;
+    }
+    public static UnityAction<T0, T1> Fn<T0, T1>(UnityAction<T0, T1> action) {
+      return action;
+    }
+    public static UnityAction<T0, T1, T2> Fn<T0, T1, T2>(UnityAction<T0, T1, T2> action) {
+      return action;
+    }
+    public static UnityAction<T0, T1, T2, T3> Fn<T0, T1, T2, T3>(UnityAction<T0, T1, T2, T3> action) {
+      return action;
+    }
+    #endregion
   }
 
   /// <summary>
@@ -148,6 +203,24 @@ namespace DT.UniStart {
     /// If the type is not registered, return `default(T)`.
     /// </summary>
     public T TryGet<T>() => this.core.TryGet<T>();
+    #endregion
+
+    #region re-expose Fn methods
+    public static UnityAction Fn(UnityAction action) {
+      return action;
+    }
+    public static UnityAction<T0> Fn<T0>(UnityAction<T0> action) {
+      return action;
+    }
+    public static UnityAction<T0, T1> Fn<T0, T1>(UnityAction<T0, T1> action) {
+      return action;
+    }
+    public static UnityAction<T0, T1, T2> Fn<T0, T1, T2>(UnityAction<T0, T1, T2> action) {
+      return action;
+    }
+    public static UnityAction<T0, T1, T2, T3> Fn<T0, T1, T2, T3>(UnityAction<T0, T1, T2, T3> action) {
+      return action;
+    }
     #endregion
   }
 }
