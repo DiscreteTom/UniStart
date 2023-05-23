@@ -4,6 +4,7 @@
 
 - **_Breaking Change_**: add `AdvancedEvent`, remove `CascadeEvent`.
 - Feat: Add `FnHelper.Fn`.
+- Feat: move extensions from UniUtils to this project.
 
 ## v2.0.0
 
