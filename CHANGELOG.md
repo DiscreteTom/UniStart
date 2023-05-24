@@ -3,6 +3,7 @@
 ## v3.0.0
 
 - **_Breaking Change_**: add `AdvancedEvent`, remove `CascadeEvent`.
+- **_Breaking Change_**: `EventBus.RemoveListener` will always return the action in parameter.
 - Feat: Add `FnHelper/Entry/CBC.Fn`. #5
 - Feat: move extensions from UniUtils to this project.
 - Feat: all `AdvancedEvent` allow listener with 0 parameter.

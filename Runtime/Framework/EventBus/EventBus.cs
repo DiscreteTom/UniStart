@@ -58,27 +58,27 @@ namespace DT.UniStart {
     public UnityAction RemoveListener(T key, UnityAction action) {
       if (this.dict.TryGetValue(key, out object o))
         return ((AdvancedEvent)o).RemoveListener(action);
-      return null;
+      return action;
     }
     public UnityAction<T0> RemoveListener<T0>(T key, UnityAction<T0> action) {
       if (this.dict.TryGetValue(key, out object o))
         return ((AdvancedEvent<T0>)o).RemoveListener(action);
-      return null;
+      return action;
     }
     public UnityAction<T0, T1> RemoveListener<T0, T1>(T key, UnityAction<T0, T1> action) {
       if (this.dict.TryGetValue(key, out object o))
         return ((AdvancedEvent<T0, T1>)o).RemoveListener(action);
-      return null;
+      return action;
     }
     public UnityAction<T0, T1, T2> RemoveListener<T0, T1, T2>(T key, UnityAction<T0, T1, T2> action) {
       if (this.dict.TryGetValue(key, out object o))
         return ((AdvancedEvent<T0, T1, T2>)o).RemoveListener(action);
-      return null;
+      return action;
     }
     public UnityAction<T0, T1, T2, T3> RemoveListener<T0, T1, T2, T3>(T key, UnityAction<T0, T1, T2, T3> action) {
       if (this.dict.TryGetValue(key, out object o))
         return ((AdvancedEvent<T0, T1, T2, T3>)o).RemoveListener(action);
-      return null;
+      return action;
     }
 
     public void Invoke(T key) {
