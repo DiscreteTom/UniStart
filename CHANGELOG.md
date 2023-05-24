@@ -7,6 +7,7 @@
 - Feat: Add `FnHelper/Entry/CBC.Fn`. #5
 - Feat: move extensions from UniUtils to this project.
 - Feat: all `AdvancedEvent` allow listener with 0 parameter.
+- Feat: add `CompatibleEventBus`. #3
 - Perf: optimize `EventBus` code and runtime performance.
 
 ## v2.0.0
