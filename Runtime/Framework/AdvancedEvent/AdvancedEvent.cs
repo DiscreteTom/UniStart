@@ -15,21 +15,14 @@ namespace DT.UniStart {
   }
 
   public class AdvancedEvent<T0> : UnityEvent<T0>, IWatchable, IWatchable<T0> {
-    Dictionary<UnityAction, UnityAction<T0>> actionDict = new Dictionary<UnityAction, UnityAction<T0>>();
+    AdvancedEvent event0 = new AdvancedEvent();
 
     public UnityAction AddListener(UnityAction action) {
-      var wrapped = FnHelper.Fn((T0 _) => action.Invoke());
-      this.actionDict[action] = wrapped;
-      base.AddListener(wrapped);
-      return action;
+      return this.event0.AddListener(action);
     }
 
     public UnityAction RemoveListener(UnityAction action) {
-      if (this.actionDict.TryGetValue(action, out UnityAction<T0> wrapped)) {
-        base.RemoveListener(wrapped);
-        this.actionDict.Remove(action);
-      }
-      return action;
+      return this.event0.RemoveListener(action);
     }
 
     public new UnityAction<T0> AddListener(UnityAction<T0> action) {
@@ -41,24 +34,22 @@ namespace DT.UniStart {
       base.RemoveListener(action);
       return action;
     }
+
+    public new void Invoke(T0 arg0) {
+      this.event0.Invoke();
+      base.Invoke(arg0);
+    }
   }
 
   public class AdvancedEvent<T0, T1> : UnityEvent<T0, T1>, IWatchable, IWatchable<T0, T1> {
-    Dictionary<UnityAction, UnityAction<T0, T1>> actionDict = new Dictionary<UnityAction, UnityAction<T0, T1>>();
+    AdvancedEvent event0 = new AdvancedEvent();
 
     public UnityAction AddListener(UnityAction action) {
-      var wrapped = FnHelper.Fn((T0 _, T1 __) => action.Invoke());
-      this.actionDict[action] = wrapped;
-      base.AddListener(wrapped);
-      return action;
+      return this.event0.AddListener(action);
     }
 
     public UnityAction RemoveListener(UnityAction action) {
-      if (this.actionDict.TryGetValue(action, out UnityAction<T0, T1> wrapped)) {
-        base.RemoveListener(wrapped);
-        this.actionDict.Remove(action);
-      }
-      return action;
+      return this.event0.RemoveListener(action);
     }
 
     public new UnityAction<T0, T1> AddListener(UnityAction<T0, T1> action) {
@@ -70,24 +61,22 @@ namespace DT.UniStart {
       base.RemoveListener(action);
       return action;
     }
+
+    public new void Invoke(T0 arg0, T1 arg1) {
+      this.event0.Invoke();
+      base.Invoke(arg0, arg1);
+    }
   }
 
   public class AdvancedEvent<T0, T1, T2> : UnityEvent<T0, T1, T2>, IWatchable, IWatchable<T0, T1, T2> {
-    Dictionary<UnityAction, UnityAction<T0, T1, T2>> actionDict = new Dictionary<UnityAction, UnityAction<T0, T1, T2>>();
+    AdvancedEvent event0 = new AdvancedEvent();
 
     public UnityAction AddListener(UnityAction action) {
-      var wrapped = FnHelper.Fn((T0 _, T1 __, T2 ___) => action.Invoke());
-      this.actionDict[action] = wrapped;
-      base.AddListener(wrapped);
-      return action;
+      return this.event0.AddListener(action);
     }
 
     public UnityAction RemoveListener(UnityAction action) {
-      if (this.actionDict.TryGetValue(action, out UnityAction<T0, T1, T2> wrapped)) {
-        base.RemoveListener(wrapped);
-        this.actionDict.Remove(action);
-      }
-      return action;
+      return this.event0.RemoveListener(action);
     }
 
     public new UnityAction<T0, T1, T2> AddListener(UnityAction<T0, T1, T2> action) {
@@ -99,24 +88,22 @@ namespace DT.UniStart {
       base.RemoveListener(action);
       return action;
     }
+
+    public new void Invoke(T0 arg0, T1 arg1, T2 arg2) {
+      this.event0.Invoke();
+      base.Invoke(arg0, arg1, arg2);
+    }
   }
 
   public class AdvancedEvent<T0, T1, T2, T3> : UnityEvent<T0, T1, T2, T3>, IWatchable, IWatchable<T0, T1, T2, T3> {
-    Dictionary<UnityAction, UnityAction<T0, T1, T2, T3>> actionDict = new Dictionary<UnityAction, UnityAction<T0, T1, T2, T3>>();
+    AdvancedEvent event0 = new AdvancedEvent();
 
     public UnityAction AddListener(UnityAction action) {
-      var wrapped = FnHelper.Fn((T0 _, T1 __, T2 ___, T3 ____) => action.Invoke());
-      this.actionDict[action] = wrapped;
-      base.AddListener(wrapped);
-      return action;
+      return this.event0.AddListener(action);
     }
 
     public UnityAction RemoveListener(UnityAction action) {
-      if (this.actionDict.TryGetValue(action, out UnityAction<T0, T1, T2, T3> wrapped)) {
-        base.RemoveListener(wrapped);
-        this.actionDict.Remove(action);
-      }
-      return action;
+      return this.event0.RemoveListener(action);
     }
 
     public new UnityAction<T0, T1, T2, T3> AddListener(UnityAction<T0, T1, T2, T3> action) {
@@ -127,6 +114,11 @@ namespace DT.UniStart {
     public new UnityAction<T0, T1, T2, T3> RemoveListener(UnityAction<T0, T1, T2, T3> action) {
       base.RemoveListener(action);
       return action;
+    }
+
+    public new void Invoke(T0 arg0, T1 arg1, T2 arg2, T3 arg3) {
+      this.event0.Invoke();
+      base.Invoke(arg0, arg1, arg2, arg3);
     }
   }
 }
