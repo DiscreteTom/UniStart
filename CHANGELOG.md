@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v3.1.1
+
+- Fix: using `System` for `Func`.
+
 ## v3.1.0
 
 - Feat: `FnHelper/Entry/CBC.Fn` support `Func`. #5
