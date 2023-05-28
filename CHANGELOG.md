@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v3.1.0
+
+- Feat: `FnHelper/Entry/CBC.Fn` support `Func`. #5
+
 ## v3.0.0
 
 - **_Breaking Change_**: add `AdvancedEvent`, remove `CascadeEvent`.
