@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 using UnityEngine.Events;
 
 namespace DT.UniStart {
@@ -6,8 +7,9 @@ namespace DT.UniStart {
   /// Watch a **value** type for changes.
   /// This class should be used for immutable types (int, float, bool, string, etc) only.
   /// </summary>
+  [Serializable]
   public class Watch<T> : IWatchable, IWatchable<T>, IWatchable<T, T>, IOnceWatchable, IOnceWatchable<T>, IOnceWatchable<T, T> {
-    protected T value;
+    [SerializeField] protected T value;
     AdvancedEvent<T> onChange1;
     AdvancedEvent<T, T> onChange2;
 
