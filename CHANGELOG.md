@@ -6,6 +6,7 @@
 - Feat: rewrite IoC module, add `IBasicIoCC/IKeyedIoCC/IStringIoCC/StringIoCC`.
 - Feat: add `AdvancedEvent.AddOnceListener/RemoveOnceListener`.
 - Feat: add `IComposable`.
+- Feat: `ComposableBehaviour` can watch `IEventBus<K>`.
 
 ## v3.1.1
 
