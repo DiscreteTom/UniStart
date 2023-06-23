@@ -14,7 +14,7 @@ namespace DT.UniStart {
     /// </summary>
     public UnityAction Watch(IWatchable watchable, UnityAction action) {
       watchable.AddListener(action);
-      this.onDestroy.AddListener(() => watchable.RemoveListener(action));
+      this.onDestroy.AddOnceListener(() => watchable.RemoveListener(action));
       return action;
     }
     /// <summary>
@@ -23,7 +23,7 @@ namespace DT.UniStart {
     /// </summary>
     public UnityAction<T0> Watch<T0>(IWatchable<T0> watchable, UnityAction<T0> action) {
       watchable.AddListener(action);
-      this.onDestroy.AddListener(() => watchable.RemoveListener(action));
+      this.onDestroy.AddOnceListener(() => watchable.RemoveListener(action));
       return action;
     }
     /// <summary>
@@ -32,7 +32,7 @@ namespace DT.UniStart {
     /// </summary>
     public UnityAction<T0, T1> Watch<T0, T1>(IWatchable<T0, T1> watchable, UnityAction<T0, T1> action) {
       watchable.AddListener(action);
-      this.onDestroy.AddListener(() => watchable.RemoveListener(action));
+      this.onDestroy.AddOnceListener(() => watchable.RemoveListener(action));
       return action;
     }
     /// <summary>
@@ -41,7 +41,7 @@ namespace DT.UniStart {
     /// </summary>
     public UnityAction<T0, T1, T2> Watch<T0, T1, T2>(IWatchable<T0, T1, T2> watchable, UnityAction<T0, T1, T2> action) {
       watchable.AddListener(action);
-      this.onDestroy.AddListener(() => watchable.RemoveListener(action));
+      this.onDestroy.AddOnceListener(() => watchable.RemoveListener(action));
       return action;
     }
     /// <summary>
@@ -50,7 +50,7 @@ namespace DT.UniStart {
     /// </summary>
     public UnityAction<T0, T1, T2, T3> Watch<T0, T1, T2, T3>(IWatchable<T0, T1, T2, T3> watchable, UnityAction<T0, T1, T2, T3> action) {
       watchable.AddListener(action);
-      this.onDestroy.AddListener(() => watchable.RemoveListener(action));
+      this.onDestroy.AddOnceListener(() => watchable.RemoveListener(action));
       return action;
     }
     /// <summary>
@@ -59,7 +59,7 @@ namespace DT.UniStart {
     /// </summary>
     public UnityAction OnceWatch(IOnceWatchable watchable, UnityAction action) {
       watchable.AddOnceListener(wrapper);
-      this.onDestroy.AddListener(() => watchable.RemoveOnceListener(wrapper));
+      this.onDestroy.AddOnceListener(() => watchable.RemoveOnceListener(wrapper));
       return wrapper;
     }
     /// <summary>
@@ -68,7 +68,7 @@ namespace DT.UniStart {
     /// </summary>
     public UnityAction<T0> OnceWatch<T0>(IOnceWatchable<T0> watchable, UnityAction<T0> action) {
       watchable.AddOnceListener(wrapper);
-      this.onDestroy.AddListener(() => watchable.RemoveOnceListener(wrapper));
+      this.onDestroy.AddOnceListener(() => watchable.RemoveOnceListener(wrapper));
       return wrapper;
     }
     /// <summary>
@@ -77,7 +77,7 @@ namespace DT.UniStart {
     /// </summary>
     public UnityAction<T0, T1> OnceWatch<T0, T1>(IOnceWatchable<T0, T1> watchable, UnityAction<T0, T1> action) {
       watchable.AddOnceListener(wrapper);
-      this.onDestroy.AddListener(() => watchable.RemoveOnceListener(wrapper));
+      this.onDestroy.AddOnceListener(() => watchable.RemoveOnceListener(wrapper));
       return wrapper;
     }
     /// <summary>
@@ -86,7 +86,7 @@ namespace DT.UniStart {
     /// </summary>
     public UnityAction<T0, T1, T2> OnceWatch<T0, T1, T2>(IOnceWatchable<T0, T1, T2> watchable, UnityAction<T0, T1, T2> action) {
       watchable.AddOnceListener(wrapper);
-      this.onDestroy.AddListener(() => watchable.RemoveOnceListener(wrapper));
+      this.onDestroy.AddOnceListener(() => watchable.RemoveOnceListener(wrapper));
       return wrapper;
     }
     /// <summary>
@@ -95,7 +95,7 @@ namespace DT.UniStart {
     /// </summary>
     public UnityAction<T0, T1, T2, T3> OnceWatch<T0, T1, T2, T3>(IOnceWatchable<T0, T1, T2, T3> watchable, UnityAction<T0, T1, T2, T3> action) {
       watchable.AddOnceListener(wrapper);
-      this.onDestroy.AddListener(() => watchable.RemoveOnceListener(wrapper));
+      this.onDestroy.AddOnceListener(() => watchable.RemoveOnceListener(wrapper));
       return wrapper;
     }
     #endregion
@@ -107,7 +107,7 @@ namespace DT.UniStart {
     /// </summary>
     public UnityAction Watch<K>(IEventBus<K> eventBus, K key, UnityAction action) {
       eventBus.AddListener(key, action);
-      this.onDestroy.AddListener(() => eventBus.RemoveListener(key, action));
+      this.onDestroy.AddOnceListener(() => eventBus.RemoveListener(key, action));
       return action;
     }
     /// <summary>
@@ -116,7 +116,7 @@ namespace DT.UniStart {
     /// </summary>
     public UnityAction<T0> Watch<K, T0>(IEventBus<K> eventBus, K key, UnityAction<T0> action) {
       eventBus.AddListener(key, action);
-      this.onDestroy.AddListener(() => eventBus.RemoveListener(key, action));
+      this.onDestroy.AddOnceListener(() => eventBus.RemoveListener(key, action));
       return action;
     }
     /// <summary>
@@ -125,7 +125,7 @@ namespace DT.UniStart {
     /// </summary>
     public UnityAction<T0, T1> Watch<K, T0, T1>(IEventBus<K> eventBus, K key, UnityAction<T0, T1> action) {
       eventBus.AddListener(key, action);
-      this.onDestroy.AddListener(() => eventBus.RemoveListener(key, action));
+      this.onDestroy.AddOnceListener(() => eventBus.RemoveListener(key, action));
       return action;
     }
     /// <summary>
@@ -134,7 +134,7 @@ namespace DT.UniStart {
     /// </summary>
     public UnityAction<T0, T1, T2> Watch<K, T0, T1, T2>(IEventBus<K> eventBus, K key, UnityAction<T0, T1, T2> action) {
       eventBus.AddListener(key, action);
-      this.onDestroy.AddListener(() => eventBus.RemoveListener(key, action));
+      this.onDestroy.AddOnceListener(() => eventBus.RemoveListener(key, action));
       return action;
     }
     /// <summary>
@@ -143,7 +143,7 @@ namespace DT.UniStart {
     /// </summary>
     public UnityAction<T0, T1, T2, T3> Watch<K, T0, T1, T2, T3>(IEventBus<K> eventBus, K key, UnityAction<T0, T1, T2, T3> action) {
       eventBus.AddListener(key, action);
-      this.onDestroy.AddListener(() => eventBus.RemoveListener(key, action));
+      this.onDestroy.AddOnceListener(() => eventBus.RemoveListener(key, action));
       return action;
     }
     #endregion
