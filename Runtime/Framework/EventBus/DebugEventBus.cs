@@ -15,12 +15,11 @@ namespace DT.UniStart {
   /// <summary>
   /// DebugEventBus is a wrapper around an IEventBus which logs all calls to AddListener, RemoveListener and Invoke.
   /// </summary>
-  public class DebugEventBus<Bus, T> : IEventBus<T> where Bus : IEventBus<T> {
-
+  public class DebugEventBus<T> : IEventBus<T> {
     DebugEventBusMode mode;
-    Bus bus;
+    IEventBus<T> bus;
 
-    public DebugEventBus(Bus bus, DebugEventBusMode mode = DebugEventBusMode.Invoke) {
+    public DebugEventBus(IEventBus<T> bus, DebugEventBusMode mode = DebugEventBusMode.Invoke) {
       this.mode = mode;
       this.bus = bus;
     }
@@ -29,42 +28,82 @@ namespace DT.UniStart {
       if ((this.mode & DebugEventBusMode.AddListener) == DebugEventBusMode.AddListener) Debug.Log($"DebugEventBus.AddListener: key = {key}");
       return this.bus.AddListener(key, action);
     }
+    public UnityAction AddOnceListener(T key, UnityAction action) {
+      if ((this.mode & DebugEventBusMode.AddListener) == DebugEventBusMode.AddListener) Debug.Log($"DebugEventBus.AddOnceListener: key = {key}");
+      return this.bus.AddOnceListener(key, action);
+    }
     public UnityAction<T0> AddListener<T0>(T key, UnityAction<T0> action) {
       if ((this.mode & DebugEventBusMode.AddListener) == DebugEventBusMode.AddListener) Debug.Log($"DebugEventBus.AddListener: key = {key}");
       return this.bus.AddListener(key, action);
+    }
+    public UnityAction<T0> AddOnceListener<T0>(T key, UnityAction<T0> action) {
+      if ((this.mode & DebugEventBusMode.AddListener) == DebugEventBusMode.AddListener) Debug.Log($"DebugEventBus.AddOnceListener: key = {key}");
+      return this.bus.AddOnceListener(key, action);
     }
     public UnityAction<T0, T1> AddListener<T0, T1>(T key, UnityAction<T0, T1> action) {
       if ((this.mode & DebugEventBusMode.AddListener) == DebugEventBusMode.AddListener) Debug.Log($"DebugEventBus.AddListener: key = {key}");
       return this.bus.AddListener(key, action);
     }
+    public UnityAction<T0, T1> AddOnceListener<T0, T1>(T key, UnityAction<T0, T1> action) {
+      if ((this.mode & DebugEventBusMode.AddListener) == DebugEventBusMode.AddListener) Debug.Log($"DebugEventBus.AddOnceListener: key = {key}");
+      return this.bus.AddOnceListener(key, action);
+    }
     public UnityAction<T0, T1, T2> AddListener<T0, T1, T2>(T key, UnityAction<T0, T1, T2> action) {
       if ((this.mode & DebugEventBusMode.AddListener) == DebugEventBusMode.AddListener) Debug.Log($"DebugEventBus.AddListener: key = {key}");
       return this.bus.AddListener(key, action);
     }
+    public UnityAction<T0, T1, T2> AddOnceListener<T0, T1, T2>(T key, UnityAction<T0, T1, T2> action) {
+      if ((this.mode & DebugEventBusMode.AddListener) == DebugEventBusMode.AddListener) Debug.Log($"DebugEventBus.AddOnceListener: key = {key}");
+      return this.bus.AddOnceListener(key, action);
+    }
     public UnityAction<T0, T1, T2, T3> AddListener<T0, T1, T2, T3>(T key, UnityAction<T0, T1, T2, T3> action) {
       if ((this.mode & DebugEventBusMode.AddListener) == DebugEventBusMode.AddListener) Debug.Log($"DebugEventBus.AddListener: key = {key}");
       return this.bus.AddListener(key, action);
+    }
+    public UnityAction<T0, T1, T2, T3> AddOnceListener<T0, T1, T2, T3>(T key, UnityAction<T0, T1, T2, T3> action) {
+      if ((this.mode & DebugEventBusMode.AddListener) == DebugEventBusMode.AddListener) Debug.Log($"DebugEventBus.AddOnceListener: key = {key}");
+      return this.bus.AddOnceListener(key, action);
     }
 
     public UnityAction RemoveListener(T key, UnityAction action) {
       if ((this.mode & DebugEventBusMode.RemoveListener) == DebugEventBusMode.RemoveListener) Debug.Log($"DebugEventBus.RemoveListener: key = {key}");
       return this.bus.RemoveListener(key, action);
     }
+    public UnityAction RemoveOnceListener(T key, UnityAction action) {
+      if ((this.mode & DebugEventBusMode.RemoveListener) == DebugEventBusMode.RemoveListener) Debug.Log($"DebugEventBus.RemoveOnceListener: key = {key}");
+      return this.bus.RemoveOnceListener(key, action);
+    }
     public UnityAction<T0> RemoveListener<T0>(T key, UnityAction<T0> action) {
       if ((this.mode & DebugEventBusMode.RemoveListener) == DebugEventBusMode.RemoveListener) Debug.Log($"DebugEventBus.RemoveListener: key = {key}");
       return this.bus.RemoveListener(key, action);
+    }
+    public UnityAction<T0> RemoveOnceListener<T0>(T key, UnityAction<T0> action) {
+      if ((this.mode & DebugEventBusMode.RemoveListener) == DebugEventBusMode.RemoveListener) Debug.Log($"DebugEventBus.RemoveOnceListener: key = {key}");
+      return this.bus.RemoveOnceListener(key, action);
     }
     public UnityAction<T0, T1> RemoveListener<T0, T1>(T key, UnityAction<T0, T1> action) {
       if ((this.mode & DebugEventBusMode.RemoveListener) == DebugEventBusMode.RemoveListener) Debug.Log($"DebugEventBus.RemoveListener: key = {key}");
       return this.bus.RemoveListener(key, action);
     }
+    public UnityAction<T0, T1> RemoveOnceListener<T0, T1>(T key, UnityAction<T0, T1> action) {
+      if ((this.mode & DebugEventBusMode.RemoveListener) == DebugEventBusMode.RemoveListener) Debug.Log($"DebugEventBus.RemoveOnceListener: key = {key}");
+      return this.bus.RemoveOnceListener(key, action);
+    }
     public UnityAction<T0, T1, T2> RemoveListener<T0, T1, T2>(T key, UnityAction<T0, T1, T2> action) {
       if ((this.mode & DebugEventBusMode.RemoveListener) == DebugEventBusMode.RemoveListener) Debug.Log($"DebugEventBus.RemoveListener: key = {key}");
       return this.bus.RemoveListener(key, action);
     }
+    public UnityAction<T0, T1, T2> RemoveOnceListener<T0, T1, T2>(T key, UnityAction<T0, T1, T2> action) {
+      if ((this.mode & DebugEventBusMode.RemoveListener) == DebugEventBusMode.RemoveListener) Debug.Log($"DebugEventBus.RemoveOnceListener: key = {key}");
+      return this.bus.RemoveOnceListener(key, action);
+    }
     public UnityAction<T0, T1, T2, T3> RemoveListener<T0, T1, T2, T3>(T key, UnityAction<T0, T1, T2, T3> action) {
       if ((this.mode & DebugEventBusMode.RemoveListener) == DebugEventBusMode.RemoveListener) Debug.Log($"DebugEventBus.RemoveListener: key = {key}");
       return this.bus.RemoveListener(key, action);
+    }
+    public UnityAction<T0, T1, T2, T3> RemoveOnceListener<T0, T1, T2, T3>(T key, UnityAction<T0, T1, T2, T3> action) {
+      if ((this.mode & DebugEventBusMode.RemoveListener) == DebugEventBusMode.RemoveListener) Debug.Log($"DebugEventBus.RemoveOnceListener: key = {key}");
+      return this.bus.RemoveOnceListener(key, action);
     }
 
     public void Invoke(T key) {
@@ -94,16 +133,9 @@ namespace DT.UniStart {
   }
 
   /// <summary>
-  /// DebugEventBus logs all calls to AddListener, RemoveListener and Invoke.
-  /// </summary>
-  public class DebugEventBus<T> : DebugEventBus<EventBus<T>, T>, IEventBus<T> {
-    public DebugEventBus(DebugEventBusMode mode = DebugEventBusMode.Invoke) : base(new EventBus<T>(), mode) { }
-  }
-
-  /// <summary>
-  /// DebugEventBus logs all calls to AddListener, RemoveListener and Invoke.
+  /// DebugEventBus can log calls to AddListener, RemoveListener and Invoke.
   /// </summary>
   public class DebugEventBus : DebugEventBus<object>, IEventBus<object>, IEventBus {
-    public DebugEventBus(DebugEventBusMode mode = DebugEventBusMode.Invoke) : base(mode) { }
+    public DebugEventBus(DebugEventBusMode mode = DebugEventBusMode.Invoke) : base(new EventBus(), mode) { }
   }
 }

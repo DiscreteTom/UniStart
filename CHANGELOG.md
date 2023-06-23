@@ -11,7 +11,7 @@
 - Feat: add `AdvancedEvent.AddOnceListener/RemoveOnceListener`.
 - Feat: add `IComposable`.
 - Feat: add `IOnceWatchable`.
-  - Apply to `AdvancedEvent/UniStartBehaviour/Watch/WatchRef/Computed` and watchable collections.
+  - Apply to `AdvancedEvent/UniStartBehaviour/Watch/WatchRef/Computed/IEventBus` and watchable collections.
 
 ## v3.1.1
 
