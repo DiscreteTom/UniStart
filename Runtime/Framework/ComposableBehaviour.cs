@@ -132,51 +132,6 @@ namespace DT.UniStart {
     /// Watch an event bus for events.
     /// Remove the listener when the object is destroyed.
     /// </summary>
-    public UnityAction Watch(IEventBus eventBus, object key, UnityAction action) {
-      eventBus.AddListener(key, action);
-      this.onDestroy.AddListener(() => eventBus.RemoveListener(key, action));
-      return action;
-    }
-    /// <summary>
-    /// Watch an event bus for events.
-    /// Remove the listener when the object is destroyed.
-    /// </summary>
-    public UnityAction<T0> Watch<T0>(IEventBus eventBus, object key, UnityAction<T0> action) {
-      eventBus.AddListener(key, action);
-      this.onDestroy.AddListener(() => eventBus.RemoveListener(key, action));
-      return action;
-    }
-    /// <summary>
-    /// Watch an event bus for events.
-    /// Remove the listener when the object is destroyed.
-    /// </summary>
-    public UnityAction<T0, T1> Watch<T0, T1>(IEventBus eventBus, object key, UnityAction<T0, T1> action) {
-      eventBus.AddListener(key, action);
-      this.onDestroy.AddListener(() => eventBus.RemoveListener(key, action));
-      return action;
-    }
-    /// <summary>
-    /// Watch an event bus for events.
-    /// Remove the listener when the object is destroyed.
-    /// </summary>
-    public UnityAction<T0, T1, T2> Watch<T0, T1, T2>(IEventBus eventBus, object key, UnityAction<T0, T1, T2> action) {
-      eventBus.AddListener(key, action);
-      this.onDestroy.AddListener(() => eventBus.RemoveListener(key, action));
-      return action;
-    }
-    /// <summary>
-    /// Watch an event bus for events.
-    /// Remove the listener when the object is destroyed.
-    /// </summary>
-    public UnityAction<T0, T1, T2, T3> Watch<T0, T1, T2, T3>(IEventBus eventBus, object key, UnityAction<T0, T1, T2, T3> action) {
-      eventBus.AddListener(key, action);
-      this.onDestroy.AddListener(() => eventBus.RemoveListener(key, action));
-      return action;
-    }
-    /// <summary>
-    /// Watch an event bus for events.
-    /// Remove the listener when the object is destroyed.
-    /// </summary>
     public UnityAction Watch<K>(IEventBus<K> eventBus, K key, UnityAction action) {
       eventBus.AddListener(key, action);
       this.onDestroy.AddListener(() => eventBus.RemoveListener(key, action));
