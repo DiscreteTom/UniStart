@@ -121,7 +121,7 @@ namespace DT.UniStart {
     protected T context {
       get {
         if (this._context == null)
-          this._context = Entry<T>.GetCore(this.gameObject);
+          this._context = Entry<T>.GetContext(this.gameObject);
         return this._context;
       }
       set => this._context = value;
@@ -149,7 +149,7 @@ namespace DT.UniStart {
     protected IIoCC context {
       get {
         if (this._context == null)
-          this._context = Entry.GetCore(this.gameObject);
+          this._context = Entry.GetContext(this.gameObject);
         return this._context;
       }
       set => this._context = value;
