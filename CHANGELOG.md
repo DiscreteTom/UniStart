@@ -3,6 +3,7 @@
 ## v4.0.0
 
 - **_Breaking Change_**: rename `core` to `context`.
+- Feat: rewrite IoC module, add `IBasicIoCC/IKeyedIoCC/KeyedIoCC/IStringIoCC/StringIoCC`.
 
 ## v3.1.1
 
