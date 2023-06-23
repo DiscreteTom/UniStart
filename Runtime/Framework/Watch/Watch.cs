@@ -58,7 +58,7 @@ namespace DT.UniStart {
   /// Watch a **reference** type for changes.
   /// </summary>
   public class WatchRef<T> : IWatchable, IWatchable<WatchRef<T>>, IOnceWatchable, IOnceWatchable<WatchRef<T>> {
-    protected T value;
+    [SerializeField] protected T value;
     AdvancedEvent<WatchRef<T>> onChange;
 
     public WatchRef(T value) {
