@@ -3,7 +3,66 @@ using UnityEngine;
 using UnityEngine.Events;
 
 namespace DT.UniStart {
-  public class ComposableBehaviour : MonoBehaviour {
+  public interface IComposable {
+    AdvancedEvent<int> onAnimatorIK { get; }
+    AdvancedEvent onAnimatorMove { get; }
+    AdvancedEvent<bool> onApplicationFocus { get; }
+    AdvancedEvent<bool> onApplicationPause { get; }
+    AdvancedEvent onApplicationQuit { get; }
+    AdvancedEvent<float[], int> onAudioFilterRead { get; }
+    AdvancedEvent onBecameInvisible { get; }
+    AdvancedEvent onBecameVisible { get; }
+    AdvancedEvent<Collision> onCollisionEnter { get; }
+    AdvancedEvent<Collision2D> onCollisionEnter2D { get; }
+    AdvancedEvent<Collision> onCollisionExit { get; }
+    AdvancedEvent<Collision2D> onCollisionExit2D { get; }
+    AdvancedEvent<Collision> onCollisionStay { get; }
+    AdvancedEvent<Collision2D> onCollisionStay2D { get; }
+    AdvancedEvent<ControllerColliderHit> onControllerColliderHit { get; }
+    AdvancedEvent onDestroy { get; }
+    AdvancedEvent onDisable { get; }
+    AdvancedEvent onDrawGizmos { get; }
+    AdvancedEvent onDrawGizmosSelected { get; }
+    AdvancedEvent onEnable { get; }
+    AdvancedEvent onGUI { get; }
+    AdvancedEvent onFixedUpdate { get; }
+    AdvancedEvent<float> onJointBreak { get; }
+    AdvancedEvent<Joint2D> onJointBreak2D { get; }
+    AdvancedEvent onLateUpdate { get; }
+    AdvancedEvent onMouseDown { get; }
+    AdvancedEvent onMouseDrag { get; }
+    AdvancedEvent onMouseEnter { get; }
+    AdvancedEvent onMouseExit { get; }
+    AdvancedEvent onMouseOver { get; }
+    AdvancedEvent onMouseUp { get; }
+    AdvancedEvent onMouseUpAsButton { get; }
+    AdvancedEvent onNextFixedUpdate { get; }
+    AdvancedEvent onNextLateUpdate { get; }
+    AdvancedEvent onNextUpdate { get; }
+    AdvancedEvent<GameObject> onParticleCollision { get; }
+    AdvancedEvent onParticleSystemStopped { get; }
+    AdvancedEvent onParticleTrigger { get; }
+    AdvancedEvent onParticleUpdateJobScheduled { get; }
+    AdvancedEvent onPostRender { get; }
+    AdvancedEvent onPreCull { get; }
+    AdvancedEvent onPreRender { get; }
+    AdvancedEvent<RenderTexture, RenderTexture> onRenderImage { get; }
+    AdvancedEvent onRenderObject { get; }
+    AdvancedEvent onReset { get; }
+    AdvancedEvent onTransformChildrenChanged { get; }
+    AdvancedEvent onTransformParentChanged { get; }
+    AdvancedEvent<Collider> onTriggerEnter { get; }
+    AdvancedEvent<Collider2D> onTriggerEnter2D { get; }
+    AdvancedEvent<Collider> onTriggerExit { get; }
+    AdvancedEvent<Collider2D> onTriggerExit2D { get; }
+    AdvancedEvent<Collider> onTriggerStay { get; }
+    AdvancedEvent<Collider2D> onTriggerStay2D { get; }
+    AdvancedEvent onUpdate { get; }
+    AdvancedEvent onValidate { get; }
+    AdvancedEvent onWillRenderObject { get; }
+  }
+
+  public class ComposableBehaviour : MonoBehaviour, IComposable {
     IoCC ioc = new IoCC(); // cache for components
 
     /// <summary>

@@ -5,6 +5,7 @@
 - **_Breaking Change_**: rename `core` to `context`.
 - Feat: rewrite IoC module, add `IBasicIoCC/IKeyedIoCC/IStringIoCC/StringIoCC`.
 - Feat: add `AdvancedEvent.AddOnceListener/RemoveOnceListener`.
+- Feat: add `IComposable`.
 
 ## v3.1.1
 
