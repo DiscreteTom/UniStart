@@ -13,6 +13,7 @@
 - Feat: add `IComposable`.
 - Feat: add `IOnceWatchable`.
   - Apply to `AdvancedEvent/UniStartBehaviour/Watch/WatchRef/Computed/IEventBus` and watchable collections.
+- Feat: add `Rigidbody/Rigidbody2D.SetVelocityX/Y/Z`. #8
 
 ## v3.1.1
 
