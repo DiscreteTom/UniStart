@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v4.0.0
+
+- **_Breaking Change_**: rename `core` to `context`.
+
 ## v3.1.1
 
 - Fix: using `System` for `Func`.

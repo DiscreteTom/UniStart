@@ -5,24 +5,25 @@ using UnityEngine.Events;
 namespace DT.UniStart {
 
   public class Entry<T> : ComposableBehaviour where T : class {
-    public T core = null;
+    public T context = null;
 
-    public static T GetCore(GameObject obj) {
-      T core = null;
-      // first, try to find the core in the root object
-      core = obj.transform.root.GetComponent<Entry<T>>()?.core;
-      if (core != null) return core;
+    // TODO: add generic GetContext<T> method?
+    public static T GetContext(GameObject obj) {
+      T context = null;
+      // first, try to find the context in the root object
+      context = obj.transform.root.GetComponent<Entry<T>>()?.context;
+      if (context != null) return context;
 
-      // second, try to find the core in the parent object
-      core = obj.GetComponentInParent<Entry<T>>()?.core;
-      if (core != null) return core;
+      // second, try to find the context in the parent object
+      context = obj.GetComponentInParent<Entry<T>>()?.context;
+      if (context != null) return context;
 
-      // finally, try to find the core in the whole scene
-      core = GameObject.FindObjectOfType<Entry<T>>()?.core;
-      if (core != null) return core;
+      // finally, try to find the context in the whole scene
+      context = GameObject.FindObjectOfType<Entry<T>>()?.context;
+      if (context != null) return context;
 
-      // if we can't find the core, throw an error
-      throw new System.Exception("Can't find core in the scene!");
+      // if we can't find the context, throw an error
+      throw new System.Exception("Can't find context in the scene!");
     }
 
     #region re-expose Fn methods
@@ -40,61 +41,61 @@ namespace DT.UniStart {
   }
 
   public class Entry : ComposableBehaviour {
-    public IIoCC core { get; private set; } = new IoCC();
+    public IIoCC context { get; private set; } = new IoCC();
 
-    public static IIoCC GetCore(GameObject obj) {
-      IIoCC core = null;
-      // first, try to find the core in the root object
-      core = obj.transform.root.GetComponent<Entry>()?.core;
-      if (core != null) return core;
+    public static IIoCC GetContext(GameObject obj) {
+      IIoCC context = null;
+      // first, try to find the context in the root object
+      context = obj.transform.root.GetComponent<Entry>()?.context;
+      if (context != null) return context;
 
-      // second, try to find the core in the parent object
-      core = obj.GetComponentInParent<Entry>()?.core;
-      if (core != null) return core;
+      // second, try to find the context in the parent object
+      context = obj.GetComponentInParent<Entry>()?.context;
+      if (context != null) return context;
 
-      // finally, try to find the core in the whole scene
-      core = GameObject.FindObjectOfType<Entry>()?.core;
-      if (core != null) return core;
+      // finally, try to find the context in the whole scene
+      context = GameObject.FindObjectOfType<Entry>()?.context;
+      if (context != null) return context;
 
-      // if we can't find the core, throw an error
-      throw new System.Exception("Can't find core in the scene!");
+      // if we can't find the context, throw an error
+      throw new System.Exception("Can't find context in the scene!");
     }
 
     #region re-expose IIoCC methods
     /// <summary>
     /// Register a type with an existing instance and a key.
     /// </summary>
-    public T Add<T>(object key, T instance) => this.core.Add<T>(key, instance);
+    public T Add<T>(object key, T instance) => this.context.Add<T>(key, instance);
     /// <summary>
     /// Register a type with an existing instance.
     /// </summary>
-    public T Add<T>(T instance) => this.core.Add<T>(instance);
+    public T Add<T>(T instance) => this.context.Add<T>(instance);
     /// <summary>
     /// Register a type with a key, and auto create an instance.
     /// </summary>
-    public T Add<T>(object key) where T : new() => this.core.Add<T>(key);
+    public T Add<T>(object key) where T : new() => this.context.Add<T>(key);
     /// <summary>
     /// Register a type and auto create an instance.
     /// </summary>
-    public T Add<T>() where T : new() => this.core.Add<T>();
+    public T Add<T>() where T : new() => this.context.Add<T>();
     /// <summary>
     /// Get the instance of a type by key.
     /// </summary>
-    public T Get<T>(object key) => this.core.Get<T>(key);
+    public T Get<T>(object key) => this.context.Get<T>(key);
     /// <summary>
     /// Get the instance of a type.
     /// </summary>
-    public T Get<T>() => this.core.Get<T>();
+    public T Get<T>() => this.context.Get<T>();
     /// <summary>
     /// Try to get the instance of a type with a key.
     /// If the type is not registered, return `default(T)`.
     /// </summary>
-    public T TryGet<T>(object key) => this.core.TryGet<T>(key);
+    public T TryGet<T>(object key) => this.context.TryGet<T>(key);
     /// <summary>
     /// Try to get the instance of a type.
     /// If the type is not registered, return `default(T)`.
     /// </summary>
-    public T TryGet<T>() => this.core.TryGet<T>();
+    public T TryGet<T>() => this.context.TryGet<T>();
     #endregion
 
     #region re-expose Fn methods
@@ -112,18 +113,18 @@ namespace DT.UniStart {
   }
 
   /// <summary>
-  /// ComposableBehaviour with core injected.
+  /// ComposableBehaviour with context injected.
   /// </summary>
   public class CBC<T> : ComposableBehaviour where T : class {
-    // cache the core to avoid searching it every time
-    T _core = null;
-    protected T core {
+    // cache the context to avoid searching it every time
+    T _context = null;
+    protected T context {
       get {
-        if (this._core == null)
-          this._core = Entry<T>.GetCore(this.gameObject);
-        return this._core;
+        if (this._context == null)
+          this._context = Entry<T>.GetCore(this.gameObject);
+        return this._context;
       }
-      set => this._core = value;
+      set => this._context = value;
     }
 
     #region re-expose Fn methods
@@ -141,54 +142,54 @@ namespace DT.UniStart {
   }
 
   /// <summary>
-  /// ComposableBehaviour with core injected.
+  /// ComposableBehaviour with context injected.
   /// </summary>
   public class CBC : ComposableBehaviour {
-    IIoCC _core = null;
-    protected IIoCC core {
+    IIoCC _context = null;
+    protected IIoCC context {
       get {
-        if (this._core == null)
-          this._core = Entry.GetCore(this.gameObject);
-        return this._core;
+        if (this._context == null)
+          this._context = Entry.GetCore(this.gameObject);
+        return this._context;
       }
-      set => this._core = value;
+      set => this._context = value;
     }
 
     #region re-expose IIoCC methods
     /// <summary>
     /// Register a type with an existing instance and a key.
     /// </summary>
-    public T Add<T>(object key, T instance) => this.core.Add<T>(key, instance);
+    public T Add<T>(object key, T instance) => this.context.Add<T>(key, instance);
     /// <summary>
     /// Register a type with an existing instance.
     /// </summary>
-    public T Add<T>(T instance) => this.core.Add<T>(instance);
+    public T Add<T>(T instance) => this.context.Add<T>(instance);
     /// <summary>
     /// Register a type with a key, and auto create an instance.
     /// </summary>
-    public T Add<T>(object key) where T : new() => this.core.Add<T>(key);
+    public T Add<T>(object key) where T : new() => this.context.Add<T>(key);
     /// <summary>
     /// Register a type and auto create an instance.
     /// </summary>
-    public T Add<T>() where T : new() => this.core.Add<T>();
+    public T Add<T>() where T : new() => this.context.Add<T>();
     /// <summary>
     /// Get the instance of a type by key.
     /// </summary>
-    public T Get<T>(object key) => this.core.Get<T>(key);
+    public T Get<T>(object key) => this.context.Get<T>(key);
     /// <summary>
     /// Get the instance of a type.
     /// </summary>
-    public T Get<T>() => this.core.Get<T>();
+    public T Get<T>() => this.context.Get<T>();
     /// <summary>
     /// Try to get the instance of a type with a key.
     /// If the type is not registered, return `default(T)`.
     /// </summary>
-    public T TryGet<T>(object key) => this.core.TryGet<T>(key);
+    public T TryGet<T>(object key) => this.context.TryGet<T>(key);
     /// <summary>
     /// Try to get the instance of a type.
     /// If the type is not registered, return `default(T)`.
     /// </summary>
-    public T TryGet<T>() => this.core.TryGet<T>();
+    public T TryGet<T>() => this.context.TryGet<T>();
     #endregion
 
     #region re-expose Fn methods
