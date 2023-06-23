@@ -3,8 +3,121 @@ using UnityEngine;
 using UnityEngine.Events;
 
 namespace DT.UniStart {
+  /// <summary>
+  /// The base class for Entry and CBC.
+  /// </summary>
+  public class UniStartBehaviour : ComposableBehaviour {
+    #region Helper Methods for IWatchable
+    /// <summary>
+    /// Watch a watchable for changes.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public UnityAction Watch(IWatchable watchable, UnityAction action) {
+      watchable.AddListener(action);
+      this.onDestroy.AddListener(() => watchable.RemoveListener(action));
+      return action;
+    }
+    /// <summary>
+    /// Watch a watchable for changes.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public UnityAction<T0> Watch<T0>(IWatchable<T0> watchable, UnityAction<T0> action) {
+      watchable.AddListener(action);
+      this.onDestroy.AddListener(() => watchable.RemoveListener(action));
+      return action;
+    }
+    /// <summary>
+    /// Watch a watchable for changes.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public UnityAction<T0, T1> Watch<T0, T1>(IWatchable<T0, T1> watchable, UnityAction<T0, T1> action) {
+      watchable.AddListener(action);
+      this.onDestroy.AddListener(() => watchable.RemoveListener(action));
+      return action;
+    }
+    /// <summary>
+    /// Watch a watchable for changes.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public UnityAction<T0, T1, T2> Watch<T0, T1, T2>(IWatchable<T0, T1, T2> watchable, UnityAction<T0, T1, T2> action) {
+      watchable.AddListener(action);
+      this.onDestroy.AddListener(() => watchable.RemoveListener(action));
+      return action;
+    }
+    /// <summary>
+    /// Watch a watchable for changes.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public UnityAction<T0, T1, T2, T3> Watch<T0, T1, T2, T3>(IWatchable<T0, T1, T2, T3> watchable, UnityAction<T0, T1, T2, T3> action) {
+      watchable.AddListener(action);
+      this.onDestroy.AddListener(() => watchable.RemoveListener(action));
+      return action;
+    }
+    #endregion
 
-  public class Entry<T> : ComposableBehaviour where T : class {
+    #region Helper Methods for IEventBus
+    /// <summary>
+    /// Watch an event bus for events.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public UnityAction Watch<K>(IEventBus<K> eventBus, K key, UnityAction action) {
+      eventBus.AddListener(key, action);
+      this.onDestroy.AddListener(() => eventBus.RemoveListener(key, action));
+      return action;
+    }
+    /// <summary>
+    /// Watch an event bus for events.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public UnityAction<T0> Watch<K, T0>(IEventBus<K> eventBus, K key, UnityAction<T0> action) {
+      eventBus.AddListener(key, action);
+      this.onDestroy.AddListener(() => eventBus.RemoveListener(key, action));
+      return action;
+    }
+    /// <summary>
+    /// Watch an event bus for events.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public UnityAction<T0, T1> Watch<K, T0, T1>(IEventBus<K> eventBus, K key, UnityAction<T0, T1> action) {
+      eventBus.AddListener(key, action);
+      this.onDestroy.AddListener(() => eventBus.RemoveListener(key, action));
+      return action;
+    }
+    /// <summary>
+    /// Watch an event bus for events.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public UnityAction<T0, T1, T2> Watch<K, T0, T1, T2>(IEventBus<K> eventBus, K key, UnityAction<T0, T1, T2> action) {
+      eventBus.AddListener(key, action);
+      this.onDestroy.AddListener(() => eventBus.RemoveListener(key, action));
+      return action;
+    }
+    /// <summary>
+    /// Watch an event bus for events.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public UnityAction<T0, T1, T2, T3> Watch<K, T0, T1, T2, T3>(IEventBus<K> eventBus, K key, UnityAction<T0, T1, T2, T3> action) {
+      eventBus.AddListener(key, action);
+      this.onDestroy.AddListener(() => eventBus.RemoveListener(key, action));
+      return action;
+    }
+    #endregion
+
+    #region re-expose Fn methods
+    public static UnityAction Fn(UnityAction action) => action;
+    public static UnityAction<T0> Fn<T0>(UnityAction<T0> action) => action;
+    public static UnityAction<T0, T1> Fn<T0, T1>(UnityAction<T0, T1> action) => action;
+    public static UnityAction<T0, T1, T2> Fn<T0, T1, T2>(UnityAction<T0, T1, T2> action) => action;
+    public static UnityAction<T0, T1, T2, T3> Fn<T0, T1, T2, T3>(UnityAction<T0, T1, T2, T3> action) => action;
+    public static Func<R> Fn<R>(Func<R> f) => f;
+    public static Func<T0, R> Fn<T0, R>(Func<T0, R> f) => f;
+    public static Func<T0, T1, R> Fn<T0, T1, R>(Func<T0, T1, R> f) => f;
+    public static Func<T0, T1, T2, R> Fn<T0, T1, T2, R>(Func<T0, T1, T2, R> f) => f;
+    public static Func<T0, T1, T2, T3, R> Fn<T0, T1, T2, T3, R>(Func<T0, T1, T2, T3, R> f) => f;
+    #endregion
+  }
+
+  public class Entry<T> : UniStartBehaviour where T : class {
     public T context = null;
 
     // TODO: add generic GetContext<T> method?
@@ -25,22 +138,9 @@ namespace DT.UniStart {
       // if we can't find the context, throw an error
       throw new System.Exception("Can't find context in the scene!");
     }
-
-    #region re-expose Fn methods
-    public static UnityAction Fn(UnityAction action) => action;
-    public static UnityAction<T0> Fn<T0>(UnityAction<T0> action) => action;
-    public static UnityAction<T0, T1> Fn<T0, T1>(UnityAction<T0, T1> action) => action;
-    public static UnityAction<T0, T1, T2> Fn<T0, T1, T2>(UnityAction<T0, T1, T2> action) => action;
-    public static UnityAction<T0, T1, T2, T3> Fn<T0, T1, T2, T3>(UnityAction<T0, T1, T2, T3> action) => action;
-    public static Func<R> Fn<R>(Func<R> f) => f;
-    public static Func<T0, R> Fn<T0, R>(Func<T0, R> f) => f;
-    public static Func<T0, T1, R> Fn<T0, T1, R>(Func<T0, T1, R> f) => f;
-    public static Func<T0, T1, T2, R> Fn<T0, T1, T2, R>(Func<T0, T1, T2, R> f) => f;
-    public static Func<T0, T1, T2, T3, R> Fn<T0, T1, T2, T3, R>(Func<T0, T1, T2, T3, R> f) => f;
-    #endregion
   }
 
-  public class Entry : ComposableBehaviour {
+  public class Entry : UniStartBehaviour {
     public IIoCC context { get; private set; } = new IoCC();
 
     public static IIoCC GetContext(GameObject obj) {
@@ -97,25 +197,12 @@ namespace DT.UniStart {
     /// </summary>
     public T TryGet<T>() => this.context.TryGet<T>();
     #endregion
-
-    #region re-expose Fn methods
-    public static UnityAction Fn(UnityAction action) => action;
-    public static UnityAction<T0> Fn<T0>(UnityAction<T0> action) => action;
-    public static UnityAction<T0, T1> Fn<T0, T1>(UnityAction<T0, T1> action) => action;
-    public static UnityAction<T0, T1, T2> Fn<T0, T1, T2>(UnityAction<T0, T1, T2> action) => action;
-    public static UnityAction<T0, T1, T2, T3> Fn<T0, T1, T2, T3>(UnityAction<T0, T1, T2, T3> action) => action;
-    public static Func<R> Fn<R>(Func<R> f) => f;
-    public static Func<T0, R> Fn<T0, R>(Func<T0, R> f) => f;
-    public static Func<T0, T1, R> Fn<T0, T1, R>(Func<T0, T1, R> f) => f;
-    public static Func<T0, T1, T2, R> Fn<T0, T1, T2, R>(Func<T0, T1, T2, R> f) => f;
-    public static Func<T0, T1, T2, T3, R> Fn<T0, T1, T2, T3, R>(Func<T0, T1, T2, T3, R> f) => f;
-    #endregion
   }
 
   /// <summary>
   /// ComposableBehaviour with context injected.
   /// </summary>
-  public class CBC<T> : ComposableBehaviour where T : class {
+  public class CBC<T> : UniStartBehaviour where T : class {
     // cache the context to avoid searching it every time
     T _context = null;
     protected T context {
@@ -126,25 +213,12 @@ namespace DT.UniStart {
       }
       set => this._context = value;
     }
-
-    #region re-expose Fn methods
-    public static UnityAction Fn(UnityAction action) => action;
-    public static UnityAction<T0> Fn<T0>(UnityAction<T0> action) => action;
-    public static UnityAction<T0, T1> Fn<T0, T1>(UnityAction<T0, T1> action) => action;
-    public static UnityAction<T0, T1, T2> Fn<T0, T1, T2>(UnityAction<T0, T1, T2> action) => action;
-    public static UnityAction<T0, T1, T2, T3> Fn<T0, T1, T2, T3>(UnityAction<T0, T1, T2, T3> action) => action;
-    public static Func<R> Fn<R>(Func<R> f) => f;
-    public static Func<T0, R> Fn<T0, R>(Func<T0, R> f) => f;
-    public static Func<T0, T1, R> Fn<T0, T1, R>(Func<T0, T1, R> f) => f;
-    public static Func<T0, T1, T2, R> Fn<T0, T1, T2, R>(Func<T0, T1, T2, R> f) => f;
-    public static Func<T0, T1, T2, T3, R> Fn<T0, T1, T2, T3, R>(Func<T0, T1, T2, T3, R> f) => f;
-    #endregion
   }
 
   /// <summary>
   /// ComposableBehaviour with context injected.
   /// </summary>
-  public class CBC : ComposableBehaviour {
+  public class CBC : UniStartBehaviour {
     IIoCC _context = null;
     protected IIoCC context {
       get {
@@ -190,19 +264,6 @@ namespace DT.UniStart {
     /// If the type is not registered, return `default(T)`.
     /// </summary>
     public T TryGet<T>() => this.context.TryGet<T>();
-    #endregion
-
-    #region re-expose Fn methods
-    public static UnityAction Fn(UnityAction action) => action;
-    public static UnityAction<T0> Fn<T0>(UnityAction<T0> action) => action;
-    public static UnityAction<T0, T1> Fn<T0, T1>(UnityAction<T0, T1> action) => action;
-    public static UnityAction<T0, T1, T2> Fn<T0, T1, T2>(UnityAction<T0, T1, T2> action) => action;
-    public static UnityAction<T0, T1, T2, T3> Fn<T0, T1, T2, T3>(UnityAction<T0, T1, T2, T3> action) => action;
-    public static Func<R> Fn<R>(Func<R> f) => f;
-    public static Func<T0, R> Fn<T0, R>(Func<T0, R> f) => f;
-    public static Func<T0, T1, R> Fn<T0, T1, R>(Func<T0, T1, R> f) => f;
-    public static Func<T0, T1, T2, R> Fn<T0, T1, T2, R>(Func<T0, T1, T2, R> f) => f;
-    public static Func<T0, T1, T2, T3, R> Fn<T0, T1, T2, T3, R>(Func<T0, T1, T2, T3, R> f) => f;
     #endregion
   }
 }

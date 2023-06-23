@@ -3,10 +3,12 @@
 ## v4.0.0
 
 - **_Breaking Change_**: rename `core` to `context`.
+- **_Breaking Change_**: move `ComposableBehaviour.Watch` to `UniStartBehaviour.Watch`.
+  - Add `UniStartBehaviour`.
+  - `UniStartBehaviour` can watch `IEventBus<K>`.
 - Feat: rewrite IoC module, add `IBasicIoCC/IKeyedIoCC/IStringIoCC/StringIoCC`.
 - Feat: add `AdvancedEvent.AddOnceListener/RemoveOnceListener`.
 - Feat: add `IComposable`.
-- Feat: `ComposableBehaviour` can watch `IEventBus<K>`.
 
 ## v3.1.1
 
