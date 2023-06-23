@@ -60,11 +60,77 @@ public class Test : ComposableBehaviour {
 }
 ```
 
-By using these events and closures, you can write your logic _at the same place_, instead of writing your logic in many different locations like `Start`(to initialize), `Update`, and some other functions you defined.
+By using these events and closures, you can write your logic **_at the same place_**, instead of writing your logic in many different locations.
 
 > This is inspired by [Vue Composition API](https://vuejs.org/guide/extras/composition-api-faq.html#more-flexible-code-organization).
 
-Another thing to mention is that, during your development with this framework, your `Start` function will get bigger and bigger, so you may need to split it into multiple modules when you are ready. This is a progressive process, and you can do it at any time.
+<details>
+<summary>Example</summary>
+
+```cs
+public class UseMonoBehaviour : MonoBehaviour {
+  // define vars as fields
+  Rigidbody rb;
+  SpriteRenderer sr;
+
+  void Start() {
+    // init vars at start
+    rb = this.GetComponent<Rigidbody>();
+    sr = this.GetComponent<SpriteRenderer>();
+  }
+
+  void Update() {
+    // update logic
+    rb.AddForce(Vector3.up * 10);
+    sr.color = Color.red;
+  }
+
+  void OnDestroy() {
+    // clean up
+    Destroy(rb);
+    Destroy(sr);
+  }
+}
+
+public class UseComposableBehaviour : ComposableBehaviour {
+  void Start() {
+    // define vars as local variables
+    // write logic at the same place
+    var rb = this.GetComponent<Rigidbody>();
+    this.onUpdate.AddListener(() => rb.AddForce(Vector3.up * 10));
+    this.onDestroy.AddListener(() => Destroy(rb));
+
+    var sr = this.GetComponent<SpriteRenderer>();
+    this.onUpdate.AddListener(() => sr.color = Color.red);
+    this.onDestroy.AddListener(() => Destroy(sr));
+  }
+}
+```
+
+</details>
+
+Another thing to mention is that, during your development with this framework, your `Start` function will get bigger and bigger, so you may need to split it into multiple modules when you are ready. This is a progressive process, and you can do it at any time. You can also abstract your logic into many files and use them in different classes.
+
+```cs
+public class Logics {
+  public static void UseLogic1(ComposableBehaviour cb) {
+    var sr = cb.GetComponent<SpriteRenderer>();
+    cb.onUpdate.AddListener(() => sr.color = Color.red);
+    cb.onDestroy.AddListener(() => Destroy(sr));
+  }
+}
+
+public class Test1 : ComposableBehaviour {
+  void Start() {
+    Logics.UseLogic1(this);
+  }
+}
+public class Test2 : ComposableBehaviour {
+  void Start() {
+    Logics.UseLogic1(this);
+  }
+}
+```
 
 ### Global Context Management
 
@@ -73,7 +139,7 @@ When developing a game, you may need to store some global context, like the play
 In UniStart, we recommend to initialize those context in the `Entry` class, and use `Add` to register it to the app.
 
 ```cs
-public class App : Entry {
+public class App : Entry {c
   // Use Awake instead of Start to initialize your app.
   void Awake() {
     // Add the Config class to the app.
@@ -103,16 +169,16 @@ The `Entry` should be treated as the entry of you app (just like the `main` func
 
 > **Note**: It's recommended to attach the `Entry/App` to the root GameObject of the scene, and make sure it's the first script to be executed.
 
-To get those context, you can use the static method `Entry.GetCore`, but we have a better way to do it.
+To get those context, you can use the static method `Entry.GetContext`, but we have a better way to do it.
 
 ```cs
-// CBC: ComposableBehaviour with Core injected.
+// CBC: ComposableBehaviour with context injected.
 public class WithContext : CBC {
   void Start() {
-    // First, you can use the injected core.
+    // First, you can use the injected context.
     var config = this.Get<Config>();
 
-    // Second, this is a ComposableBehaviour, so you can use the onUpdate event.
+    // Second, this is a ComposableBehaviour, so you can use composable methods like onUpdate.
     this.onUpdate.AddListener(() => print("WithContext.onUpdate"));
   }
 }
@@ -216,17 +282,17 @@ public class App : Entry {
     // Since it also implements IEventBus, you don't need to change your code.
     this.Add<IEventBus>(new DebugEventBus());
     // Typed EventBus.
-    this.Add<IEventBus<int>>(new DebugEventBus<int>());
+    var ebi = this.Add<IEventBus<int>>(new DebugEventBus<int>(new EventBus<int>()));
+    this.Watch(eb, 1, (int i) => print("Watch: " + i));
     // Even with your own EventBus type.
-    this.Add<IEventBus<int>>(new DebugEventBus<MyEventBus, int>(new MyEventBus()));
-
+    this.Add<IEventBus<int>>(new DebugEventBus<int>(new MyEventBus()));
     // DelayedEventBus will delay the event invocation, until you call InvokeDelayed.
     var deb = new DelayedEventBus(); // store as DelayedEventBus
     this.Add<IEventBus>(deb); // but register as IEventBus
     this.onLateUpdate.AddListener(deb.InvokeDelayed); // invoke all delayed events
     // Generic DelayedEventBus.
-    this.Add<IEventBus<int>>(new DelayedEventBus<int>());
-    this.Add<IEventBus<int>>(new DelayedEventBus<MyEventBus, int>(new MyEventBus()));
+    this.Add<IEventBus<int>>(new DelayedEventBus<int>(new EventBus<int>()));
+    this.Add<IEventBus<int>>(new DelayedEventBus<int>(new MyEventBus()));
   }
 }
 ```
