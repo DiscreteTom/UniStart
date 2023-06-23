@@ -7,6 +7,7 @@
   - Add `UniStartBehaviour`.
   - `UniStartBehaviour` can watch `IEventBus<K>`.
 - **_Breaking Change_**: remove `CompatibleEventBus`, rewrite `EventBus` family.
+- **_Breaking Change_**: rename `SpriteRendererExtension.WithX` to `SpriteRendererExtension.SetColorX`.
 - Feat: rewrite IoC module, add `IBasicIoCC/IKeyedIoCC/IStringIoCC/StringIoCC`.
 - Feat: add `AdvancedEvent.AddOnceListener/RemoveOnceListener`.
 - Feat: add `IComposable`.
