@@ -59,11 +59,14 @@ namespace DT.UniStart {
   /// </summary>
   public interface IIoCC<K> : IBasicIoCC, IKeyedIoCC<K> { }
 
-  public class KeyedIoCC<K> : IIoCC<K> {
+  /// <summary>
+  /// IoC Container which implements both `IBasicIoCC` and `IKeyedIoCC`.
+  /// </summary>
+  public class IoCC<K> : IIoCC<K> {
     public Func<Type, K> adapter;
     Dictionary<K, object> dict;
 
-    public KeyedIoCC(Func<Type, K> adapter) {
+    public IoCC(Func<Type, K> adapter) {
       this.adapter = adapter;
       this.dict = new Dictionary<K, object>();
     }
@@ -139,7 +142,7 @@ namespace DT.UniStart {
   /// <summary>
   /// IoC Container with object as key.
   /// </summary>
-  public class IoCC : KeyedIoCC<object>, IIoCC {
+  public class IoCC : IoCC<object>, IIoCC {
     public IoCC() : base((type) => type) { }
   }
 
@@ -150,7 +153,7 @@ namespace DT.UniStart {
   /// <summary>
   /// IoC Container with string as key.
   /// </summary>
-  public class StringIoCC : KeyedIoCC<string>, IStringIoCC {
+  public class StringIoCC : IoCC<string>, IStringIoCC {
     public StringIoCC() : base((type) => type.FullName) { }
   }
 }
