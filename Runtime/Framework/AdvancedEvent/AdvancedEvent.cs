@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine.Events;
 
 namespace DT.UniStart {
-  public class AdvancedEvent : UnityEvent, IWatchable {
+  public class AdvancedEvent : UnityEvent, IWatchable, IOnceWatchable {
     UnityEvent onceEvent = new UnityEvent();
 
     public new UnityAction AddListener(UnityAction action) {
@@ -33,7 +33,7 @@ namespace DT.UniStart {
     }
   }
 
-  public class AdvancedEvent<T0> : UnityEvent<T0>, IWatchable, IWatchable<T0> {
+  public class AdvancedEvent<T0> : UnityEvent<T0>, IWatchable, IWatchable<T0>, IOnceWatchable, IOnceWatchable<T0> {
     AdvancedEvent event0 = new AdvancedEvent();
     UnityEvent<T0> onceEvent = new UnityEvent<T0>();
 
@@ -71,7 +71,7 @@ namespace DT.UniStart {
     }
   }
 
-  public class AdvancedEvent<T0, T1> : UnityEvent<T0, T1>, IWatchable, IWatchable<T0, T1> {
+  public class AdvancedEvent<T0, T1> : UnityEvent<T0, T1>, IWatchable, IWatchable<T0, T1>, IOnceWatchable, IOnceWatchable<T0, T1> {
     AdvancedEvent event0 = new AdvancedEvent();
     UnityEvent<T0, T1> onceEvent = new UnityEvent<T0, T1>();
 
@@ -109,7 +109,7 @@ namespace DT.UniStart {
     }
   }
 
-  public class AdvancedEvent<T0, T1, T2> : UnityEvent<T0, T1, T2>, IWatchable, IWatchable<T0, T1, T2> {
+  public class AdvancedEvent<T0, T1, T2> : UnityEvent<T0, T1, T2>, IWatchable, IWatchable<T0, T1, T2>, IOnceWatchable, IOnceWatchable<T0, T1, T2> {
     AdvancedEvent event0 = new AdvancedEvent();
     UnityEvent<T0, T1, T2> onceEvent = new UnityEvent<T0, T1, T2>();
 
@@ -147,7 +147,7 @@ namespace DT.UniStart {
     }
   }
 
-  public class AdvancedEvent<T0, T1, T2, T3> : UnityEvent<T0, T1, T2, T3>, IWatchable, IWatchable<T0, T1, T2, T3> {
+  public class AdvancedEvent<T0, T1, T2, T3> : UnityEvent<T0, T1, T2, T3>, IWatchable, IWatchable<T0, T1, T2, T3>, IOnceWatchable, IOnceWatchable<T0, T1, T2, T3> {
     AdvancedEvent event0 = new AdvancedEvent();
     UnityEvent<T0, T1, T2, T3> onceEvent = new UnityEvent<T0, T1, T2, T3>();
 

@@ -10,6 +10,7 @@
 - Feat: add `AdvancedEvent.AddOnceListener/RemoveOnceListener`.
 - Feat: add `IComposable`.
 - Feat: add `IOnceWatchable`.
+  - Apply to `AdvancedEvent`.
 
 ## v3.1.1
 
