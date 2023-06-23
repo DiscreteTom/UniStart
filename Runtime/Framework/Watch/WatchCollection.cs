@@ -8,7 +8,7 @@ namespace DT.UniStart {
   /// <summary>
   /// Watch a list-like type for changes.
   /// </summary>
-  public class WatchIList<L, T> : WatchRef<L>, IList<T>, IWatchable, IWatchable<ReadOnlyCollection<T>> where L : IList<T> {
+  public class WatchIList<L, T> : WatchRef<L>, IList<T>, IWatchable, IWatchable<ReadOnlyCollection<T>>, IOnceWatchable, IOnceWatchable<ReadOnlyCollection<T>> where L : IList<T> {
     LazyComputed<ReadOnlyCollection<T>> readOnlyList;
     AdvancedEvent<ReadOnlyCollection<T>> onChange;
 
@@ -24,7 +24,9 @@ namespace DT.UniStart {
     public ReadOnlyCollection<T> Value => this.readOnlyList.Value;
 
     public UnityAction<ReadOnlyCollection<T>> AddListener(UnityAction<ReadOnlyCollection<T>> f) => this.onChange.AddListener(f);
+    public UnityAction<ReadOnlyCollection<T>> AddOnceListener(UnityAction<ReadOnlyCollection<T>> f) => this.onChange.AddOnceListener(f);
     public UnityAction<ReadOnlyCollection<T>> RemoveListener(UnityAction<ReadOnlyCollection<T>> f) => this.onChange.RemoveListener(f);
+    public UnityAction<ReadOnlyCollection<T>> RemoveOnceListener(UnityAction<ReadOnlyCollection<T>> f) => this.onChange.RemoveOnceListener(f);
 
     protected new void InvokeEvent() {
       base.InvokeEvent();
@@ -79,7 +81,7 @@ namespace DT.UniStart {
   /// <summary>
   /// Watch a dictionary-like type for changes.
   /// </summary>
-  public class WatchIDictionary<D, K, V> : WatchRef<D>, IDictionary<K, V>, IWatchable, IWatchable<ReadOnlyDictionary<K, V>> where D : IDictionary<K, V> {
+  public class WatchIDictionary<D, K, V> : WatchRef<D>, IDictionary<K, V>, IWatchable, IWatchable<ReadOnlyDictionary<K, V>>, IOnceWatchable, IOnceWatchable<ReadOnlyDictionary<K, V>> where D : IDictionary<K, V> {
     LazyComputed<ReadOnlyDictionary<K, V>> readOnlyDictionary;
     AdvancedEvent<ReadOnlyDictionary<K, V>> onChange;
 
@@ -94,7 +96,10 @@ namespace DT.UniStart {
     public ReadOnlyDictionary<K, V> Value => this.readOnlyDictionary.Value;
 
     public UnityAction<ReadOnlyDictionary<K, V>> AddListener(UnityAction<ReadOnlyDictionary<K, V>> f) => this.onChange.AddListener(f);
+    public UnityAction<ReadOnlyDictionary<K, V>> AddOnceListener(UnityAction<ReadOnlyDictionary<K, V>> f) => this.onChange.AddOnceListener(f);
     public UnityAction<ReadOnlyDictionary<K, V>> RemoveListener(UnityAction<ReadOnlyDictionary<K, V>> f) => this.onChange.RemoveListener(f);
+    public UnityAction<ReadOnlyDictionary<K, V>> RemoveOnceListener(UnityAction<ReadOnlyDictionary<K, V>> f) => this.onChange.RemoveOnceListener(f);
+
     protected new void InvokeEvent() {
       base.InvokeEvent();
       this.onChange.Invoke(this.Value);
