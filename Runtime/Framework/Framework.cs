@@ -138,6 +138,9 @@ namespace DT.UniStart {
       // if we can't find the context, throw an error
       throw new System.Exception("Can't find context in the scene!");
     }
+
+    // show a warning if the user want's to write a Start method
+    public void Start() { }
   }
 
   public class Entry : UniStartBehaviour {
@@ -197,6 +200,9 @@ namespace DT.UniStart {
     /// </summary>
     public T TryGet<T>() => this.context.TryGet<T>();
     #endregion
+
+    // show a warning if the user want's to write a Start method
+    public void Start() { }
   }
 
   /// <summary>
