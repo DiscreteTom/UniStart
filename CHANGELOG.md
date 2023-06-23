@@ -6,7 +6,7 @@
 - **_Breaking Change_**: move `ComposableBehaviour.Watch` to `UniStartBehaviour.Watch`.
   - Add `UniStartBehaviour`.
   - `UniStartBehaviour` can watch `IEventBus<K>`.
-- **_Breaking Change_**: remove `CompatibleEventBus`.
+- **_Breaking Change_**: remove `CompatibleEventBus`, rewrite `EventBus` family.
 - Feat: rewrite IoC module, add `IBasicIoCC/IKeyedIoCC/IStringIoCC/StringIoCC`.
 - Feat: add `AdvancedEvent.AddOnceListener/RemoveOnceListener`.
 - Feat: add `IComposable`.
