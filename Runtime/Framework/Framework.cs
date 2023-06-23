@@ -6,7 +6,7 @@ namespace DT.UniStart {
   /// <summary>
   /// The base class for Entry and CBC.
   /// </summary>
-  public class UniStartBehaviour : ComposableBehaviour {
+  public abstract class UniStartBehaviour<CtxKey, Ctx> : ComposableBehaviour where Ctx : IIoCC<CtxKey> {
     #region Helper Methods for IWatchable
     /// <summary>
     /// Watch a watchable for changes.
@@ -103,7 +103,7 @@ namespace DT.UniStart {
     }
     #endregion
 
-    #region re-expose Fn methods
+    #region Re-expose Fn methods
     public static UnityAction Fn(UnityAction action) => action;
     public static UnityAction<T0> Fn<T0>(UnityAction<T0> action) => action;
     public static UnityAction<T0, T1> Fn<T0, T1>(UnityAction<T0, T1> action) => action;
@@ -115,60 +115,13 @@ namespace DT.UniStart {
     public static Func<T0, T1, T2, R> Fn<T0, T1, T2, R>(Func<T0, T1, T2, R> f) => f;
     public static Func<T0, T1, T2, T3, R> Fn<T0, T1, T2, T3, R>(Func<T0, T1, T2, T3, R> f) => f;
     #endregion
-  }
 
-  public class Entry<T> : UniStartBehaviour where T : class {
-    public T context = null;
-
-    // TODO: add generic GetContext<T> method?
-    public static T GetContext(GameObject obj) {
-      T context = null;
-      // first, try to find the context in the root object
-      context = obj.transform.root.GetComponent<Entry<T>>()?.context;
-      if (context != null) return context;
-
-      // second, try to find the context in the parent object
-      context = obj.GetComponentInParent<Entry<T>>()?.context;
-      if (context != null) return context;
-
-      // finally, try to find the context in the whole scene
-      context = GameObject.FindObjectOfType<Entry<T>>()?.context;
-      if (context != null) return context;
-
-      // if we can't find the context, throw an error
-      throw new System.Exception("Can't find context in the scene!");
-    }
-
-    // show a warning if the user want's to write a Start method
-    public void Start() { }
-  }
-
-  public class Entry : UniStartBehaviour {
-    public IIoCC context { get; private set; } = new IoCC();
-
-    public static IIoCC GetContext(GameObject obj) {
-      IIoCC context = null;
-      // first, try to find the context in the root object
-      context = obj.transform.root.GetComponent<Entry>()?.context;
-      if (context != null) return context;
-
-      // second, try to find the context in the parent object
-      context = obj.GetComponentInParent<Entry>()?.context;
-      if (context != null) return context;
-
-      // finally, try to find the context in the whole scene
-      context = GameObject.FindObjectOfType<Entry>()?.context;
-      if (context != null) return context;
-
-      // if we can't find the context, throw an error
-      throw new System.Exception("Can't find context in the scene!");
-    }
-
-    #region re-expose IIoCC methods
+    #region Context Management
+    protected abstract IIoCC<CtxKey> context { get; set; }
     /// <summary>
     /// Register a type with an existing instance and a key.
     /// </summary>
-    public T Add<T>(object key, T instance) => this.context.Add<T>(key, instance);
+    public T Add<T>(CtxKey key, T instance) => this.context.Add<T>(key, instance);
     /// <summary>
     /// Register a type with an existing instance.
     /// </summary>
@@ -176,7 +129,7 @@ namespace DT.UniStart {
     /// <summary>
     /// Register a type with a key, and auto create an instance.
     /// </summary>
-    public T Add<T>(object key) where T : new() => this.context.Add<T>(key);
+    public T Add<T>(CtxKey key) where T : new() => this.context.Add<T>(key);
     /// <summary>
     /// Register a type and auto create an instance.
     /// </summary>
@@ -184,7 +137,7 @@ namespace DT.UniStart {
     /// <summary>
     /// Get the instance of a type by key.
     /// </summary>
-    public T Get<T>(object key) => this.context.Get<T>(key);
+    public T Get<T>(CtxKey key) => this.context.Get<T>(key);
     /// <summary>
     /// Get the instance of a type.
     /// </summary>
@@ -193,28 +146,56 @@ namespace DT.UniStart {
     /// Try to get the instance of a type with a key.
     /// If the type is not registered, return `default(T)`.
     /// </summary>
-    public T TryGet<T>(object key) => this.context.TryGet<T>(key);
+    public T TryGet<T>(CtxKey key) => this.context.TryGet<T>(key);
     /// <summary>
     /// Try to get the instance of a type.
     /// If the type is not registered, return `default(T)`.
     /// </summary>
     public T TryGet<T>() => this.context.TryGet<T>();
     #endregion
+  }
+
+  public class Entry<CtxKey, Ctx> : UniStartBehaviour<CtxKey, Ctx> where Ctx : IIoCC<CtxKey>, new() {
+    IIoCC<CtxKey> _context = new Ctx();
+    protected override IIoCC<CtxKey> context {
+      get { return _context; }
+      set { _context = value; }
+    }
+
+    public static IIoCC<CtxKey> GetContext(GameObject obj) {
+      IIoCC<CtxKey> context = null;
+      // first, try to find the context in the root object
+      context = obj.transform.root.GetComponent<Entry<CtxKey, Ctx>>()?.context;
+      if (context != null) return context;
+
+      // second, try to find the context in the parent object
+      context = obj.GetComponentInParent<Entry<CtxKey, Ctx>>()?.context;
+      if (context != null) return context;
+
+      // finally, try to find the context in the whole scene
+      context = GameObject.FindObjectOfType<Entry<CtxKey, Ctx>>()?.context;
+      if (context != null) return context;
+
+      // if we can't find the context, throw an error
+      throw new System.Exception("Can't find context in the scene!");
+    }
 
     // show a warning if the user want's to write a Start method
     public void Start() { }
   }
 
+  public class Entry : Entry<object, IoCC> { }
+
   /// <summary>
   /// ComposableBehaviour with context injected.
   /// </summary>
-  public class CBC<T> : UniStartBehaviour where T : class {
+  public class CBC<CtxKey, Ctx> : UniStartBehaviour<CtxKey, Ctx> where Ctx : IIoCC<CtxKey>, new() {
     // cache the context to avoid searching it every time
-    T _context = null;
-    protected T context {
+    IIoCC<CtxKey> _context = null;
+    protected override IIoCC<CtxKey> context {
       get {
         if (this._context == null)
-          this._context = Entry<T>.GetContext(this.gameObject);
+          this._context = Entry<CtxKey, Ctx>.GetContext(this.gameObject);
         return this._context;
       }
       set => this._context = value;
@@ -224,52 +205,5 @@ namespace DT.UniStart {
   /// <summary>
   /// ComposableBehaviour with context injected.
   /// </summary>
-  public class CBC : UniStartBehaviour {
-    IIoCC _context = null;
-    protected IIoCC context {
-      get {
-        if (this._context == null)
-          this._context = Entry.GetContext(this.gameObject);
-        return this._context;
-      }
-      set => this._context = value;
-    }
-
-    #region re-expose IIoCC methods
-    /// <summary>
-    /// Register a type with an existing instance and a key.
-    /// </summary>
-    public T Add<T>(object key, T instance) => this.context.Add<T>(key, instance);
-    /// <summary>
-    /// Register a type with an existing instance.
-    /// </summary>
-    public T Add<T>(T instance) => this.context.Add<T>(instance);
-    /// <summary>
-    /// Register a type with a key, and auto create an instance.
-    /// </summary>
-    public T Add<T>(object key) where T : new() => this.context.Add<T>(key);
-    /// <summary>
-    /// Register a type and auto create an instance.
-    /// </summary>
-    public T Add<T>() where T : new() => this.context.Add<T>();
-    /// <summary>
-    /// Get the instance of a type by key.
-    /// </summary>
-    public T Get<T>(object key) => this.context.Get<T>(key);
-    /// <summary>
-    /// Get the instance of a type.
-    /// </summary>
-    public T Get<T>() => this.context.Get<T>();
-    /// <summary>
-    /// Try to get the instance of a type with a key.
-    /// If the type is not registered, return `default(T)`.
-    /// </summary>
-    public T TryGet<T>(object key) => this.context.TryGet<T>(key);
-    /// <summary>
-    /// Try to get the instance of a type.
-    /// If the type is not registered, return `default(T)`.
-    /// </summary>
-    public T TryGet<T>() => this.context.TryGet<T>();
-    #endregion
-  }
+  public class CBC : CBC<object, IoCC> { }
 }
