@@ -6,7 +6,7 @@ namespace DT.UniStart {
   /// Watch a **value** type for changes.
   /// This class should be used for immutable types (int, float, bool, string, etc) only.
   /// </summary>
-  public class Watch<T> : IWatchable, IWatchable<T>, IWatchable<T, T> {
+  public class Watch<T> : IWatchable, IWatchable<T>, IWatchable<T, T>, IOnceWatchable, IOnceWatchable<T>, IOnceWatchable<T, T> {
     protected T value;
     AdvancedEvent<T> onChange1;
     AdvancedEvent<T, T> onChange2;
@@ -31,25 +31,31 @@ namespace DT.UniStart {
     /// Add a listener that will be called when the value changes.
     /// </summary>
     public UnityAction AddListener(UnityAction f) => this.onChange1.AddListener(f);
+    public UnityAction AddOnceListener(UnityAction f) => this.onChange1.AddOnceListener(f);
     public UnityAction RemoveListener(UnityAction f) => this.onChange1.RemoveListener(f);
+    public UnityAction RemoveOnceListener(UnityAction f) => this.onChange1.RemoveOnceListener(f);
     /// <summary>
     /// Add a listener that will be called when the value changes.
     /// The parameter is the new value.
     /// </summary>
     public UnityAction<T> AddListener(UnityAction<T> f) => this.onChange1.AddListener(f);
+    public UnityAction<T> AddOnceListener(UnityAction<T> f) => this.onChange1.AddOnceListener(f);
     public UnityAction<T> RemoveListener(UnityAction<T> f) => this.onChange1.RemoveListener(f);
+    public UnityAction<T> RemoveOnceListener(UnityAction<T> f) => this.onChange1.RemoveOnceListener(f);
     /// <summary>
     /// Add a listener that will be called when the value changes.
     /// The parameter is the new value and the previous value.
     /// </summary>
     public UnityAction<T, T> AddListener(UnityAction<T, T> f) => this.onChange2.AddListener(f);
+    public UnityAction<T, T> AddOnceListener(UnityAction<T, T> f) => this.onChange2.AddOnceListener(f);
     public UnityAction<T, T> RemoveListener(UnityAction<T, T> f) => this.onChange2.RemoveListener(f);
+    public UnityAction<T, T> RemoveOnceListener(UnityAction<T, T> f) => this.onChange2.RemoveOnceListener(f);
   }
 
   /// <summary>
   /// Watch a **reference** type for changes.
   /// </summary>
-  public class WatchRef<T> : IWatchable, IWatchable<WatchRef<T>> {
+  public class WatchRef<T> : IWatchable, IWatchable<WatchRef<T>>, IOnceWatchable, IOnceWatchable<WatchRef<T>> {
     protected T value;
     AdvancedEvent<WatchRef<T>> onChange;
 
@@ -101,12 +107,16 @@ namespace DT.UniStart {
     /// Add a listener that will be called when the value changes.
     /// </summary>
     public UnityAction<WatchRef<T>> AddListener(UnityAction<WatchRef<T>> f) => this.onChange.AddListener(f);
+    public UnityAction<WatchRef<T>> AddOnceListener(UnityAction<WatchRef<T>> f) => this.onChange.AddOnceListener(f);
     public UnityAction<WatchRef<T>> RemoveListener(UnityAction<WatchRef<T>> f) => this.onChange.RemoveListener(f);
+    public UnityAction<WatchRef<T>> RemoveOnceListener(UnityAction<WatchRef<T>> f) => this.onChange.RemoveOnceListener(f);
     /// <summary>
     /// Add a listener that will be called when the value changes.
     /// </summary>
     public UnityAction AddListener(UnityAction f) => this.onChange.AddListener(f);
+    public UnityAction AddOnceListener(UnityAction f) => this.onChange.AddOnceListener(f);
     public UnityAction RemoveListener(UnityAction f) => this.onChange.RemoveListener(f);
+    public UnityAction RemoveOnceListener(UnityAction f) => this.onChange.RemoveOnceListener(f);
 
     /// <summary>
     /// Invoke all events.
