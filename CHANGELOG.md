@@ -7,6 +7,7 @@
   - Move `MonoBehaviour.ExitGame` to `UniStart.ExitGame`.
 - Feat: add `UniStart.ReloadScene`.
 - Fix: `Entry/CBC.context` is not `Ctx`.
+- Feat: add **_experimental_** `ICommandBus/CommandBus`.
 
 ## v4.0.0
 
