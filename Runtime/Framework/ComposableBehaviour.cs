@@ -1,3 +1,4 @@
+using System;
 using DT.UniStart.Composable;
 using UnityEngine;
 using UnityEngine.Events;
@@ -95,9 +96,11 @@ namespace DT.UniStart {
     public AdvancedEvent<Collision2D> onCollisionStay2D => this.GetOrAddComponent<ComposableCollisionStay2D>().@event;
     public AdvancedEvent<ControllerColliderHit> onControllerColliderHit => this.GetOrAddComponent<ComposableControllerColliderHit>().@event;
     public AdvancedEvent onDestroy => this.GetOrAddComponent<ComposableDestroy>().@event;
+    [Obsolete("See https://github.com/DiscreteTom/UniStart/issues/9.")]
     public AdvancedEvent onDisable => this.GetOrAddComponent<ComposableDisable>().@event;
     public AdvancedEvent onDrawGizmos => this.GetOrAddComponent<ComposableDrawGizmos>().@event;
     public AdvancedEvent onDrawGizmosSelected => this.GetOrAddComponent<ComposableDrawGizmosSelected>().@event;
+    [Obsolete("See https://github.com/DiscreteTom/UniStart/issues/9.")]
     public AdvancedEvent onEnable => this.GetOrAddComponent<ComposableEnable>().@event;
     public AdvancedEvent onGUI => this.GetOrAddComponent<ComposableGUI>().@event;
     public AdvancedEvent onFixedUpdate => this.GetOrAddComponent<ComposableFixedUpdate>().@event;
