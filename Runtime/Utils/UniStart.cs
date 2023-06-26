@@ -1,5 +1,7 @@
 using System;
+using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 namespace DT.UniStart {
   public static class UniStart {
@@ -7,9 +9,11 @@ namespace DT.UniStart {
 #if UNITY_EDITOR
       UnityEditor.EditorApplication.isPlaying = false;
 #else
-      UnityEngine.Application.Quit();
+      Application.Quit();
 #endif
     }
+
+    public static void ReloadScene() => SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 
     #region Fn Helpers
     public static UnityAction Fn(UnityAction action) => action;

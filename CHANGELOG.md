@@ -5,6 +5,7 @@
 - **_Breaking Change_**: move static utils into `UniStart` class.
   - Move `FnHelper.Fn` to `UniStart.Fn`.
   - Move `MonoBehaviour.ExitGame` to `UniStart.ExitGame`.
+- Feat: add `UniStart.ReloadScene`.
 - Fix: `Entry/CBC.context` is not `Ctx`.
 
 ## v4.0.0
