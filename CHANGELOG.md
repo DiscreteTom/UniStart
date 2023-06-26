@@ -1,7 +1,10 @@
 # CHANGELOG
 
-## v4.0.1
+## v5.0.0
 
+- **_Breaking Change_**: move static utils into `UniStart` class.
+  - Move `FnHelper.Fn` to `UniStart.Fn`.
+  - Move `MonoBehaviour.ExitGame` to `UniStart.ExitGame`.
 - Fix: `Entry/CBC.context` is not `Ctx`.
 
 ## v4.0.0
