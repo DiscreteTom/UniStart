@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v4.0.1
+
+- Fix: `Entry/CBC.context` is not `Ctx`.
+
 ## v4.0.0
 
 - **_Breaking Change_**: rename `core` to `context`.

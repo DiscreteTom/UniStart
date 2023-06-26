@@ -162,7 +162,7 @@ namespace DT.UniStart {
     #endregion
 
     #region Context Management
-    protected abstract IIoCC<CtxKey> context { get; set; }
+    protected abstract Ctx context { get; set; }
     /// <summary>
     /// Register a type with an existing instance and a key.
     /// </summary>
@@ -200,15 +200,15 @@ namespace DT.UniStart {
     #endregion
   }
 
-  public class Entry<CtxKey, Ctx> : UniStartBehaviour<CtxKey, Ctx> where Ctx : IIoCC<CtxKey>, new() {
-    IIoCC<CtxKey> _context = new Ctx();
-    protected override IIoCC<CtxKey> context {
+  public class Entry<CtxKey, Ctx> : UniStartBehaviour<CtxKey, Ctx> where Ctx : class, IIoCC<CtxKey>, new() {
+    Ctx _context = new Ctx();
+    protected override Ctx context {
       get { return _context; }
       set { _context = value; }
     }
 
-    public static IIoCC<CtxKey> GetContext(GameObject obj) {
-      IIoCC<CtxKey> context = null;
+    public static Ctx GetContext(GameObject obj) {
+      Ctx context = null;
       // first, try to find the context in the root object
       context = obj.transform.root.GetComponent<Entry<CtxKey, Ctx>>()?.context;
       if (context != null) return context;
@@ -234,10 +234,10 @@ namespace DT.UniStart {
   /// <summary>
   /// ComposableBehaviour with context injected.
   /// </summary>
-  public class CBC<CtxKey, Ctx> : UniStartBehaviour<CtxKey, Ctx> where Ctx : IIoCC<CtxKey>, new() {
+  public class CBC<CtxKey, Ctx> : UniStartBehaviour<CtxKey, Ctx> where Ctx : class, IIoCC<CtxKey>, new() {
     // cache the context to avoid searching it every time
-    IIoCC<CtxKey> _context = null;
-    protected override IIoCC<CtxKey> context {
+    Ctx _context = null;
+    protected override Ctx context {
       get {
         if (this._context == null)
           this._context = Entry<CtxKey, Ctx>.GetContext(this.gameObject);
