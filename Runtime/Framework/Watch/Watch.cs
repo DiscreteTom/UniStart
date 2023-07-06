@@ -57,6 +57,7 @@ namespace DT.UniStart {
   /// <summary>
   /// Watch a **reference** type for changes.
   /// </summary>
+  [Serializable]
   public class WatchRef<T> : IWatchable, IWatchable<WatchRef<T>>, IOnceWatchable, IOnceWatchable<WatchRef<T>> {
     [SerializeField] protected T value;
     AdvancedEvent<WatchRef<T>> onChange;
@@ -132,6 +133,7 @@ namespace DT.UniStart {
   /// Immediately calculate a value when a watchable changes.
   /// The result should be immutable.
   /// </summary>
+  [Serializable]
   public class Computed<T> : Watch<T>, IWatchable, IWatchable<T>, IWatchable<T, T> {
     Func<T> compute;
 
@@ -162,9 +164,10 @@ namespace DT.UniStart {
   /// Auto calculate a value when the value is used after a watchable changes.
   /// The result should be immutable.
   /// </summary>
+  [Serializable]
   public class LazyComputed<T> {
-    T value;
-    bool needUpdate = true;
+    [SerializeField] T value;
+    [SerializeField] bool needUpdate = true;
     Func<T> compute { get; set; }
 
     public T Value {

@@ -5,6 +5,7 @@
 - **_Breaking Change_**: refactor `CommandBus`. Add `CommandRepo`, `DelayedCommandBus`.
 - Feat: add `Lazy/LazyRef/LazyNew`.
 - Feat: move `ComposableBehaviour.GetOrAddComponent` to `MonoBehaviourExtension`.
+- Feat: show `Computed/LazyComputed/WatchRef` in inspector. #4
 - Fix: #9
 - Note: make `Entry.Start` protected.
 
