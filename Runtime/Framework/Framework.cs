@@ -226,7 +226,7 @@ namespace DT.UniStart {
     }
 
     // show a warning if the user want's to write a Start method
-    public void Start() { }
+    protected void Start() { }
   }
 
   public class Entry : Entry<object, IoCC> { }

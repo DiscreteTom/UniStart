@@ -4,6 +4,7 @@
 
 - Feat: add `Lazy/LazyRef/LazyNew`.
 - Feat: move `ComposableBehaviour.GetOrAddComponent` to `MonoBehaviourExtension`.
+- Note: make `Entry.Start` protected.
 
 ## v5.0.0
 
