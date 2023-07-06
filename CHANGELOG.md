@@ -3,6 +3,7 @@
 ## v6.0.0
 
 - Feat: add `Lazy/LazyRef/LazyNew`.
+- Feat: move `ComposableBehaviour.GetOrAddComponent` to `MonoBehaviourExtension`.
 
 ## v5.0.0
 
