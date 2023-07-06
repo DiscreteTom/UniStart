@@ -2,7 +2,7 @@
 
 ## v6.0.0
 
-- **_Breaking Change_**: new `CommandBus`.
+- **_Breaking Change_**: refactor `CommandBus`. Add `CommandRepo`, `DelayedCommandBus`.
 - Feat: add `Lazy/LazyRef/LazyNew`.
 - Feat: move `ComposableBehaviour.GetOrAddComponent` to `MonoBehaviourExtension`.
 - Fix: #9
