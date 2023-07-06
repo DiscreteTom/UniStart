@@ -6,30 +6,27 @@ namespace DT.UniStart {
   /// A wrapper around an ICommandBus which delays all commands execution until InvokeDelayed is called.
   /// </summary>
   public class DelayedCommandBus<T> : ICommandBus<T> {
-    // TODO: use UnityEvent instead of List<UnityAction>
-    List<UnityAction> delayedActions;
+    UnityAction delayedActions;
     ICommandBus<T> bus;
 
     public DelayedCommandBus(ICommandBus<T> CommandBus) {
       this.bus = CommandBus;
-      this.delayedActions = new List<UnityAction>();
+      this.delayedActions = () => { };
     }
 
     /// <summary>
     /// Invoke all delayed commands execution.
     /// </summary>
     public void InvokeDelayed() {
-      foreach (UnityAction action in this.delayedActions) {
-        action.Invoke();
-      }
-      this.delayedActions.Clear();
+      this.delayedActions.Invoke();
+      this.delayedActions = () => { };
     }
 
-    public void Push(T key) => this.delayedActions.Add(() => this.bus.Push(key));
-    public void Push<T0>(T key, T0 arg0) => this.delayedActions.Add(() => this.bus.Push(key, arg0));
-    public void Push<T0, T1>(T key, T0 arg0, T1 arg1) => this.delayedActions.Add(() => this.bus.Push(key, arg0, arg1));
-    public void Push<T0, T1, T2>(T key, T0 arg0, T1 arg1, T2 arg2) => this.delayedActions.Add(() => this.bus.Push(key, arg0, arg1, arg2));
-    public void Push<T0, T1, T2, T3>(T key, T0 arg0, T1 arg1, T2 arg2, T3 arg3) => this.delayedActions.Add(() => this.bus.Push(key, arg0, arg1, arg2, arg3));
+    public void Push(T key) => this.delayedActions += () => this.bus.Push(key);
+    public void Push<T0>(T key, T0 arg0) => this.delayedActions += () => this.bus.Push(key, arg0);
+    public void Push<T0, T1>(T key, T0 arg0, T1 arg1) => this.delayedActions += () => this.bus.Push(key, arg0, arg1);
+    public void Push<T0, T1, T2>(T key, T0 arg0, T1 arg1, T2 arg2) => this.delayedActions += () => this.bus.Push(key, arg0, arg1, arg2);
+    public void Push<T0, T1, T2, T3>(T key, T0 arg0, T1 arg1, T2 arg2, T3 arg3) => this.delayedActions += () => this.bus.Push(key, arg0, arg1, arg2, arg3);
   }
 
   public class DelayedCommandBus : DelayedCommandBus<object>, ICommandBus<object>, ICommandBus {
