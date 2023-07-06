@@ -64,22 +64,7 @@ namespace DT.UniStart {
   }
 
   public class ComposableBehaviour : MonoBehaviour, IComposable {
-    IoCC ioc = new IoCC(); // cache for components
-
-    /// <summary>
-    /// Try to get a component from the cache.
-    /// If it doesn't exist, try to get it from the game object.
-    /// If it still doesn't exist, add it to the game object and cache it.
-    /// </summary>
-    public T GetOrAddComponent<T>() where T : Component {
-      // IMPORTANT: don't use `??` to check for null, because Unity overrides the == operator
-      T res = this.ioc.TryGet<T>();
-      if (res != null) return res;
-      res = this.gameObject.GetComponent<T>();
-      if (res != null) return this.ioc.Add<T>(res);
-      return this.ioc.Add<T>(this.gameObject.AddComponent<T>());
-    }
-
+    #region Composable Components
     public AdvancedEvent<int> onAnimatorIK => this.GetOrAddComponent<ComposableAnimatorIK>().@event;
     public AdvancedEvent onAnimatorMove => this.GetOrAddComponent<ComposableAnimatorMove>().@event;
     public AdvancedEvent<bool> onApplicationFocus => this.GetOrAddComponent<ComposableApplicationFocus>().@event;
@@ -95,13 +80,8 @@ namespace DT.UniStart {
     public AdvancedEvent<Collision> onCollisionStay => this.GetOrAddComponent<ComposableCollisionStay>().@event;
     public AdvancedEvent<Collision2D> onCollisionStay2D => this.GetOrAddComponent<ComposableCollisionStay2D>().@event;
     public AdvancedEvent<ControllerColliderHit> onControllerColliderHit => this.GetOrAddComponent<ComposableControllerColliderHit>().@event;
-    public AdvancedEvent onDestroy => this.GetOrAddComponent<ComposableDestroy>().@event;
-    [Obsolete("See https://github.com/DiscreteTom/UniStart/issues/9.")]
-    public AdvancedEvent onDisable => this.GetOrAddComponent<ComposableDisable>().@event;
     public AdvancedEvent onDrawGizmos => this.GetOrAddComponent<ComposableDrawGizmos>().@event;
     public AdvancedEvent onDrawGizmosSelected => this.GetOrAddComponent<ComposableDrawGizmosSelected>().@event;
-    [Obsolete("See https://github.com/DiscreteTom/UniStart/issues/9.")]
-    public AdvancedEvent onEnable => this.GetOrAddComponent<ComposableEnable>().@event;
     public AdvancedEvent onGUI => this.GetOrAddComponent<ComposableGUI>().@event;
     public AdvancedEvent onFixedUpdate => this.GetOrAddComponent<ComposableFixedUpdate>().@event;
     public AdvancedEvent<float> onJointBreak => this.GetOrAddComponent<ComposableJointBreak>().@event;
@@ -138,5 +118,23 @@ namespace DT.UniStart {
     public AdvancedEvent onUpdate => this.GetOrAddComponent<ComposableUpdate>().@event;
     public AdvancedEvent onValidate => this.GetOrAddComponent<ComposableValidate>().@event;
     public AdvancedEvent onWillRenderObject => this.GetOrAddComponent<ComposableWillRenderObject>().@event;
+    #endregion
+
+    // See: https://github.com/DiscreteTom/UniStart/issues/9
+    #region Component Level Events
+    LazyNew<AdvancedEvent> _onDestroy = new LazyNew<AdvancedEvent>();
+    LazyNew<AdvancedEvent> _onDisable = new LazyNew<AdvancedEvent>();
+    LazyNew<AdvancedEvent> _onEnable = new LazyNew<AdvancedEvent>();
+    public AdvancedEvent onDestroy => this._onDestroy.Value;
+    public AdvancedEvent onDisable => this._onDisable.Value;
+    /// <summary>
+    /// When being used in `Start`, you might want to invoke this immediately after adding a listener: `onEnable(...).Invoke()`.
+    /// </summary>
+    public AdvancedEvent onEnable => this._onEnable.Value;
+    // make these protected to show a warning if the user want's to override them
+    protected void OnDestroy() => this._onDestroy.RawValue?.Invoke();
+    protected void OnDisable() => this._onDisable.RawValue?.Invoke();
+    protected void OnEnable() => this._onEnable.RawValue?.Invoke();
+    #endregion
   }
 }
