@@ -11,10 +11,11 @@ namespace DT.UniStart {
       }
       mb.StartCoroutine(InvokeRoutine(f, delay));
     }
+    public static void Invoke(this MonoBehaviour mb, float delay, Action f) => mb.Invoke(f, delay);
 
     public static void InvokeRepeating(this MonoBehaviour mb, Action f, float delay, float interval) {
       static IEnumerator InvokeRepeatingRoutine(Action f, float delay, float interval) {
-        yield return new WaitForSeconds(delay);
+        if (delay != 0) yield return new WaitForSeconds(delay);
         while (true) {
           f();
           yield return new WaitForSeconds(interval);
@@ -22,6 +23,10 @@ namespace DT.UniStart {
       }
       mb.StartCoroutine(InvokeRepeatingRoutine(f, delay, interval));
     }
+    public static void InvokeRepeating(this MonoBehaviour mb, Action f, float interval) => mb.InvokeRepeating(f, 0, interval);
+    public static void InvokeRepeating(this MonoBehaviour mb, float delay, float interval, Action f) => mb.InvokeRepeating(f, delay, interval);
+    public static void InvokeRepeating(this MonoBehaviour mb, float interval, Action f) => mb.InvokeRepeating(f, 0, interval);
+
 
     /// <summary>
     /// Try to get a component from the game object.

@@ -6,6 +6,7 @@
 - Feat: add `Lazy/LazyRef/LazyNew`.
 - Feat: move `ComposableBehaviour.GetOrAddComponent` to `MonoBehaviourExtension`.
 - Feat: show `Computed/LazyComputed/WatchRef` in inspector. #4
+- Feat: more `MonoBehaviourExtension.Invoke/InvokeRepeating` overloads.
 - Fix: #9
 - Note: make `Entry.Start` protected.
 
