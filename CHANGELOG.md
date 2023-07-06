@@ -2,6 +2,7 @@
 
 ## v6.0.0
 
+- **_Breaking Change_**: new `CommandBus`.
 - Feat: add `Lazy/LazyRef/LazyNew`.
 - Feat: move `ComposableBehaviour.GetOrAddComponent` to `MonoBehaviourExtension`.
 - Fix: #9
