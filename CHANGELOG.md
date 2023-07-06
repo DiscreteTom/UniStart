@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v6.0.0
+
+- Feat: add `Lazy/LazyRef/LazyNew`.
+
 ## v5.0.0
 
 - **_Breaking Change_**: move static utils into `UniStart` class.
