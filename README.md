@@ -56,6 +56,10 @@ public class Test : ComposableBehaviour {
     int i = 0;
     this.onUpdate.AddListener(() => print(i++));
     this.onCollisionEnter.AddListener((collision) => print(i));
+
+    // be ware of onEnable, since Start is called after OnEnable,
+    // you might want to invoke the listener immediately.
+    this.onEnable.AddListener(() => print("enable")).Invoke();
   }
 }
 ```
@@ -68,6 +72,8 @@ By using these events and closures, you can write your logic **_at the same plac
 <summary>Example</summary>
 
 ```cs
+// Without ComposableBehaviour,
+// your logics will spread into many different places.
 public class UseMonoBehaviour : MonoBehaviour {
   // define vars as fields
   Rigidbody rb;
@@ -92,10 +98,12 @@ public class UseMonoBehaviour : MonoBehaviour {
   }
 }
 
+// With ComposableBehaviour,
+// you can write your logic at the same place.
 public class UseComposableBehaviour : ComposableBehaviour {
   void Start() {
-    // define vars as local variables
-    // write logic at the same place
+    // define vars as local variables,
+    // and you will never forget to init/delete them.
     var rb = this.GetComponent<Rigidbody>();
     this.onUpdate.AddListener(() => rb.AddForce(Vector3.up * 10));
     this.onDestroy.AddListener(() => Destroy(rb));
@@ -109,11 +117,11 @@ public class UseComposableBehaviour : ComposableBehaviour {
 
 </details>
 
-Another thing to mention is that, during your development with this framework, your `Start` function will get bigger and bigger, so you may need to split it into multiple modules when you are ready. This is a progressive process, and you can do it at any time. You can also abstract your logic into many files and use them in different classes.
+Another thing to mention is that, during your development with this `ComposableBehaviour`, your `Start` function will get bigger and bigger, so you may need to split it into multiple modules when you are ready. This is a progressive process, and you can do it at any time. You can also abstract your logic into many files and use them in different classes.
 
 ```cs
 public class Logics {
-  public static void UseLogic1(ComposableBehaviour cb) {
+  public static void ApplyLogic(ComposableBehaviour cb) {
     var sr = cb.GetComponent<SpriteRenderer>();
     cb.onUpdate.AddListener(() => sr.color = Color.red);
     cb.onDestroy.AddListener(() => Destroy(sr));
@@ -122,12 +130,12 @@ public class Logics {
 
 public class Test1 : ComposableBehaviour {
   void Start() {
-    Logics.UseLogic1(this);
+    Logics.ApplyLogic(this);
   }
 }
 public class Test2 : ComposableBehaviour {
   void Start() {
-    Logics.UseLogic1(this);
+    Logics.ApplyLogic(this);
   }
 }
 ```
@@ -139,7 +147,7 @@ When developing a game, you may need to store some global context, like the play
 In UniStart, we recommend to initialize those context in the `Entry` class, and use `Add` to register it to the app.
 
 ```cs
-public class App : Entry {c
+public class App : Entry {
   // Use Awake instead of Start to initialize your app.
   void Awake() {
     // Add the Config class to the app.
@@ -156,6 +164,9 @@ public class App : Entry {c
     // but register it as an interface instead of a class.
     this.Add<IEventBus>(new EventBus());
 
+    // Register with a custom key.
+    this.Add<IEventBus>("anotherEB", new EventBus());
+
     // You can also get the instance after Add.
     var config = this.Get<Config>();
 
@@ -165,14 +176,12 @@ public class App : Entry {c
 }
 ```
 
-The `Entry` should be treated as the entry of you app (just like the `main` function), and should use `Awake` to initialize the context before the `Start` of other classes.
-
-> **Note**: It's recommended to attach the `Entry/App` to the root GameObject of the scene, and make sure it's the first script to be executed.
+The `Entry` should be treated as the entry of you app (just like the `main` function), and should use `Awake` to initialize the context before the `Start` of other classes. It's recommended to attach the `Entry`'s subclass to the root GameObject of the scene.
 
 To get those context, you can use the static method `Entry.GetContext`, but we have a better way to do it.
 
 ```cs
-// CBC: ComposableBehaviour with context injected.
+// CBC: ComposableBehaviour with Context injected.
 public class WithContext : CBC {
   void Start() {
     // First, you can use the injected context.
@@ -184,6 +193,8 @@ public class WithContext : CBC {
 }
 ```
 
+You can replace all your `MonoBehaviour` with `ComposableBehaviour` to use the context injection, except the `Entry` class since the `Entry` class is responsible for initializing the context.
+
 With this design, you will have an explicit place to initialize your context, instead of using singletons or other static variables.
 
 > This is inspired by [QFramework](https://github.com/liangxiegame/QFramework)'s IoC container, and [jackutea](https://github.com/jackutea)'s deterministic lifecycle management.
@@ -193,16 +204,16 @@ With this design, you will have an explicit place to initialize your context, in
 In UniStart, we have many built-in responsive containers/collections:
 
 ```cs
-public class Model {
-  public Watch<int> Count { get; private set; }
-  public WatchList<int> List { get; private set; }
-  public WatchArray<bool> Array { get; private set; }
-  public WatchDictionary<string, int> Dictionary { get; private set; }
+public class Model : MonoBehaviour {
+  [field: SerializeField] public Watch<int> Count { get; private set; }
+  [field: SerializeField] public WatchList<int> List { get; private set; }
+  [field: SerializeField] public WatchArray<bool> Array { get; private set; }
+  [field: SerializeField] public WatchDictionary<string, int> Dictionary { get; private set; }
 
-  public Computed<int> Computed { get; private set; }
-  public LazyComputed<int> LazyComputed { get; private set; }
+  [field: SerializeField] public Computed<int> Computed { get; private set; }
+  [field: SerializeField] public LazyComputed<int> LazyComputed { get; private set; }
 
-  public Model(int count) {
+  public Model Setup(int count) {
     // set the initial value
     this.Count = new Watch<int>(count);
     this.List = new WatchList<int>(); // init an empty list
@@ -212,6 +223,18 @@ public class Model {
     // For computed values, we need to watch the values that are used to compute the value.
     this.Computed = new Computed<int>(() => this.Count.Value * 2).Watch(this.Count);
     this.LazyComputed = new LazyComputed<int>(() => this.Count.Value * 2).Watch(this.Count);
+
+    return this;
+  }
+}
+```
+
+Register `Model` to `Entry`:
+
+```cs
+public class App : Entry {
+  void Awake() {
+    this.Add(this.GetComponent<Model>().Setup(1));
   }
 }
 ```
@@ -219,7 +242,7 @@ public class Model {
 Then we can `AddListener` to those responsive containers, and they will be called when the value changes.
 
 ```cs
-// CBC: ComposableBehaviour with Core injected.
+// CBC: ComposableBehaviour with Context injected.
 public class WithContext : CBC {
   void Start() {
     // Retrieve the instance of Model from the app.
@@ -302,18 +325,18 @@ public class App : Entry {
 ### RemoveListener on Destroy
 
 ```cs
-// CBC: ComposableBehaviour with Core injected.
+// CBC: ComposableBehaviour with Context injected.
 public class WithContext : CBC {
   void Start() {
     var model = this.Get<Model>();
     var eb = this.Get<IEventBus>();
 
     // This function will capture `this` in a closure,
-    // we need to remove the listener when the object is destroyed.
+    // we need to remove the listener when the script is destroyed.
     var cb = model.Count.AddListener((count) => print(this));
     this.onDestroy.AddListener(() => model.Count.RemoveListener(cb));
 
-    // Helper function. Listener will be removed when the object is destroyed.
+    // Helper function. Listener will be removed when the script is destroyed.
     this.Watch(model.Count, (count) => print(this));
 
     // You can watch other watchable objects.
@@ -326,8 +349,97 @@ public class WithContext : CBC {
 }
 ```
 
+### CommandBus
+
+Though you can modify your `Model` in any place, we recommend you to use `CommandBus` to modify your `Model` in a more centralized way.
+
+```cs
+// store commands in CommandRepo
+public class MyCommandRepo: CommandRepo {
+  public MyCommandRepo(Entry app) {
+    // get context at the beginning
+    var model = app.Get<Model>();
+    var eb = app.Get<IEventBus>();
+
+    // add command with a key,
+    // use captured context, modify model, trigger event, etc
+    this.Add("CommandName", () => {
+      model.Count.Value++;
+      eb.Invoke("SomeEvent");
+    });
+
+    // the key is an object, so you can use enum, int, etc.
+    // commands can have parameters
+    this.Add(SomeEnum.SomeValue, (int i) => {
+      model.Count.Value += i;
+      eb.Invoke("SomeEvent");
+    });
+
+    // get command from the return value
+    var cmd = this.Add("Test", (int i) => {});
+
+    // reuse existing command's logic
+    this.Add("AnotherCommand", () => {
+      // use this.Get to get existing command
+      this.Get("CommandName").Invoke();
+      // use this.Get to get existing command with parameters,
+      // the returned command will must be UnityAction,
+      // so provide parameters in `Get` instead of `Invoke`
+      this.Get(SomeEnum.SomeValue, 1).Invoke();
+      // or, just use returned command,
+      // pass parameters in `Invoke`
+      cmd.Invoke(0);
+    });
+  }
+}
+
+public class App : Entry {
+  void Awake() {
+    // init context before CommandBus
+    this.Add<Model>();
+    this.Add<IEventBus>(new EventBus());
+
+    // register CommandBus with CommandRepo
+    this.Add<ICommandBus>(new CommandBus(new MyCommandRepo(this)));
+  }
+}
+
+public class MyCBC : CBC {
+  void Start() {
+    var model = this.Get<Model>();
+    var eb = this.Get<IEventBus>();
+    var cb = this.Get<ICommandBus>();
+
+    // read values in model
+    this.onUpdate.AddListener(() => print(model.Count.Value));
+
+    // responsive by model/events
+    this.Watch(model.Count, () => print(model.Count.Value));
+    this.Watch(eb, "SomeEvent", () => print("SomeEvent"));
+
+    // update model by command
+    cb.Push("CommandName");
+    // with parameters
+    cb.Push(SomeEnum.SomeValue, 1);
+  }
+}
+```
+
+Thus, you can separate your game logics in the `CommandRepo` from the views in `CBC`. If you modify your view in `CBC` you can still reuse your logics in `CommandRepo`.
+
+The data flow should be like:
+
+1. Capture input/physics/other events in `CBC`.
+2. Push commands into command bus in `CBC`.
+3. Execute game logics in commands, change model, trigger events, etc.
+4. Watch model/events in `CBC`, update views.
+
+> This is inspired by [QFramework](https://github.com/liangxiegame/QFramework)'s command system.
+
 ## Related
 
 - [CannonVsMosquito](https://github.com/DiscreteTom/CannonVsMosquito) - A demo game.
+- [QFramework](https://github.com/liangxiegame/QFramework) - Which inspired this project.
+- [jackutea](https://github.com/jackutea) - Who helped me a lot.
 
 ## [CHANGELOG](https://github.com/DiscreteTom/UniStart/blob/main/CHANGELOG.md)
