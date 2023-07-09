@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v6.0.1
+
+- Fix: #13
+
 ## v6.0.0
 
 - **_Breaking Change_**: refactor `CommandBus`. Add `CommandRepo`, `DelayedCommandBus`.
