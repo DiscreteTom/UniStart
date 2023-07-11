@@ -1,7 +1,7 @@
 using UnityEngine.Events;
 
 namespace DT.UniStart {
-  public interface IEventBus<T> {
+  public interface IEventListener<T> {
     UnityAction AddListener(T key, UnityAction action);
     UnityAction AddOnceListener(T key, UnityAction action);
     UnityAction<T0> AddListener<T0>(T key, UnityAction<T0> action);
@@ -23,13 +23,18 @@ namespace DT.UniStart {
     UnityAction<T0, T1, T2> RemoveOnceListener<T0, T1, T2>(T key, UnityAction<T0, T1, T2> action);
     UnityAction<T0, T1, T2, T3> RemoveListener<T0, T1, T2, T3>(T key, UnityAction<T0, T1, T2, T3> action);
     UnityAction<T0, T1, T2, T3> RemoveOnceListener<T0, T1, T2, T3>(T key, UnityAction<T0, T1, T2, T3> action);
+  }
+  public interface IEventListener : IEventListener<object> { }
 
+  public interface IEventInvoker<T> {
     void Invoke(T key);
     void Invoke<T0>(T key, T0 arg0);
     void Invoke<T0, T1>(T key, T0 arg0, T1 arg1);
     void Invoke<T0, T1, T2>(T key, T0 arg0, T1 arg1, T2 arg2);
     void Invoke<T0, T1, T2, T3>(T key, T0 arg0, T1 arg1, T2 arg2, T3 arg3);
   }
+  public interface IEventInvoker : IEventInvoker<object> { }
 
-  public interface IEventBus : IEventBus<object> { }
+  public interface IEventBus<T> : IEventListener<T>, IEventInvoker<T> { }
+  public interface IEventBus : IEventBus<object>, IEventListener, IEventInvoker { }
 }

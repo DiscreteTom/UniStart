@@ -2,8 +2,9 @@
 
 ## v6.1.0
 
-- Note: optimize output format of `DebugEventBus`.
 - Feat: add `DebugCommandBus`, fix #11.
+- Feat: add `IEventListener/IEventInvoker` as sub-interface of `IEventBus`.
+- Note: optimize output format of `DebugEventBus`.
 
 ## v6.0.1
 
