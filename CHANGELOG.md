@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v6.1.0
+
+- Note: optimize output format of `DebugEventBus`.
+
 ## v6.0.1
 
 - Fix: #13

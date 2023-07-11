@@ -111,28 +111,33 @@ namespace DT.UniStart {
       return this.bus.RemoveOnceListener(key, action);
     }
 
+    void LogInvoke(string keyStr, string argsStr) {
+      if (this.isInvokeModeEnabled || this.isParameterModeEnabled) {
+        string message = "DebugEventBus.Invoke: ";
+        if (this.isInvokeModeEnabled) message += keyStr;
+        if (this.isInvokeModeEnabled && this.isParameterModeEnabled) message += ", ";
+        if (this.isParameterModeEnabled) message += argsStr;
+        Debug.Log(message);
+      }
+    }
     public void Invoke(T key) {
       if (this.isInvokeModeEnabled) Debug.Log($"DebugEventBus.Invoke: key = {key}");
       this.bus.Invoke(key);
     }
     public void Invoke<T0>(T key, T0 arg0) {
-      if (this.isInvokeModeEnabled) Debug.Log($"DebugEventBus.Invoke: key = {key}");
-      if (this.isParameterModeEnabled) Debug.Log($"DebugEventBus.Invoke: arg0 = {arg0}");
+      this.LogInvoke($"key = {key}", $"arg0 = {arg0}");
       this.bus.Invoke(key, arg0);
     }
     public void Invoke<T0, T1>(T key, T0 arg0, T1 arg1) {
-      if (this.isInvokeModeEnabled) Debug.Log($"DebugEventBus.Invoke: key = {key}");
-      if (this.isParameterModeEnabled) Debug.Log($"DebugEventBus.Invoke: arg0 = {arg0}, arg1 = {arg1}");
+      this.LogInvoke($"key = {key}", $"arg0 = {arg0}, arg1 = {arg1}");
       this.bus.Invoke(key, arg0, arg1);
     }
     public void Invoke<T0, T1, T2>(T key, T0 arg0, T1 arg1, T2 arg2) {
-      if (this.isInvokeModeEnabled) Debug.Log($"DebugEventBus.Invoke: key = {key}");
-      if (this.isParameterModeEnabled) Debug.Log($"DebugEventBus.Invoke: arg0 = {arg0}, arg1 = {arg1}, arg2 = {arg2}");
+      this.LogInvoke($"key = {key}", $"arg0 = {arg0}, arg1 = {arg1}, arg2 = {arg2}");
       this.bus.Invoke(key, arg0, arg1, arg2);
     }
     public void Invoke<T0, T1, T2, T3>(T key, T0 arg0, T1 arg1, T2 arg2, T3 arg3) {
-      if (this.isInvokeModeEnabled) Debug.Log($"DebugEventBus.Invoke: key = {key}");
-      if (this.isParameterModeEnabled) Debug.Log($"DebugEventBus.Invoke: arg0 = {arg0}, arg1 = {arg1}, arg2 = {arg2}, arg3 = {arg3}");
+      this.LogInvoke($"key = {key}", $"arg0 = {arg0}, arg1 = {arg1}, arg2 = {arg2}, arg3 = {arg3}");
       this.bus.Invoke(key, arg0, arg1, arg2, arg3);
     }
   }
