@@ -60,6 +60,10 @@ public class Test : ComposableBehaviour {
     // be ware of onEnable, since Start is called after OnEnable,
     // you might want to invoke the listener immediately.
     this.onEnable.AddListener(() => print("enable")).Invoke();
+
+    // you can also manage children's lifecycle easily
+    // without creating a new class.
+    this.transform.Find("Child").AddComponent<ComposableBehaviour>().onUpdate.AddListener(l);
   }
 }
 ```
@@ -205,13 +209,13 @@ In UniStart, we have many built-in responsive containers/collections:
 
 ```cs
 public class Model : MonoBehaviour {
-  [field: SerializeField] public Watch<int> Count { get; private set; }
-  [field: SerializeField] public WatchList<int> List { get; private set; }
-  [field: SerializeField] public WatchArray<bool> Array { get; private set; }
-  [field: SerializeField] public WatchDictionary<string, int> Dictionary { get; private set; }
+  public Watch<int> Count;
+  public WatchList<int> List;
+  public WatchArray<bool> Array;
+  public WatchDictionary<string, int> Dictionary;
 
-  [field: SerializeField] public Computed<int> Computed { get; private set; }
-  [field: SerializeField] public LazyComputed<int> LazyComputed { get; private set; }
+  public Computed<int> Computed;
+  public LazyComputed<int> LazyComputed;
 
   public Model Setup(int count) {
     // set the initial value
@@ -319,6 +323,8 @@ public class App : Entry {
   }
 }
 ```
+
+Besides, there are 2 base interface of `IEventBus`: `IEventListener` and `IEventInvoker`.
 
 > This is inspired by [QFramework](https://github.com/liangxiegame/QFramework)'s event system.
 
