@@ -19,15 +19,15 @@ namespace DT.UniStart {
     DebugEventBusMode mode;
     IEventBus<T> bus;
 
-    public DebugEventBus(IEventBus<T> bus, DebugEventBusMode mode = DebugEventBusMode.Invoke) {
-      this.mode = mode;
-      this.bus = bus;
-    }
-
     bool isAddListenerModeEnabled => (this.mode & DebugEventBusMode.AddListener) == DebugEventBusMode.AddListener;
     bool isRemoveListenerModeEnabled => (this.mode & DebugEventBusMode.RemoveListener) == DebugEventBusMode.RemoveListener;
     bool isInvokeModeEnabled => (this.mode & DebugEventBusMode.Invoke) == DebugEventBusMode.Invoke;
     bool isParameterModeEnabled => (this.mode & DebugEventBusMode.Parameter) == DebugEventBusMode.Parameter;
+
+    public DebugEventBus(IEventBus<T> bus, DebugEventBusMode mode = DebugEventBusMode.Invoke) {
+      this.mode = mode;
+      this.bus = bus;
+    }
 
     public UnityAction AddListener(T key, UnityAction action) {
       if (this.isAddListenerModeEnabled) Debug.Log($"DebugEventBus.AddListener: key = {key}");
