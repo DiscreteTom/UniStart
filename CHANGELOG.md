@@ -3,6 +3,7 @@
 ## v6.1.0
 
 - Note: optimize output format of `DebugEventBus`.
+- Feat: add `DebugCommandBus`, fix #11.
 
 ## v6.0.1
 
