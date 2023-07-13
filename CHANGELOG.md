@@ -5,6 +5,9 @@
 - **_Breaking Change_**: rewrite `EventBus` family, including `IEventBus/EventBus/DebugEventBus/DelayedEventBus`.
   - Use typed event bus. Fix #14.
   - Add `DebugEventBusMode.All`.
+- **_Breaking Change_**: rollback `IoC` family.
+  - Remove `KeyedIoCC`.
+  - Simplify `Framework`.
 - Feat: add `IDictionaryExtension`.
 - Feat: add `System.Runtime.CompilerServices.IsExternalInit` to make records working.
 - Feat: add `GameObject.GetOrAddComponent`.

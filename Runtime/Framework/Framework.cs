@@ -6,7 +6,7 @@ namespace DT.UniStart {
   /// <summary>
   /// The base class for Entry and CBC.
   /// </summary>
-  public abstract class UniStartBehaviour<CtxKey, Ctx> : ComposableBehaviour where Ctx : IIoCC<CtxKey> {
+  public abstract class UniStartBehaviour<Ctx> : ComposableBehaviour, IIoCC where Ctx : IIoCC {
     #region Helper Methods for IWatchable
     /// <summary>
     /// Watch a watchable for changes.
@@ -137,43 +137,26 @@ namespace DT.UniStart {
     #region Context Management
     protected abstract Ctx context { get; set; }
     /// <summary>
-    /// Register a type with an existing instance and a key.
-    /// </summary>
-    public T Add<T>(CtxKey key, T instance) => this.context.Add<T>(key, instance);
-    /// <summary>
     /// Register a type with an existing instance.
     /// </summary>
     public T Add<T>(T instance) => this.context.Add<T>(instance);
-    /// <summary>
-    /// Register a type with a key, and auto create an instance.
-    /// </summary>
-    public T Add<T>(CtxKey key) where T : new() => this.context.Add<T>(key);
     /// <summary>
     /// Register a type and auto create an instance.
     /// </summary>
     public T Add<T>() where T : new() => this.context.Add<T>();
     /// <summary>
-    /// Get the instance of a type by key.
-    /// </summary>
-    public T Get<T>(CtxKey key) => this.context.Get<T>(key);
-    /// <summary>
     /// Get the instance of a type.
     /// </summary>
     public T Get<T>() => this.context.Get<T>();
     /// <summary>
-    /// Try to get the instance of a type with a key.
-    /// If the type is not registered, return `default(T)`.
-    /// </summary>
-    public T TryGet<T>(CtxKey key) => this.context.TryGet<T>(key);
-    /// <summary>
     /// Try to get the instance of a type.
     /// If the type is not registered, return `default(T)`.
     /// </summary>
-    public T TryGet<T>() => this.context.TryGet<T>();
+    public T GetOrDefault<T>() => this.context.GetOrDefault<T>();
     #endregion
   }
 
-  public class Entry<CtxKey, Ctx> : UniStartBehaviour<CtxKey, Ctx> where Ctx : class, IIoCC<CtxKey>, new() {
+  public class Entry<Ctx> : UniStartBehaviour<Ctx> where Ctx : class, IIoCC, new() {
     Ctx _context = new Ctx();
     protected override Ctx context {
       get { return _context; }
@@ -183,15 +166,15 @@ namespace DT.UniStart {
     public static Ctx GetContext(GameObject obj) {
       Ctx context = null;
       // first, try to find the context in the root object
-      context = obj.transform.root.GetComponent<Entry<CtxKey, Ctx>>()?.context;
+      context = obj.transform.root.GetComponent<Entry<Ctx>>()?.context;
       if (context != null) return context;
 
       // second, try to find the context in the parent object
-      context = obj.GetComponentInParent<Entry<CtxKey, Ctx>>()?.context;
+      context = obj.GetComponentInParent<Entry<Ctx>>()?.context;
       if (context != null) return context;
 
       // finally, try to find the context in the whole scene
-      context = GameObject.FindObjectOfType<Entry<CtxKey, Ctx>>()?.context;
+      context = GameObject.FindObjectOfType<Entry<Ctx>>()?.context;
       if (context != null) return context;
 
       // if we can't find the context, throw an error
@@ -202,18 +185,18 @@ namespace DT.UniStart {
     protected void Start() { }
   }
 
-  public class Entry : Entry<object, IoCC> { }
+  public class Entry : Entry<IoCC> { }
 
   /// <summary>
   /// ComposableBehaviour with context injected.
   /// </summary>
-  public class CBC<CtxKey, Ctx> : UniStartBehaviour<CtxKey, Ctx> where Ctx : class, IIoCC<CtxKey>, new() {
+  public class CBC<Ctx> : UniStartBehaviour<Ctx> where Ctx : class, IIoCC, new() {
     // cache the context to avoid searching it every time
     Ctx _context = null;
     protected override Ctx context {
       get {
         if (this._context == null)
-          this._context = Entry<CtxKey, Ctx>.GetContext(this.gameObject);
+          this._context = Entry<Ctx>.GetContext(this.gameObject);
         return this._context;
       }
       set => this._context = value;
@@ -223,5 +206,5 @@ namespace DT.UniStart {
   /// <summary>
   /// ComposableBehaviour with context injected.
   /// </summary>
-  public class CBC : CBC<object, IoCC> { }
+  public class CBC : CBC<IoCC> { }
 }
