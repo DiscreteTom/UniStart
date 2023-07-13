@@ -5,9 +5,9 @@ using UnityEngine.Events;
 namespace DT.UniStart {
   public interface ICommandRepo {
     ICommandRepo Add<T>(UnityAction command);
-    ICommandRepo Add<T>(UnityAction command, out UnityAction named);
+    ICommandRepo Add<T>(out UnityAction named, UnityAction command);
     ICommandRepo Add<T>(UnityAction<T> command);
-    ICommandRepo Add<T>(UnityAction<T> command, out UnityAction<T> named);
+    ICommandRepo Add<T>(out UnityAction<T> named, UnityAction<T> command);
     void Invoke<T>(T arg);
     void Invoke<T>() where T : new();
   }
@@ -23,7 +23,7 @@ namespace DT.UniStart {
       this.bus.AddListener<T>(command);
       return this;
     }
-    public ICommandRepo Add<T>(UnityAction command, out UnityAction named) {
+    public ICommandRepo Add<T>(out UnityAction named, UnityAction command) {
       named = command;
       return this.Add<T>(command);
     }
@@ -31,7 +31,7 @@ namespace DT.UniStart {
       this.bus.AddListener(command);
       return this;
     }
-    public ICommandRepo Add<T>(UnityAction<T> command, out UnityAction<T> named) {
+    public ICommandRepo Add<T>(out UnityAction<T> named, UnityAction<T> command) {
       named = command;
       return this.Add(command);
     }

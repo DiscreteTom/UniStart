@@ -24,11 +24,11 @@ namespace DT.UniStart {
     public ReadOnlyCollection<T> Value => this.readOnlyList.Value;
 
     public UnityAction<ReadOnlyCollection<T>> AddListener(UnityAction<ReadOnlyCollection<T>> f) => this.onChange.AddListener(f);
+    public UnityAction<ReadOnlyCollection<T>> AddListener(out UnityAction<ReadOnlyCollection<T>> named, UnityAction<ReadOnlyCollection<T>> f) => this.onChange.AddListener(out named, f);
     public UnityAction<ReadOnlyCollection<T>> AddOnceListener(UnityAction<ReadOnlyCollection<T>> f) => this.onChange.AddOnceListener(f);
+    public UnityAction<ReadOnlyCollection<T>> AddOnceListener(out UnityAction<ReadOnlyCollection<T>> named, UnityAction<ReadOnlyCollection<T>> f) => this.onChange.AddOnceListener(out named, f);
     public UnityAction<ReadOnlyCollection<T>> RemoveListener(UnityAction<ReadOnlyCollection<T>> f) => this.onChange.RemoveListener(f);
-    public UnityAction<ReadOnlyCollection<T>> AddListener(UnityAction<ReadOnlyCollection<T>> f, out UnityAction<ReadOnlyCollection<T>> named) => this.onChange.AddListener(f, out named);
-    public UnityAction<ReadOnlyCollection<T>> AddOnceListener(UnityAction<ReadOnlyCollection<T>> f, out UnityAction<ReadOnlyCollection<T>> named) => this.onChange.AddOnceListener(f, out named);
-    public UnityAction<ReadOnlyCollection<T>> RemoveListener(UnityAction<ReadOnlyCollection<T>> f, out UnityAction<ReadOnlyCollection<T>> named) => this.onChange.RemoveListener(f, out named);
+    public UnityAction<ReadOnlyCollection<T>> RemoveListener(out UnityAction<ReadOnlyCollection<T>> named, UnityAction<ReadOnlyCollection<T>> f) => this.onChange.RemoveListener(out named, f);
 
     protected new void InvokeEvent() {
       base.InvokeEvent();
@@ -98,11 +98,11 @@ namespace DT.UniStart {
     public ReadOnlyDictionary<K, V> Value => this.readOnlyDictionary.Value;
 
     public UnityAction<ReadOnlyDictionary<K, V>> AddListener(UnityAction<ReadOnlyDictionary<K, V>> f) => this.onChange.AddListener(f);
-    public UnityAction<ReadOnlyDictionary<K, V>> AddListener(UnityAction<ReadOnlyDictionary<K, V>> f, out UnityAction<ReadOnlyDictionary<K, V>> named) => this.onChange.AddListener(f, out named);
+    public UnityAction<ReadOnlyDictionary<K, V>> AddListener(out UnityAction<ReadOnlyDictionary<K, V>> named, UnityAction<ReadOnlyDictionary<K, V>> f) => this.onChange.AddListener(out named, f);
     public UnityAction<ReadOnlyDictionary<K, V>> AddOnceListener(UnityAction<ReadOnlyDictionary<K, V>> f) => this.onChange.AddOnceListener(f);
-    public UnityAction<ReadOnlyDictionary<K, V>> AddOnceListener(UnityAction<ReadOnlyDictionary<K, V>> f, out UnityAction<ReadOnlyDictionary<K, V>> named) => this.onChange.AddOnceListener(f, out named);
+    public UnityAction<ReadOnlyDictionary<K, V>> AddOnceListener(out UnityAction<ReadOnlyDictionary<K, V>> named, UnityAction<ReadOnlyDictionary<K, V>> f) => this.onChange.AddOnceListener(out named, f);
     public UnityAction<ReadOnlyDictionary<K, V>> RemoveListener(UnityAction<ReadOnlyDictionary<K, V>> f) => this.onChange.RemoveListener(f);
-    public UnityAction<ReadOnlyDictionary<K, V>> RemoveListener(UnityAction<ReadOnlyDictionary<K, V>> f, out UnityAction<ReadOnlyDictionary<K, V>> named) => this.onChange.RemoveListener(f, out named);
+    public UnityAction<ReadOnlyDictionary<K, V>> RemoveListener(out UnityAction<ReadOnlyDictionary<K, V>> named, UnityAction<ReadOnlyDictionary<K, V>> f) => this.onChange.RemoveListener(out named, f);
 
     protected new void InvokeEvent() {
       base.InvokeEvent();

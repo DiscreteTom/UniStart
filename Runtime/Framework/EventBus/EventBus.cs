@@ -11,22 +11,22 @@ namespace DT.UniStart {
     }
 
     public UnityAction AddListener<T>(UnityAction listener) => (this.dict.GetOrAdd(typeof(T), () => new AdvancedEvent<T>()) as AdvancedEvent<T>).AddListener(listener);
-    public UnityAction AddListener<T>(UnityAction listener, out UnityAction named) => (this.dict.GetOrAdd(typeof(T), () => new AdvancedEvent<T>()) as AdvancedEvent<T>).AddListener(listener, out named);
+    public UnityAction AddListener<T>(out UnityAction named, UnityAction listener) => (this.dict.GetOrAdd(typeof(T), () => new AdvancedEvent<T>()) as AdvancedEvent<T>).AddListener(out named, listener);
     public UnityAction<T> AddListener<T>(UnityAction<T> listener) => (this.dict.GetOrAdd(typeof(T), () => new AdvancedEvent<T>()) as AdvancedEvent<T>).AddListener(listener);
-    public UnityAction<T> AddListener<T>(UnityAction<T> listener, out UnityAction<T> named) => (this.dict.GetOrAdd(typeof(T), () => new AdvancedEvent<T>()) as AdvancedEvent<T>).AddListener(listener, out named);
+    public UnityAction<T> AddListener<T>(out UnityAction<T> named, UnityAction<T> listener) => (this.dict.GetOrAdd(typeof(T), () => new AdvancedEvent<T>()) as AdvancedEvent<T>).AddListener(out named, listener);
     public UnityAction AddOnceListener<T>(UnityAction listener) => (this.dict.GetOrAdd(typeof(T), () => new AdvancedEvent<T>()) as AdvancedEvent<T>).AddOnceListener(listener);
-    public UnityAction AddOnceListener<T>(UnityAction listener, out UnityAction named) => (this.dict.GetOrAdd(typeof(T), () => new AdvancedEvent<T>()) as AdvancedEvent<T>).AddOnceListener(listener, out named);
+    public UnityAction AddOnceListener<T>(out UnityAction named, UnityAction listener) => (this.dict.GetOrAdd(typeof(T), () => new AdvancedEvent<T>()) as AdvancedEvent<T>).AddOnceListener(out named, listener);
     public UnityAction<T> AddOnceListener<T>(UnityAction<T> listener) => (this.dict.GetOrAdd(typeof(T), () => new AdvancedEvent<T>()) as AdvancedEvent<T>).AddOnceListener(listener);
-    public UnityAction<T> AddOnceListener<T>(UnityAction<T> listener, out UnityAction<T> named) => (this.dict.GetOrAdd(typeof(T), () => new AdvancedEvent<T>()) as AdvancedEvent<T>).AddOnceListener(listener, out named);
+    public UnityAction<T> AddOnceListener<T>(out UnityAction<T> named, UnityAction<T> listener) => (this.dict.GetOrAdd(typeof(T), () => new AdvancedEvent<T>()) as AdvancedEvent<T>).AddOnceListener(out named, listener);
     public UnityAction RemoveListener<T>(UnityAction listener) => (this.dict.GetOrDefault(typeof(T)) as AdvancedEvent<T>)?.RemoveListener(listener);
-    public UnityAction RemoveListener<T>(UnityAction listener, out UnityAction named) {
+    public UnityAction RemoveListener<T>(out UnityAction named, UnityAction listener) {
       named = null;
-      return (this.dict.GetOrDefault(typeof(T)) as AdvancedEvent<T>)?.RemoveListener(listener, out named);
+      return (this.dict.GetOrDefault(typeof(T)) as AdvancedEvent<T>)?.RemoveListener(out named, listener);
     }
     public UnityAction<T> RemoveListener<T>(UnityAction<T> listener) => (this.dict.GetOrDefault(typeof(T)) as AdvancedEvent<T>)?.RemoveListener(listener);
-    public UnityAction<T> RemoveListener<T>(UnityAction<T> listener, out UnityAction<T> named) {
+    public UnityAction<T> RemoveListener<T>(out UnityAction<T> named, UnityAction<T> listener) {
       named = null;
-      return (this.dict.GetOrDefault(typeof(T)) as AdvancedEvent<T>)?.RemoveListener(listener, out named);
+      return (this.dict.GetOrDefault(typeof(T)) as AdvancedEvent<T>)?.RemoveListener(out named, listener);
     }
 
     public void Invoke<T>(T e) => (this.dict.GetOrDefault(typeof(T)) as AdvancedEvent<T>)?.Invoke(e);

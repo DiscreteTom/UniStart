@@ -7,7 +7,7 @@ namespace DT.UniStart {
       base.AddListener(action);
       return action;
     }
-    public UnityAction AddListener(UnityAction action, out UnityAction named) {
+    public UnityAction AddListener(out UnityAction named, UnityAction action) {
       named = action;
       return this.AddListener(action);
     }
@@ -16,7 +16,7 @@ namespace DT.UniStart {
       base.RemoveListener(action);
       return action;
     }
-    public UnityAction RemoveListener(UnityAction action, out UnityAction named) {
+    public UnityAction RemoveListener(out UnityAction named, UnityAction action) {
       named = action;
       return this.RemoveListener(action);
     }
@@ -29,7 +29,7 @@ namespace DT.UniStart {
       this.AddListener(() => this.RemoveListener(action));
       return action;
     }
-    public UnityAction AddOnceListener(UnityAction action, out UnityAction named) {
+    public UnityAction AddOnceListener(out UnityAction named, UnityAction action) {
       named = action;
       return this.AddOnceListener(action);
     }
@@ -44,7 +44,7 @@ namespace DT.UniStart {
       this.e.AddListener(action);
       return action;
     }
-    public UnityAction<T0> AddListener(UnityAction<T0> action, out UnityAction<T0> named) {
+    public UnityAction<T0> AddListener(out UnityAction<T0> named, UnityAction<T0> action) {
       named = action;
       return this.AddListener(action);
     }
@@ -53,7 +53,7 @@ namespace DT.UniStart {
       this.e.RemoveListener(action);
       return action;
     }
-    public UnityAction<T0> RemoveListener(UnityAction<T0> action, out UnityAction<T0> named) {
+    public UnityAction<T0> RemoveListener(out UnityAction<T0> named, UnityAction<T0> action) {
       named = action;
       return this.RemoveListener(action);
     }
@@ -66,7 +66,7 @@ namespace DT.UniStart {
       this.AddListener(() => this.RemoveListener(action));
       return action;
     }
-    public UnityAction<T0> AddOnceListener(UnityAction<T0> action, out UnityAction<T0> named) {
+    public UnityAction<T0> AddOnceListener(out UnityAction<T0> named, UnityAction<T0> action) {
       named = action;
       return this.AddOnceListener(action);
     }
@@ -84,7 +84,7 @@ namespace DT.UniStart {
       this.e.AddListener(action);
       return action;
     }
-    public UnityAction<T0, T1> AddListener(UnityAction<T0, T1> action, out UnityAction<T0, T1> named) {
+    public UnityAction<T0, T1> AddListener(out UnityAction<T0, T1> named, UnityAction<T0, T1> action) {
       named = action;
       return this.AddListener(action);
     }
@@ -93,7 +93,7 @@ namespace DT.UniStart {
       this.e.RemoveListener(action);
       return action;
     }
-    public UnityAction<T0, T1> RemoveListener(UnityAction<T0, T1> action, out UnityAction<T0, T1> named) {
+    public UnityAction<T0, T1> RemoveListener(out UnityAction<T0, T1> named, UnityAction<T0, T1> action) {
       named = action;
       return this.RemoveListener(action);
     }
@@ -106,7 +106,7 @@ namespace DT.UniStart {
       this.AddListener(() => this.RemoveListener(action));
       return action;
     }
-    public UnityAction<T0, T1> AddOnceListener(UnityAction<T0, T1> action, out UnityAction<T0, T1> named) {
+    public UnityAction<T0, T1> AddOnceListener(out UnityAction<T0, T1> named, UnityAction<T0, T1> action) {
       named = action;
       return this.AddOnceListener(action);
     }
@@ -124,7 +124,7 @@ namespace DT.UniStart {
       this.e.AddListener(action);
       return action;
     }
-    public UnityAction<T0, T1, T2> AddListener(UnityAction<T0, T1, T2> action, out UnityAction<T0, T1, T2> named) {
+    public UnityAction<T0, T1, T2> AddListener(out UnityAction<T0, T1, T2> named, UnityAction<T0, T1, T2> action) {
       named = action;
       return this.AddListener(action);
     }
@@ -133,7 +133,7 @@ namespace DT.UniStart {
       this.e.RemoveListener(action);
       return action;
     }
-    public UnityAction<T0, T1, T2> RemoveListener(UnityAction<T0, T1, T2> action, out UnityAction<T0, T1, T2> named) {
+    public UnityAction<T0, T1, T2> RemoveListener(out UnityAction<T0, T1, T2> named, UnityAction<T0, T1, T2> action) {
       named = action;
       return this.RemoveListener(action);
     }
@@ -146,7 +146,7 @@ namespace DT.UniStart {
       this.AddListener(() => this.RemoveListener(action));
       return action;
     }
-    public UnityAction<T0, T1, T2> AddOnceListener(UnityAction<T0, T1, T2> action, out UnityAction<T0, T1, T2> named) {
+    public UnityAction<T0, T1, T2> AddOnceListener(out UnityAction<T0, T1, T2> named, UnityAction<T0, T1, T2> action) {
       named = action;
       return this.AddOnceListener(action);
     }
@@ -164,7 +164,7 @@ namespace DT.UniStart {
       this.e.AddListener(action);
       return action;
     }
-    public UnityAction<T0, T1, T2, T3> AddListener(UnityAction<T0, T1, T2, T3> action, out UnityAction<T0, T1, T2, T3> named) {
+    public UnityAction<T0, T1, T2, T3> AddListener(out UnityAction<T0, T1, T2, T3> named, UnityAction<T0, T1, T2, T3> action) {
       named = action;
       return this.AddListener(action);
     }
@@ -173,7 +173,7 @@ namespace DT.UniStart {
       this.e.RemoveListener(action);
       return action;
     }
-    public UnityAction<T0, T1, T2, T3> RemoveListener(UnityAction<T0, T1, T2, T3> action, out UnityAction<T0, T1, T2, T3> named) {
+    public UnityAction<T0, T1, T2, T3> RemoveListener(out UnityAction<T0, T1, T2, T3> named, UnityAction<T0, T1, T2, T3> action) {
       named = action;
       return this.RemoveListener(action);
     }
@@ -186,7 +186,7 @@ namespace DT.UniStart {
       this.AddListener(() => this.RemoveListener(action));
       return action;
     }
-    public UnityAction<T0, T1, T2, T3> AddOnceListener(UnityAction<T0, T1, T2, T3> action, out UnityAction<T0, T1, T2, T3> named) {
+    public UnityAction<T0, T1, T2, T3> AddOnceListener(out UnityAction<T0, T1, T2, T3> named, UnityAction<T0, T1, T2, T3> action) {
       named = action;
       return this.AddOnceListener(action);
     }

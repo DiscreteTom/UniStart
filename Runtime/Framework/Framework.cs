@@ -21,7 +21,7 @@ namespace DT.UniStart {
     /// Watch a watchable for changes.
     /// Remove the listener when the object is destroyed.
     /// </summary>
-    public UnityAction Watch(IWatchable watchable, UnityAction action, out UnityAction named) {
+    public UnityAction Watch(out UnityAction named, IWatchable watchable, UnityAction action) {
       named = action;
       return this.Watch(watchable, action);
     }
@@ -38,7 +38,7 @@ namespace DT.UniStart {
     /// Watch a watchable for changes.
     /// Remove the listener when the object is destroyed.
     /// </summary>
-    public UnityAction<T0> Watch<T0>(IWatchable<T0> watchable, UnityAction<T0> action, out UnityAction<T0> named) {
+    public UnityAction<T0> Watch<T0>(out UnityAction<T0> named, IWatchable<T0> watchable, UnityAction<T0> action) {
       named = action;
       return this.Watch(watchable, action);
     }
@@ -55,7 +55,7 @@ namespace DT.UniStart {
     /// Watch a watchable for changes.
     /// Remove the listener when the object is destroyed.
     /// </summary>
-    public UnityAction<T0, T1> Watch<T0, T1>(IWatchable<T0, T1> watchable, UnityAction<T0, T1> action, out UnityAction<T0, T1> named) {
+    public UnityAction<T0, T1> Watch<T0, T1>(out UnityAction<T0, T1> named, IWatchable<T0, T1> watchable, UnityAction<T0, T1> action) {
       named = action;
       return this.Watch(watchable, action);
     }
@@ -72,7 +72,7 @@ namespace DT.UniStart {
     /// Watch a watchable for changes.
     /// Remove the listener when the object is destroyed.
     /// </summary>
-    public UnityAction<T0, T1, T2> Watch<T0, T1, T2>(IWatchable<T0, T1, T2> watchable, UnityAction<T0, T1, T2> action, out UnityAction<T0, T1, T2> named) {
+    public UnityAction<T0, T1, T2> Watch<T0, T1, T2>(out UnityAction<T0, T1, T2> named, IWatchable<T0, T1, T2> watchable, UnityAction<T0, T1, T2> action) {
       named = action;
       return this.Watch(watchable, action);
     }
@@ -89,7 +89,7 @@ namespace DT.UniStart {
     /// Watch a watchable for changes.
     /// Remove the listener when the object is destroyed.
     /// </summary>
-    public UnityAction<T0, T1, T2, T3> Watch<T0, T1, T2, T3>(IWatchable<T0, T1, T2, T3> watchable, UnityAction<T0, T1, T2, T3> action, out UnityAction<T0, T1, T2, T3> named) {
+    public UnityAction<T0, T1, T2, T3> Watch<T0, T1, T2, T3>(out UnityAction<T0, T1, T2, T3> named, IWatchable<T0, T1, T2, T3> watchable, UnityAction<T0, T1, T2, T3> action) {
       named = action;
       return this.Watch(watchable, action);
     }
@@ -106,7 +106,7 @@ namespace DT.UniStart {
     /// Watch a watchable for changes once.
     /// Remove the listener when the object is destroyed.
     /// </summary>
-    public UnityAction OnceWatch(IOnceWatchable watchable, UnityAction action, out UnityAction named) {
+    public UnityAction OnceWatch(out UnityAction named, IOnceWatchable watchable, UnityAction action) {
       named = action;
       return this.OnceWatch(watchable, action);
     }
@@ -123,7 +123,7 @@ namespace DT.UniStart {
     /// Watch a watchable for changes once.
     /// Remove the listener when the object is destroyed.
     /// </summary>
-    public UnityAction<T0> OnceWatch<T0>(IOnceWatchable<T0> watchable, UnityAction<T0> action, out UnityAction<T0> named) {
+    public UnityAction<T0> OnceWatch<T0>(out UnityAction<T0> named, IOnceWatchable<T0> watchable, UnityAction<T0> action) {
       named = action;
       return this.OnceWatch(watchable, action);
     }
@@ -140,7 +140,7 @@ namespace DT.UniStart {
     /// Watch a watchable for changes once.
     /// Remove the listener when the object is destroyed.
     /// </summary>
-    public UnityAction<T0, T1> OnceWatch<T0, T1>(IOnceWatchable<T0, T1> watchable, UnityAction<T0, T1> action, out UnityAction<T0, T1> named) {
+    public UnityAction<T0, T1> OnceWatch<T0, T1>(out UnityAction<T0, T1> named, IOnceWatchable<T0, T1> watchable, UnityAction<T0, T1> action) {
       named = action;
       return this.OnceWatch(watchable, action);
     }
@@ -157,7 +157,7 @@ namespace DT.UniStart {
     /// Watch a watchable for changes once.
     /// Remove the listener when the object is destroyed.
     /// </summary>
-    public UnityAction<T0, T1, T2> OnceWatch<T0, T1, T2>(IOnceWatchable<T0, T1, T2> watchable, UnityAction<T0, T1, T2> action, out UnityAction<T0, T1, T2> named) {
+    public UnityAction<T0, T1, T2> OnceWatch<T0, T1, T2>(out UnityAction<T0, T1, T2> named, IOnceWatchable<T0, T1, T2> watchable, UnityAction<T0, T1, T2> action) {
       named = action;
       return this.OnceWatch(watchable, action);
     }
@@ -174,7 +174,7 @@ namespace DT.UniStart {
     /// Watch a watchable for changes once.
     /// Remove the listener when the object is destroyed.
     /// </summary>
-    public UnityAction<T0, T1, T2, T3> OnceWatch<T0, T1, T2, T3>(IOnceWatchable<T0, T1, T2, T3> watchable, UnityAction<T0, T1, T2, T3> action, out UnityAction<T0, T1, T2, T3> named) {
+    public UnityAction<T0, T1, T2, T3> OnceWatch<T0, T1, T2, T3>(out UnityAction<T0, T1, T2, T3> named, IOnceWatchable<T0, T1, T2, T3> watchable, UnityAction<T0, T1, T2, T3> action) {
       named = action;
       return this.OnceWatch(watchable, action);
     }
@@ -194,7 +194,7 @@ namespace DT.UniStart {
     /// Watch an event bus for events.
     /// Remove the listener when the object is destroyed.
     /// </summary>
-    public UnityAction Watch<T>(IEventListener eventBus, UnityAction action, out UnityAction named) {
+    public UnityAction Watch<T>(out UnityAction named, IEventListener eventBus, UnityAction action) {
       named = action;
       return this.Watch<T>(eventBus, action);
     }
@@ -211,7 +211,7 @@ namespace DT.UniStart {
     /// Watch an event bus for events.
     /// Remove the listener when the object is destroyed.
     /// </summary>
-    public UnityAction<T> Watch<T>(IEventListener eventBus, UnityAction<T> action, out UnityAction<T> named) {
+    public UnityAction<T> Watch<T>(out UnityAction<T> named, IEventListener eventBus, UnityAction<T> action) {
       named = action;
       return this.Watch<T>(eventBus, action);
     }
@@ -228,7 +228,7 @@ namespace DT.UniStart {
     /// Watch an event bus for events.
     /// Remove the listener when the object is destroyed.
     /// </summary>
-    public UnityAction<T> OnceWatch<T>(IEventListener eventBus, UnityAction<T> action, out UnityAction<T> named) {
+    public UnityAction<T> OnceWatch<T>(out UnityAction<T> named, IEventListener eventBus, UnityAction<T> action) {
       named = action;
       return this.OnceWatch<T>(eventBus, action);
     }
@@ -245,7 +245,7 @@ namespace DT.UniStart {
     /// Watch an event bus for events.
     /// Remove the listener when the object is destroyed.
     /// </summary>
-    public UnityAction OnceWatch<T>(IEventListener eventBus, UnityAction action, out UnityAction named) {
+    public UnityAction OnceWatch<T>(out UnityAction named, IEventListener eventBus, UnityAction action) {
       named = action;
       return this.OnceWatch<T>(eventBus, action);
     }
