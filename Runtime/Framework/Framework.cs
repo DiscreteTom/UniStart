@@ -105,90 +105,18 @@ namespace DT.UniStart {
     /// Watch an event bus for events.
     /// Remove the listener when the object is destroyed.
     /// </summary>
-    public UnityAction Watch<K>(IEventListener<K> eventBus, K key, UnityAction action) {
-      eventBus.AddListener(key, action);
-      this.onDestroy.AddOnceListener(() => eventBus.RemoveListener(key, action));
+    public UnityAction<T> Watch<T>(IEventListener eventBus, UnityAction<T> action) {
+      eventBus.AddListener(action);
+      this.onDestroy.AddOnceListener(() => eventBus.RemoveListener(action));
       return action;
     }
     /// <summary>
     /// Watch an event bus for events.
     /// Remove the listener when the object is destroyed.
     /// </summary>
-    public UnityAction<T0> Watch<K, T0>(IEventListener<K> eventBus, K key, UnityAction<T0> action) {
-      eventBus.AddListener(key, action);
-      this.onDestroy.AddOnceListener(() => eventBus.RemoveListener(key, action));
-      return action;
-    }
-    /// <summary>
-    /// Watch an event bus for events.
-    /// Remove the listener when the object is destroyed.
-    /// </summary>
-    public UnityAction<T0, T1> Watch<K, T0, T1>(IEventListener<K> eventBus, K key, UnityAction<T0, T1> action) {
-      eventBus.AddListener(key, action);
-      this.onDestroy.AddOnceListener(() => eventBus.RemoveListener(key, action));
-      return action;
-    }
-    /// <summary>
-    /// Watch an event bus for events.
-    /// Remove the listener when the object is destroyed.
-    /// </summary>
-    public UnityAction<T0, T1, T2> Watch<K, T0, T1, T2>(IEventListener<K> eventBus, K key, UnityAction<T0, T1, T2> action) {
-      eventBus.AddListener(key, action);
-      this.onDestroy.AddOnceListener(() => eventBus.RemoveListener(key, action));
-      return action;
-    }
-    /// <summary>
-    /// Watch an event bus for events.
-    /// Remove the listener when the object is destroyed.
-    /// </summary>
-    public UnityAction<T0, T1, T2, T3> Watch<K, T0, T1, T2, T3>(IEventListener<K> eventBus, K key, UnityAction<T0, T1, T2, T3> action) {
-      eventBus.AddListener(key, action);
-      this.onDestroy.AddOnceListener(() => eventBus.RemoveListener(key, action));
-      return action;
-    }
-    /// <summary>
-    /// Watch an event bus for events.
-    /// Remove the listener when the object is destroyed.
-    /// </summary>
-    public UnityAction OnceWatch<K>(IEventListener<K> eventBus, K key, UnityAction action) {
-      eventBus.AddOnceListener(key, action);
-      this.onDestroy.AddOnceListener(() => eventBus.RemoveOnceListener(key, action));
-      return action;
-    }
-    /// <summary>
-    /// Watch an event bus for events.
-    /// Remove the listener when the object is destroyed.
-    /// </summary>
-    public UnityAction<T0> OnceWatch<K, T0>(IEventListener<K> eventBus, K key, UnityAction<T0> action) {
-      eventBus.AddOnceListener(key, action);
-      this.onDestroy.AddOnceListener(() => eventBus.RemoveOnceListener(key, action));
-      return action;
-    }
-    /// <summary>
-    /// Watch an event bus for events.
-    /// Remove the listener when the object is destroyed.
-    /// </summary>
-    public UnityAction<T0, T1> OnceWatch<K, T0, T1>(IEventListener<K> eventBus, K key, UnityAction<T0, T1> action) {
-      eventBus.AddOnceListener(key, action);
-      this.onDestroy.AddOnceListener(() => eventBus.RemoveOnceListener(key, action));
-      return action;
-    }
-    /// <summary>
-    /// Watch an event bus for events.
-    /// Remove the listener when the object is destroyed.
-    /// </summary>
-    public UnityAction<T0, T1, T2> OnceWatch<K, T0, T1, T2>(IEventListener<K> eventBus, K key, UnityAction<T0, T1, T2> action) {
-      eventBus.AddOnceListener(key, action);
-      this.onDestroy.AddOnceListener(() => eventBus.RemoveOnceListener(key, action));
-      return action;
-    }
-    /// <summary>
-    /// Watch an event bus for events.
-    /// Remove the listener when the object is destroyed.
-    /// </summary>
-    public UnityAction<T0, T1, T2, T3> OnceWatch<K, T0, T1, T2, T3>(IEventListener<K> eventBus, K key, UnityAction<T0, T1, T2, T3> action) {
-      eventBus.AddOnceListener(key, action);
-      this.onDestroy.AddOnceListener(() => eventBus.RemoveOnceListener(key, action));
+    public UnityAction<T> OnceWatch<T>(IEventListener eventBus, UnityAction<T> action) {
+      eventBus.AddOnceListener(action);
+      this.onDestroy.AddOnceListener(() => eventBus.RemoveOnceListener(action));
       return action;
     }
     #endregion
