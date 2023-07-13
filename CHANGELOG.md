@@ -11,6 +11,7 @@
 - Feat: add `IDictionaryExtension`.
 - Feat: add `System.Runtime.CompilerServices.IsExternalInit` to make records working.
 - Feat: add `GameObject.GetOrAddComponent`.
+- Feat: `DebugEventBus` can be renamed.
 
 ## v6.1.0
 

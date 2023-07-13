@@ -19,48 +19,50 @@ namespace DT.UniStart {
   public class DebugEventBus : IEventBus {
     DebugEventBusMode mode;
     IEventBus bus;
+    string name;
 
     bool isAddListenerModeEnabled => (this.mode & DebugEventBusMode.AddListener) == DebugEventBusMode.AddListener;
     bool isRemoveListenerModeEnabled => (this.mode & DebugEventBusMode.RemoveListener) == DebugEventBusMode.RemoveListener;
     bool isInvokeModeEnabled => (this.mode & DebugEventBusMode.Invoke) == DebugEventBusMode.Invoke;
     bool isParameterModeEnabled => (this.mode & DebugEventBusMode.Parameter) == DebugEventBusMode.Parameter;
 
-    public DebugEventBus(IEventBus bus = null, DebugEventBusMode mode = DebugEventBusMode.Invoke) {
+    public DebugEventBus(IEventBus bus = null, DebugEventBusMode mode = DebugEventBusMode.Invoke, string name = "DebugEventBus") {
       this.bus = bus ?? new EventBus();
       this.mode = mode;
+      this.name = name;
     }
 
     public UnityAction AddListener<T>(UnityAction action) {
-      if (this.isAddListenerModeEnabled) Debug.Log($"DebugEventBus.AddListener: event = {typeof(T)}");
+      if (this.isAddListenerModeEnabled) Debug.Log($"{this.name}.AddListener: event = {typeof(T)}");
       return this.bus.AddListener<T>(action);
     }
     public UnityAction<T> AddListener<T>(UnityAction<T> action) {
-      if (this.isAddListenerModeEnabled) Debug.Log($"DebugEventBus.AddListener: event = {typeof(T)}");
+      if (this.isAddListenerModeEnabled) Debug.Log($"{this.name}.AddListener: event = {typeof(T)}");
       return this.bus.AddListener(action);
     }
     public UnityAction AddOnceListener<T>(UnityAction action) {
-      if (this.isAddListenerModeEnabled) Debug.Log($"DebugEventBus.AddOnceListener: event = {typeof(T)}");
+      if (this.isAddListenerModeEnabled) Debug.Log($"{this.name}.AddOnceListener: event = {typeof(T)}");
       return this.bus.AddOnceListener<T>(action);
     }
     public UnityAction<T> AddOnceListener<T>(UnityAction<T> action) {
-      if (this.isAddListenerModeEnabled) Debug.Log($"DebugEventBus.AddOnceListener: event = {typeof(T)}");
+      if (this.isAddListenerModeEnabled) Debug.Log($"{this.name}.AddOnceListener: event = {typeof(T)}");
       return this.bus.AddOnceListener(action);
     }
 
     public UnityAction RemoveListener<T>(UnityAction action) {
-      if (this.isRemoveListenerModeEnabled) Debug.Log($"DebugEventBus.RemoveListener: event = {typeof(T)}");
+      if (this.isRemoveListenerModeEnabled) Debug.Log($"{this.name}.RemoveListener: event = {typeof(T)}");
       return this.bus.RemoveListener<T>(action);
     }
     public UnityAction<T> RemoveListener<T>(UnityAction<T> action) {
-      if (this.isRemoveListenerModeEnabled) Debug.Log($"DebugEventBus.RemoveListener: event = {typeof(T)}");
+      if (this.isRemoveListenerModeEnabled) Debug.Log($"{this.name}.RemoveListener: event = {typeof(T)}");
       return this.bus.RemoveListener(action);
     }
     public UnityAction RemoveOnceListener<T>(UnityAction action) {
-      if (this.isRemoveListenerModeEnabled) Debug.Log($"DebugEventBus.RemoveOnceListener: event = {typeof(T)}");
+      if (this.isRemoveListenerModeEnabled) Debug.Log($"{this.name}.RemoveOnceListener: event = {typeof(T)}");
       return this.bus.RemoveOnceListener<T>(action);
     }
     public UnityAction<T> RemoveOnceListener<T>(UnityAction<T> action) {
-      if (this.isRemoveListenerModeEnabled) Debug.Log($"DebugEventBus.RemoveOnceListener: event = {typeof(T)}");
+      if (this.isRemoveListenerModeEnabled) Debug.Log($"{this.name}.RemoveOnceListener: event = {typeof(T)}");
       return this.bus.RemoveOnceListener(action);
     }
 
