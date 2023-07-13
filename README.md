@@ -24,13 +24,53 @@ using DT.UniStart;
 
 ## Get Started
 
+### AdvancedEvent
+
+Before we start, let's take a look at the fundamental building block of UniStart: `AdvancedEvent`
+
+```cs
+public class AdvancedEventApp : MonoBehaviour {
+  void Start() {
+    // you can use AdvancedEvent just like UnityEvent
+    new AdvancedEvent();
+    new AdvancedEvent<int>();
+    new AdvancedEvent<int, int>();
+    new AdvancedEvent<int, int, int>();
+    new AdvancedEvent<int, int, int, int>();
+
+    // AddListener will return the listener
+    // so you can call it immediately
+    var e = new AdvancedEvent<int>();
+    e.AddListener((a) => print(a)).Invoke(1);
+    // or store it and remove it later
+    var listener = e.AddListener((a) => print(a));
+    e.RemoveListener(listener);
+    // or use out var to store it
+    e.AddListener(out var named, (a) => print(a));
+    e.RemoveListener(named);
+
+    // listeners with zero params are always acceptable
+    e.AddListener(() => print(1)).Invoke();
+
+    // listeners that will only be invoked once
+    e.AddOnceListener((a) => print(a)).Invoke(1);
+    var once = e.AddOnceListener(() => print(1));
+    e.RemoveListener(once);
+  }
+}
+```
+
+As you can see, the `AdvancedEvent` encourages you to use closures instead of methods, and it's more flexible than `UnityEvent`.
+
+Almost all events in UniStart will use `AdvancedEvent` instead of `UnityEvent`.
+
 ### Composables and Closures
 
 In UniStart, basically the only method you need to write is the `Start`:
 
 ```cs
 // Inherit from ComposableBehaviour instead of MonoBehaviour
-public class Test : ComposableBehaviour {
+public class ComposableApp : ComposableBehaviour {
   void Start() {
     // You don't need the Update method in your class.
     // Just add a listener to the onUpdate event.
@@ -43,16 +83,14 @@ public class Test : ComposableBehaviour {
     // and it's lazy so it won't be called if there are no listeners.
     this.onNextUpdate.AddListener(() => print("Test.onNextUpdate"));
 
-    // Unlike UnityEvent, AddListener will return the function you passed in,
-    // so you can store it and remove it later.
-    var l = this.onUpdate.AddListener(() => print("Test.onUpdate2"));
-    this.onUpdate.RemoveListener(l);
-    // or call it immediately
-    this.onUpdate.AddListener(() => print("Test.onUpdate2")).Invoke();
+    // All events are AdvancedEvent,
+    // so listeners with zero params are always acceptable,
+    // you can also invoke them immediately.
+    this.onCollisionEnter.AddListener(() => print(1)).Invoke();
 
     // Closures can capture variables, and value types will be boxed as reference types,
     // so you don't need to define variables as class's fields,
-    // and you can use them in multi listeners.
+    // and you can use local vars safely in multi listeners.
     int i = 0;
     this.onUpdate.AddListener(() => print(i++));
     this.onCollisionEnter.AddListener((collision) => print(i));
@@ -63,22 +101,23 @@ public class Test : ComposableBehaviour {
 
     // you can also manage children's lifecycle easily
     // without creating a new class.
-    this.transform.Find("Child").AddComponent<ComposableBehaviour>().onUpdate.AddListener(l);
+    var child = this.transform.Find("Child").gameObject;
+    child.GetOrAddComponent<ComposableBehaviour>().onUpdate.AddListener(() => { });
   }
 }
 ```
 
-By using these events and closures, you can write your logic **_at the same place_**, instead of writing your logic in many different locations.
+By using `AdvancedEvent` and closures, you can write your logic **_at the same place_**, instead of spreading your logic in many different locations.
 
 > This is inspired by [Vue Composition API](https://vuejs.org/guide/extras/composition-api-faq.html#more-flexible-code-organization).
 
 <details>
-<summary>Example</summary>
+<summary>Compare MonoBehaviour and ComposableBehaviour</summary>
 
 ```cs
 // Without ComposableBehaviour,
-// your logics will spread into many different places.
-public class UseMonoBehaviour : MonoBehaviour {
+// your logics will be spread into many different places/functions.
+public class WithMonoBehaviour : MonoBehaviour {
   // define vars as fields
   Rigidbody rb;
   SpriteRenderer sr;
@@ -104,17 +143,18 @@ public class UseMonoBehaviour : MonoBehaviour {
 
 // With ComposableBehaviour,
 // you can write your logic at the same place.
-public class UseComposableBehaviour : ComposableBehaviour {
+public class WithComposableBehaviour : ComposableBehaviour {
   void Start() {
     // define vars as local variables,
-    // and you will never forget to init/delete them.
+    // init them with auto type inference when define them,
+    // and you will never forget to clean them up.
     var rb = this.GetComponent<Rigidbody>();
-    this.onUpdate.AddListener(() => rb.AddForce(Vector3.up * 10));
     this.onDestroy.AddListener(() => Destroy(rb));
+    this.onUpdate.AddListener(() => rb.AddForce(Vector3.up * 10));
 
     var sr = this.GetComponent<SpriteRenderer>();
-    this.onUpdate.AddListener(() => sr.color = Color.red);
     this.onDestroy.AddListener(() => Destroy(sr));
+    this.onUpdate.AddListener(() => sr.color = Color.red);
   }
 }
 ```
@@ -151,25 +191,21 @@ When developing a game, you may need to store some global context, like the play
 In UniStart, we recommend to initialize those context in the `Entry` class, and use `Add` to register it to the app.
 
 ```cs
-public class App : Entry {
+public class EntryApp : Entry {
   // Use Awake instead of Start to initialize your app.
   void Awake() {
-    // Add the Config class to the app.
+    // Add custom class to the app.
     // Entry will automatically new it up for you
     // if it has a default constructor.
     this.Add<Config>();
 
-    // Add an existing instance of Model to the app.
-    // Use this if your class has parameters in its constructor.
+    // Add an existing instance to the app.
     // In addition, Add will return the instance.
     var model = this.Add(new Model(1));
 
-    // Add an existing instance of EventBus to the app
+    // Add an existing instance to the app
     // but register it as an interface instead of a class.
     this.Add<IEventBus>(new EventBus());
-
-    // Register with a custom key.
-    this.Add<IEventBus>("anotherEB", new EventBus());
 
     // You can also get the instance after Add.
     var config = this.Get<Config>();
@@ -197,7 +233,7 @@ public class WithContext : CBC {
 }
 ```
 
-You can replace all your `MonoBehaviour` with `ComposableBehaviour` to use the context injection, except the `Entry` class since the `Entry` class is responsible for initializing the context.
+You can replace all your `MonoBehaviour` with `CBC` to use the context injection, except the `Entry` class since the `Entry` class is responsible for initializing the context.
 
 With this design, you will have an explicit place to initialize your context, instead of using singletons or other static variables.
 
@@ -267,6 +303,7 @@ public class WithContext : CBC {
     // Trigger the events for collections.
     model.List.Add(1); // built-in methods are supported
     model.List.Contains(1); // readonly methods won't trigger events
+    model.List[0] = 2; // you can also use indexers
   }
 }
 ```
@@ -278,48 +315,56 @@ public class WithContext : CBC {
 Responsive containers can help you to write your logic in a more declarative way. But sometimes you may want to use this idea in your own logic. In this case, you can use the `EventBus` class.
 
 ```cs
-public class App : Entry {
+// define your own event types
+public record EventWithoutParams { }
+public record EventWithParams(int a, int b);
+
+public class EventBusApp : Entry {
   // Use Awake instead of Start to initialize your app.
   void Awake() {
     // Register the EventBus as IEventBus.
     var eb = this.Add<IEventBus>(new EventBus());
 
-    // AddListener, the 1st parameter is the event name, the 2nd parameter is the callback.
-    // You can use anything as the event name, since the event name is just an object.
-    eb.AddListener("Test", () => print("Test"));
-    eb.AddListener(123, () => print("123"));
-    eb.AddListener(SomeEnum.EnumValue, () => print("EnumValue"));
-    // And with parameters.
-    eb.AddListener("Param", (int i) => print("Param: " + i));
+    // add/remove listener
+    var listener = eb.AddListener<EventWithoutParams>(() => print(1));
+    eb.RemoveListener<EventWithoutParams>(listener);
+    // with params
+    var listenerWithParams = eb.AddListener<EventWithParams>((e) => print(e.a));
+    eb.RemoveListener(listenerWithParams);
+    // even the event has params, you can still use the listener without params
+    eb.AddListener<EventWithParams>(() => print(1));
+    // once listener
+    var once = eb.AddOnceListener<EventWithParams>((e) => print(e.b));
+    eb.RemoveListener(once);
 
-    // Trigger the events.
-    eb.Invoke("Test");
-    eb.Invoke(123);
-    eb.Invoke(SomeEnum.EnumValue);
-    // And with parameters.
-    eb.Invoke("Test", 1);
+    // trigger events
+    eb.Invoke<EventWithoutParams>();
+    eb.Invoke(new EventWithoutParams());
+    eb.Invoke(new EventWithParams(1, 2));
 
-    // You can also create typed EventBus.
-    this.Add<IEventBus<int>>(new EventBus<int>());
-    this.Add<IEventBus<SomeEnum>>(new EventBus<SomeEnum>());
-
-    // We also provide some EventBus wrappers to enhance the usage.
-    // DebugEventBus will print the event name and parameters.
-    // You can replace the EventBus with DebugEventBus to debug your events.
-    // Since it also implements IEventBus, you don't need to change your code.
+    // you can define wrappers to proxy events with other functionality,
+    // we have predefined DebugEventBus to print the event name and parameters.
+    this.Add<IEventBus>(new DebugEventBus(new EventBus(), DebugEventBusMode.Invoke));
+    // the default inner bus is EventBus, and the default mode is Invoke,
+    // so you can omit them.
     this.Add<IEventBus>(new DebugEventBus());
-    // Typed EventBus.
-    var ebi = this.Add<IEventBus<int>>(new DebugEventBus<int>(new EventBus<int>()));
-    this.Watch(eb, 1, (int i) => print("Watch: " + i));
-    // Even with your own EventBus type.
-    this.Add<IEventBus<int>>(new DebugEventBus<int>(new MyEventBus()));
-    // DelayedEventBus will delay the event invocation, until you call InvokeDelayed.
-    var deb = new DelayedEventBus(); // store as DelayedEventBus
-    this.Add<IEventBus>(deb); // but register as IEventBus
-    this.onLateUpdate.AddListener(deb.InvokeDelayed); // invoke all delayed events
-    // Generic DelayedEventBus.
-    this.Add<IEventBus<int>>(new DelayedEventBus<int>(new EventBus<int>()));
-    this.Add<IEventBus<int>>(new DelayedEventBus<int>(new MyEventBus()));
+    // you can also use your own event bus
+    this.Add<IEventBus>(new DebugEventBus(new MyEventBus()));
+    // or change the mode use keyword args
+    this.Add<IEventBus>(new DebugEventBus(mode: DebugEventBusMode.AddListener));
+
+    // we also have predefined DelayedEventBus to delay the event invocation
+    this.Add<IEventBus>(new DelayedEventBus(new EventBus()));
+    // the default inner bus is EventBus, so you can omit it.
+    this.Add<IEventBus>(new DelayedEventBus());
+    // invoke the delayed actions
+    var deb = new DelayedEventBus();
+    deb.Invoke(new EventWithParams(1, 2)); // won't invoke
+    this.onLateUpdate.AddListener(deb.InvokeDelayed); // invoke all delayed actions
+    this.onNextUpdate.AddListener(deb.InvokeDelayed); // you can also use onNextUpdate
+
+    // use multi-wrappers
+    this.Add<IEventBus>(new DebugEventBus(new DelayedEventBus(new MyEventBus())));
   }
 }
 ```
@@ -332,9 +377,10 @@ Besides, there are 2 base interface of `IEventBus`: `IEventListener` and `IEvent
 
 ```cs
 // CBC: ComposableBehaviour with Context injected.
-public class WithContext : CBC {
+public class RemoveListenerApp : CBC {
   void Start() {
     var model = this.Get<Model>();
+    var el = this.Get<IEventListener>();
     var eb = this.Get<IEventBus>();
 
     // This function will capture `this` in a closure,
@@ -349,8 +395,16 @@ public class WithContext : CBC {
     this.Watch(model.List, () => print(this));
     // Invoke your listener immediately.
     this.Watch(model.List, () => print(this)).Invoke();
-    // Including IEventBus
-    this.Watch(eb, "event name", () => print(this));
+    // Watch IEventListener/IEventBus
+    this.Watch<EventWithParams>(el, () => print(this));
+    this.Watch<EventWithParams>(eb, (e) => print(e.a));
+    this.Watch(eb, (EventWithParams e) => print(e.a));
+
+    // In addition, composable events are actually standalone components,
+    // except onEnable/onDisable and onDestroy,
+    // so if you plan to destroy the script before destroying the game object,
+    // maybe you also need to destroy the listener too.
+    this.Watch(this.onUpdate, () => print(this));
   }
 }
 ```
@@ -360,73 +414,34 @@ public class WithContext : CBC {
 Though you can modify your `Model` in any place, we recommend you to use `CommandBus` to modify your `Model` in a more centralized way.
 
 ```cs
-// store commands in CommandRepo
-public class MyCommandRepo: CommandRepo {
-  public MyCommandRepo(Entry app) {
-    // get context at the beginning
-    var model = app.Get<Model>();
-    var eb = app.Get<IEventBus>();
+public record SimpleCommand { }
+public record ComplexCommand(int a, int b);
 
-    // add command with a key,
-    // use captured context, modify model, trigger event, etc
-    this.Add("CommandName", () => {
-      model.Count.Value++;
-      eb.Invoke("SomeEvent");
-    });
-
-    // the key is an object, so you can use enum, int, etc.
-    // commands can have parameters
-    this.Add(SomeEnum.SomeValue, (int i) => {
-      model.Count.Value += i;
-      eb.Invoke("SomeEvent");
-    });
-
-    // get command from the return value
-    var cmd = this.Add("Test", (int i) => {});
-
-    // reuse existing command's logic
-    this.Add("AnotherCommand", () => {
-      // use this.Get to get existing command
-      this.Get("CommandName").Invoke();
-      // use this.Get to get existing command with parameters,
-      // the returned command will must be UnityAction,
-      // so provide parameters in `Get` instead of `Invoke`
-      this.Get(SomeEnum.SomeValue, 1).Invoke();
-      // or, just use returned command,
-      // pass parameters in `Invoke`
-      cmd.Invoke(0);
-    });
-  }
-}
-
-public class App : Entry {
+public class CommandBusApp : Entry {
   void Awake() {
-    // init context before CommandBus
-    this.Add<Model>();
-    this.Add<IEventBus>(new EventBus());
+    // first, create a command repo
+    var repo = new CommandRepo();
+    // register commands
+    repo.Add<SimpleCommand>(() => print(1));
+    repo.Add<ComplexCommand>((e) => print(e.a));
+    // register command bus into app
+    this.Add<ICommandBus>(new CommandBus(repo));
 
-    // register CommandBus with CommandRepo
-    this.Add<ICommandBus>(new CommandBus(new MyCommandRepo(this)));
-  }
-}
+    // there is an IEventBus in the CommandRepo
+    // so you can use custom event bus
+    new CommandRepo(new DebugEventBus(name: "DebugCommandBus"));
 
-public class MyCBC : CBC {
-  void Start() {
-    var model = this.Get<Model>();
-    var eb = this.Get<IEventBus>();
-    var cb = this.Get<ICommandBus>();
+    // re-use existing command with out variable
+    repo.Add<SimpleCommand>(out var named, () => print(1));
+    repo.Add<ComplexCommand>(() => named.Invoke());
 
-    // read values in model
-    this.onUpdate.AddListener(() => print(model.Count.Value));
-
-    // responsive by model/events
-    this.Watch(model.Count, () => print(model.Count.Value));
-    this.Watch(eb, "SomeEvent", () => print("SomeEvent"));
-
-    // update model by command
-    cb.Push("CommandName");
-    // with parameters
-    cb.Push(SomeEnum.SomeValue, 1);
+    // if you are a one-liner
+    this.Add<ICommandBus>(new CommandBus(new CommandRepo().Add<SimpleCommand>(out var l1, () => {
+      print(1);
+    }).Add<ComplexCommand>((e) => {
+      l1.Invoke();
+      print(e.a);
+    })));
   }
 }
 ```
