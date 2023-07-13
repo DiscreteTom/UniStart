@@ -13,6 +13,7 @@ namespace DT.UniStart {
   }
 
   public interface IEventInvoker {
+    void Invoke<T>() where T : new();
     void Invoke<T>(T e);
   }
 

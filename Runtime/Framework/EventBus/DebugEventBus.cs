@@ -76,5 +76,6 @@ namespace DT.UniStart {
       }
       this.bus.Invoke(e);
     }
+    public void Invoke<T>() where T : new() => this.Invoke(new T());
   }
 }

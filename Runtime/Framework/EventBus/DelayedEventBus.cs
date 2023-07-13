@@ -33,5 +33,6 @@ namespace DT.UniStart {
     public UnityAction<T> RemoveOnceListener<T>(UnityAction<T> action) => this.bus.RemoveOnceListener(action);
 
     public void Invoke<T>(T e) => this.delayedActions += () => this.bus.Invoke(e);
+    public void Invoke<T>() where T : new() => this.Invoke(new T());
   }
 }
