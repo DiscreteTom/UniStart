@@ -105,6 +105,15 @@ namespace DT.UniStart {
     /// Watch an event bus for events.
     /// Remove the listener when the object is destroyed.
     /// </summary>
+    public UnityAction Watch<T>(IEventListener eventBus, UnityAction action) {
+      eventBus.AddListener<T>(action);
+      this.onDestroy.AddOnceListener(() => eventBus.RemoveListener<T>(action));
+      return action;
+    }
+    /// <summary>
+    /// Watch an event bus for events.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
     public UnityAction<T> Watch<T>(IEventListener eventBus, UnityAction<T> action) {
       eventBus.AddListener(action);
       this.onDestroy.AddOnceListener(() => eventBus.RemoveListener(action));
@@ -117,6 +126,15 @@ namespace DT.UniStart {
     public UnityAction<T> OnceWatch<T>(IEventListener eventBus, UnityAction<T> action) {
       eventBus.AddOnceListener(action);
       this.onDestroy.AddOnceListener(() => eventBus.RemoveOnceListener(action));
+      return action;
+    }
+    /// <summary>
+    /// Watch an event bus for events.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public UnityAction OnceWatch<T>(IEventListener eventBus, UnityAction action) {
+      eventBus.AddOnceListener<T>(action);
+      this.onDestroy.AddOnceListener(() => eventBus.RemoveOnceListener<T>(action));
       return action;
     }
     #endregion
