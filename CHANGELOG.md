@@ -7,6 +7,7 @@
   - Add `DebugEventBusMode.All`.
 - Feat: add `IDictionaryExtension`.
 - Feat: add `System.Runtime.CompilerServices.IsExternalInit` to make records working.
+- Feat: add `GameObject.GetOrAddComponent`.
 
 ## v6.1.0
 
