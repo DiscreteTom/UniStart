@@ -3,55 +3,39 @@ using System.Collections.Generic;
 using UnityEngine.Events;
 
 namespace DT.UniStart {
-  public interface ICommandRepo<K> {
-    UnityAction Add(K key, UnityAction command);
-    UnityAction<T1> Add<T1>(K key, UnityAction<T1> command);
-    UnityAction<T1, T2> Add<T1, T2>(K key, UnityAction<T1, T2> command);
-    UnityAction<T1, T2, T3> Add<T1, T2, T3>(K key, UnityAction<T1, T2, T3> command);
-    UnityAction<T1, T2, T3, T4> Add<T1, T2, T3, T4>(K key, UnityAction<T1, T2, T3, T4> command);
-    UnityAction Get(K key);
-    UnityAction Get<T1>(K key, T1 arg1);
-    UnityAction Get<T1, T2>(K key, T1 arg1, T2 arg2);
-    UnityAction Get<T1, T2, T3>(K key, T1 arg1, T2 arg2, T3 arg3);
-    UnityAction Get<T1, T2, T3, T4>(K key, T1 arg1, T2 arg2, T3 arg3, T4 arg4);
+  public interface ICommandRepo {
+    ICommandRepo Add<T>(UnityAction command);
+    ICommandRepo Add<T>(UnityAction command, out UnityAction named);
+    ICommandRepo Add<T>(UnityAction<T> command);
+    ICommandRepo Add<T>(UnityAction<T> command, out UnityAction<T> named);
+    void Invoke<T>(T arg);
+    void Invoke<T>() where T : new();
   }
 
-  public interface ICommandRepo : ICommandRepo<object> { }
+  public class CommandRepo : ICommandRepo {
+    IEventBus bus;
 
-  public class CommandRepo<K> : ICommandRepo<K> {
-    Dictionary<K, object> commands = new Dictionary<K, object>();
-
-    // for simple command, store the command itself
-    public UnityAction Add(K key, UnityAction command) {
-      this.commands.Add(key, command);
-      return command;
-    }
-    // for other command, store a factory instead of the command itself
-    public UnityAction<T1> Add<T1>(K key, UnityAction<T1> command) {
-      this.commands.Add(key, (Func<T1, UnityAction>)((T1 arg1) => () => command.Invoke(arg1)));
-      return command;
-    }
-    public UnityAction<T1, T2> Add<T1, T2>(K key, UnityAction<T1, T2> command) {
-      this.commands.Add(key, (Func<T1, T2, UnityAction>)((T1 arg1, T2 arg2) => () => command.Invoke(arg1, arg2)));
-      return command;
-    }
-    public UnityAction<T1, T2, T3> Add<T1, T2, T3>(K key, UnityAction<T1, T2, T3> command) {
-      this.commands.Add(key, (Func<T1, T2, T3, UnityAction>)((T1 arg1, T2 arg2, T3 arg3) => () => command.Invoke(arg1, arg2, arg3)));
-      return command;
-    }
-    public UnityAction<T1, T2, T3, T4> Add<T1, T2, T3, T4>(K key, UnityAction<T1, T2, T3, T4> command) {
-      this.commands.Add(key, (Func<T1, T2, T3, T4, UnityAction>)((T1 arg1, T2 arg2, T3 arg3, T4 arg4) => () => command.Invoke(arg1, arg2, arg3, arg4)));
-      return command;
+    public CommandRepo(IEventBus bus = null) {
+      this.bus = bus ?? new EventBus();
     }
 
-    // for simple command, return the command itself
-    public UnityAction Get(K key) => (UnityAction)this.commands[key];
-    // for other command, invoke the factory to get the command
-    public UnityAction Get<T1>(K key, T1 arg1) => ((Func<T1, UnityAction>)this.commands[key]).Invoke(arg1);
-    public UnityAction Get<T1, T2>(K key, T1 arg1, T2 arg2) => ((Func<T1, T2, UnityAction>)this.commands[key]).Invoke(arg1, arg2);
-    public UnityAction Get<T1, T2, T3>(K key, T1 arg1, T2 arg2, T3 arg3) => ((Func<T1, T2, T3, UnityAction>)this.commands[key]).Invoke(arg1, arg2, arg3);
-    public UnityAction Get<T1, T2, T3, T4>(K key, T1 arg1, T2 arg2, T3 arg3, T4 arg4) => ((Func<T1, T2, T3, T4, UnityAction>)this.commands[key]).Invoke(arg1, arg2, arg3, arg4);
+    public ICommandRepo Add<T>(UnityAction command) {
+      this.bus.AddListener<T>(command);
+      return this;
+    }
+    public ICommandRepo Add<T>(UnityAction command, out UnityAction named) {
+      named = command;
+      return this.Add<T>(command);
+    }
+    public ICommandRepo Add<T>(UnityAction<T> command) {
+      this.bus.AddListener(command);
+      return this;
+    }
+    public ICommandRepo Add<T>(UnityAction<T> command, out UnityAction<T> named) {
+      named = command;
+      return this.Add(command);
+    }
+    public void Invoke<T>(T arg) => this.bus.Invoke(arg);
+    public void Invoke<T>() where T : new() => this.bus.Invoke<T>();
   }
-
-  public class CommandRepo : CommandRepo<object>, ICommandRepo { }
 }

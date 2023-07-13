@@ -8,6 +8,8 @@
 - **_Breaking Change_**: rollback `IoC` family.
   - Remove `KeyedIoCC`.
   - Simplify `Framework`.
+- **_Breaking Change_**: rewrite `CommandBus`, including `ICommandBus/CommandBus/ICommandRepo/CommandRepo`.
+  - Remove `DebugCommandBus/DelayedCommandBus`.
 - Feat: add `IDictionaryExtension`.
 - Feat: enhanced `AdvancedEvent/IEventBus/IWatchable` etc, add out variable.
 - Feat: add `System.Runtime.CompilerServices.IsExternalInit` to make records working.
