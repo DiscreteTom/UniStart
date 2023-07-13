@@ -33,25 +33,31 @@ namespace DT.UniStart {
     /// Add a listener that will be called when the value changes.
     /// </summary>
     public UnityAction AddListener(UnityAction f) => this.onChange1.AddListener(f);
+    public UnityAction AddListener(UnityAction f, out UnityAction named) => this.onChange1.AddListener(f, out named);
     public UnityAction AddOnceListener(UnityAction f) => this.onChange1.AddOnceListener(f);
+    public UnityAction AddOnceListener(UnityAction f, out UnityAction named) => this.onChange1.AddOnceListener(f, out named);
     public UnityAction RemoveListener(UnityAction f) => this.onChange1.RemoveListener(f);
-    public UnityAction RemoveOnceListener(UnityAction f) => this.onChange1.RemoveOnceListener(f);
+    public UnityAction RemoveListener(UnityAction f, out UnityAction named) => this.onChange1.RemoveListener(f, out named);
     /// <summary>
     /// Add a listener that will be called when the value changes.
     /// The parameter is the new value.
     /// </summary>
     public UnityAction<T> AddListener(UnityAction<T> f) => this.onChange1.AddListener(f);
+    public UnityAction<T> AddListener(UnityAction<T> f, out UnityAction<T> named) => this.onChange1.AddListener(f, out named);
     public UnityAction<T> AddOnceListener(UnityAction<T> f) => this.onChange1.AddOnceListener(f);
+    public UnityAction<T> AddOnceListener(UnityAction<T> f, out UnityAction<T> named) => this.onChange1.AddOnceListener(f, out named);
     public UnityAction<T> RemoveListener(UnityAction<T> f) => this.onChange1.RemoveListener(f);
-    public UnityAction<T> RemoveOnceListener(UnityAction<T> f) => this.onChange1.RemoveOnceListener(f);
+    public UnityAction<T> RemoveListener(UnityAction<T> f, out UnityAction<T> named) => this.onChange1.RemoveListener(f, out named);
     /// <summary>
     /// Add a listener that will be called when the value changes.
     /// The parameter is the new value and the previous value.
     /// </summary>
     public UnityAction<T, T> AddListener(UnityAction<T, T> f) => this.onChange2.AddListener(f);
+    public UnityAction<T, T> AddListener(UnityAction<T, T> f, out UnityAction<T, T> named) => this.onChange2.AddListener(f, out named);
     public UnityAction<T, T> AddOnceListener(UnityAction<T, T> f) => this.onChange2.AddOnceListener(f);
+    public UnityAction<T, T> AddOnceListener(UnityAction<T, T> f, out UnityAction<T, T> named) => this.onChange2.AddOnceListener(f, out named);
     public UnityAction<T, T> RemoveListener(UnityAction<T, T> f) => this.onChange2.RemoveListener(f);
-    public UnityAction<T, T> RemoveOnceListener(UnityAction<T, T> f) => this.onChange2.RemoveOnceListener(f);
+    public UnityAction<T, T> RemoveListener(UnityAction<T, T> f, out UnityAction<T, T> named) => this.onChange2.RemoveListener(f, out named);
   }
 
   /// <summary>
@@ -110,16 +116,20 @@ namespace DT.UniStart {
     /// Add a listener that will be called when the value changes.
     /// </summary>
     public UnityAction<WatchRef<T>> AddListener(UnityAction<WatchRef<T>> f) => this.onChange.AddListener(f);
+    public UnityAction<WatchRef<T>> AddListener(UnityAction<WatchRef<T>> f, out UnityAction<WatchRef<T>> named) => this.onChange.AddListener(f, out named);
     public UnityAction<WatchRef<T>> AddOnceListener(UnityAction<WatchRef<T>> f) => this.onChange.AddOnceListener(f);
+    public UnityAction<WatchRef<T>> AddOnceListener(UnityAction<WatchRef<T>> f, out UnityAction<WatchRef<T>> named) => this.onChange.AddOnceListener(f, out named);
     public UnityAction<WatchRef<T>> RemoveListener(UnityAction<WatchRef<T>> f) => this.onChange.RemoveListener(f);
-    public UnityAction<WatchRef<T>> RemoveOnceListener(UnityAction<WatchRef<T>> f) => this.onChange.RemoveOnceListener(f);
+    public UnityAction<WatchRef<T>> RemoveListener(UnityAction<WatchRef<T>> f, out UnityAction<WatchRef<T>> named) => this.onChange.RemoveListener(f, out named);
     /// <summary>
     /// Add a listener that will be called when the value changes.
     /// </summary>
     public UnityAction AddListener(UnityAction f) => this.onChange.AddListener(f);
+    public UnityAction AddListener(UnityAction f, out UnityAction named) => this.onChange.AddListener(f, out named);
     public UnityAction AddOnceListener(UnityAction f) => this.onChange.AddOnceListener(f);
+    public UnityAction AddOnceListener(UnityAction f, out UnityAction named) => this.onChange.AddOnceListener(f, out named);
     public UnityAction RemoveListener(UnityAction f) => this.onChange.RemoveListener(f);
-    public UnityAction RemoveOnceListener(UnityAction f) => this.onChange.RemoveOnceListener(f);
+    public UnityAction RemoveListener(UnityAction f, out UnityAction named) => this.onChange.RemoveListener(f, out named);
 
     /// <summary>
     /// Invoke all events.

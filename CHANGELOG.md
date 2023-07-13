@@ -9,6 +9,7 @@
   - Remove `KeyedIoCC`.
   - Simplify `Framework`.
 - Feat: add `IDictionaryExtension`.
+- Feat: enhanced `AdvancedEvent/IEventBus/IWatchable` etc, add out variable.
 - Feat: add `System.Runtime.CompilerServices.IsExternalInit` to make records working.
 - Feat: add `GameObject.GetOrAddComponent`.
 - Feat: `DebugEventBus` can be renamed.
