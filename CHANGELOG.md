@@ -5,7 +5,7 @@
 - **_Breaking Change_**: rewrite `EventBus` family, including `IEventBus/EventBus/DebugEventBus/DelayedEventBus`.
   - Use typed event bus. Fix #14.
   - Add `DebugEventBusMode.All`.
-- Feat: add `DictionaryExtension`.
+- Feat: add `IDictionaryExtension`.
 - Feat: add `System.Runtime.CompilerServices.IsExternalInit` to make records working.
 
 ## v6.1.0

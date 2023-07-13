@@ -27,16 +27,10 @@ namespace DT.UniStart {
     public static void InvokeRepeating(this MonoBehaviour mb, float delay, float interval, Action f) => mb.InvokeRepeating(f, delay, interval);
     public static void InvokeRepeating(this MonoBehaviour mb, float interval, Action f) => mb.InvokeRepeating(f, 0, interval);
 
-
     /// <summary>
     /// Try to get a component from the game object.
     /// If it doesn't exist, add it to the game object and return it.
     /// </summary>
-    public static T GetOrAddComponent<T>(this MonoBehaviour mb) where T : Component {
-      // IMPORTANT: don't use `??` to check for null, because Unity overrides the == operator
-      var res = mb.gameObject.GetComponent<T>();
-      if (res != null) return res;
-      return mb.gameObject.AddComponent<T>();
-    }
+    public static T GetOrAddComponent<T>(this MonoBehaviour mb) where T : Component => mb.gameObject.GetOrAddComponent<T>();
   }
 }
