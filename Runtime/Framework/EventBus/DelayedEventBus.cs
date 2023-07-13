@@ -5,12 +5,12 @@ namespace DT.UniStart {
   /// <summary>
   /// A wrapper around an IEventBus which delays all events until InvokeDelayed is called.
   /// </summary>
-  public class DelayedEventBus<T> : IEventBus<T> {
+  public class DelayedEventBus : IEventBus {
     UnityAction delayedActions;
-    IEventBus<T> bus;
+    IEventBus bus;
 
-    public DelayedEventBus(IEventBus<T> eventBus) {
-      this.bus = eventBus;
+    public DelayedEventBus(IEventBus bus = null) {
+      this.bus = bus ?? new EventBus();
       this.delayedActions = () => { };
     }
 
@@ -22,36 +22,16 @@ namespace DT.UniStart {
       this.delayedActions = () => { };
     }
 
-    public UnityAction AddListener(T key, UnityAction action) => this.bus.AddListener(key, action);
-    public UnityAction AddOnceListener(T key, UnityAction action) => this.bus.AddOnceListener(key, action);
-    public UnityAction<T0> AddListener<T0>(T key, UnityAction<T0> action) => this.bus.AddListener(key, action);
-    public UnityAction<T0> AddOnceListener<T0>(T key, UnityAction<T0> action) => this.bus.AddOnceListener(key, action);
-    public UnityAction<T0, T1> AddListener<T0, T1>(T key, UnityAction<T0, T1> action) => this.bus.AddListener(key, action);
-    public UnityAction<T0, T1> AddOnceListener<T0, T1>(T key, UnityAction<T0, T1> action) => this.bus.AddOnceListener(key, action);
-    public UnityAction<T0, T1, T2> AddListener<T0, T1, T2>(T key, UnityAction<T0, T1, T2> action) => this.bus.AddListener(key, action);
-    public UnityAction<T0, T1, T2> AddOnceListener<T0, T1, T2>(T key, UnityAction<T0, T1, T2> action) => this.bus.AddOnceListener(key, action);
-    public UnityAction<T0, T1, T2, T3> AddListener<T0, T1, T2, T3>(T key, UnityAction<T0, T1, T2, T3> action) => this.bus.AddListener(key, action);
-    public UnityAction<T0, T1, T2, T3> AddOnceListener<T0, T1, T2, T3>(T key, UnityAction<T0, T1, T2, T3> action) => this.bus.AddOnceListener(key, action);
+    public UnityAction AddListener<T>(UnityAction action) => this.bus.AddListener<T>(action);
+    public UnityAction<T> AddListener<T>(UnityAction<T> action) => this.bus.AddListener(action);
+    public UnityAction AddOnceListener<T>(UnityAction action) => this.bus.AddOnceListener<T>(action);
+    public UnityAction<T> AddOnceListener<T>(UnityAction<T> action) => this.bus.AddOnceListener(action);
 
-    public UnityAction RemoveListener(T key, UnityAction action) => this.bus.RemoveListener(key, action);
-    public UnityAction RemoveOnceListener(T key, UnityAction action) => this.bus.RemoveOnceListener(key, action);
-    public UnityAction<T0> RemoveListener<T0>(T key, UnityAction<T0> action) => this.bus.RemoveListener(key, action);
-    public UnityAction<T0> RemoveOnceListener<T0>(T key, UnityAction<T0> action) => this.bus.RemoveOnceListener(key, action);
-    public UnityAction<T0, T1> RemoveListener<T0, T1>(T key, UnityAction<T0, T1> action) => this.bus.RemoveListener(key, action);
-    public UnityAction<T0, T1> RemoveOnceListener<T0, T1>(T key, UnityAction<T0, T1> action) => this.bus.RemoveOnceListener(key, action);
-    public UnityAction<T0, T1, T2> RemoveListener<T0, T1, T2>(T key, UnityAction<T0, T1, T2> action) => this.bus.RemoveListener(key, action);
-    public UnityAction<T0, T1, T2> RemoveOnceListener<T0, T1, T2>(T key, UnityAction<T0, T1, T2> action) => this.bus.RemoveOnceListener(key, action);
-    public UnityAction<T0, T1, T2, T3> RemoveListener<T0, T1, T2, T3>(T key, UnityAction<T0, T1, T2, T3> action) => this.bus.RemoveListener(key, action);
-    public UnityAction<T0, T1, T2, T3> RemoveOnceListener<T0, T1, T2, T3>(T key, UnityAction<T0, T1, T2, T3> action) => this.bus.RemoveOnceListener(key, action);
+    public UnityAction RemoveListener<T>(UnityAction action) => this.bus.RemoveListener<T>(action);
+    public UnityAction<T> RemoveListener<T>(UnityAction<T> action) => this.bus.RemoveListener(action);
+    public UnityAction RemoveOnceListener<T>(UnityAction action) => this.bus.RemoveOnceListener<T>(action);
+    public UnityAction<T> RemoveOnceListener<T>(UnityAction<T> action) => this.bus.RemoveOnceListener(action);
 
-    public void Invoke(T key) => this.delayedActions += () => this.bus.Invoke(key);
-    public void Invoke<T0>(T key, T0 arg0) => this.delayedActions += () => this.bus.Invoke(key, arg0);
-    public void Invoke<T0, T1>(T key, T0 arg0, T1 arg1) => this.delayedActions += () => this.bus.Invoke(key, arg0, arg1);
-    public void Invoke<T0, T1, T2>(T key, T0 arg0, T1 arg1, T2 arg2) => this.delayedActions += () => this.bus.Invoke(key, arg0, arg1, arg2);
-    public void Invoke<T0, T1, T2, T3>(T key, T0 arg0, T1 arg1, T2 arg2, T3 arg3) => this.delayedActions += () => this.bus.Invoke(key, arg0, arg1, arg2, arg3);
-  }
-
-  public class DelayedEventBus : DelayedEventBus<object>, IEventBus<object>, IEventBus {
-    public DelayedEventBus() : base(new EventBus()) { }
+    public void Invoke<T>(T e) => this.delayedActions += () => this.bus.Invoke(e);
   }
 }

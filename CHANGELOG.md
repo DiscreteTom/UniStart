@@ -2,6 +2,9 @@
 
 ## v7.0.0
 
+- **_Breaking Change_**: rewrite `EventBus` family, including `IEventBus/EventBus/DebugEventBus/DelayedEventBus`.
+  - Use typed event bus. Fix #14.
+  - Add `DebugEventBusMode.All`.
 - Feat: add `DictionaryExtension`.
 
 ## v6.1.0
