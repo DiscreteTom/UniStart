@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v7.0.0
+
+- Feat: add `DictionaryExtension`.
+
 ## v6.1.0
 
 - Feat: add `DebugCommandBus`, fix #11.
