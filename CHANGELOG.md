@@ -3,6 +3,7 @@
 ## v7.1.0
 
 - Feat: add `Model/IModel/IReadonlyModel`.
+- Optimize code.
 
 ## v7.0.0
 
