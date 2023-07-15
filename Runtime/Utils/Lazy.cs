@@ -4,7 +4,7 @@ namespace DT.UniStart {
   /// <summary>
   /// Lazy will create the value if the condition is met.
   /// </summary>
-  public class Lazy<T> {
+  public class Lazy<T> : IGetSetValue<T> {
     T value;
     Func<T> factory;
     Func<T, bool> condition;

@@ -6,6 +6,7 @@
 - Feat: add `Computed/LazyComputed.UnWatch`.
 - Feat: add `IIoCC.Contains/TryGet`.
 - Feat: add `Box`.
+- Feat: add `IGetValue/ISetValue/IGetSetValue`.
 - Note: move helper methods for `IWatchable/IEventListener` from `UniStartBehaviour` to `ComposableBehaviourExtension`.
 - Optimize code.
 
