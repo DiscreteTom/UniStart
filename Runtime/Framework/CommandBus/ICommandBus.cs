@@ -4,8 +4,6 @@ namespace DT.UniStart {
   }
 
   public static class ICommandBusExtension {
-    public static void Push<T>(this ICommandBus self) where T : new() {
-      self.Push(new T());
-    }
+    public static void Push<T>(this ICommandBus self) where T : new() => self.Push(new T());
   }
 }
