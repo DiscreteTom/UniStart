@@ -3,7 +3,7 @@
 ## v8.0.0
 
 - **_Breaking Change_**: remove `IOnceWatchable`, use `IWatchable` instead.
-- Feat: add `Computed.UnWatch`.
+- Feat: add `Computed/LazyComputed.UnWatch`.
 - Feat: add `IIoCC.Contains/TryGet`.
 - Feat: add `Box`.
 - Note: move helper methods for `IWatchable/IEventListener` from `UniStartBehaviour` to `ComposableBehaviourExtension`.

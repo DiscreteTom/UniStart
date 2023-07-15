@@ -186,6 +186,11 @@ namespace DT.UniStart {
       return this;
     }
 
+    public LazyComputed<T> UnWatch(IWatchable target) {
+      target.RemoveListener(this.Update);
+      return this;
+    }
+
     void Update() => this.needUpdate = true;
   }
 }
