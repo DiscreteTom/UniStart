@@ -6,6 +6,7 @@
 - Feat: add `Model/IModel/IReadonlyModel`.
 - Feat: add `Computed.UnWatch`.
 - Feat: add `IIoCC.Contains/TryGet`.
+- Feat: add `Box`.
 - Note: move helper methods for `IWatchable/IEventListener` from `UniStartBehaviour` to `ComposableBehaviourExtension`.
 - Optimize code.
 
