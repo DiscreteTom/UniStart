@@ -7,6 +7,5 @@ namespace DT.UniStart {
     }
 
     public void Push<T>(T arg) => this.repo.Invoke(arg);
-    public void Push<T>() where T : new() => this.repo.Invoke<T>();
   }
 }
