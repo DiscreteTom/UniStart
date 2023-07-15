@@ -2,6 +2,8 @@
 
 ## v7.0.0
 
+- **_Breaking Change_**: rewrite `AdvancedEvent`, remove `RemoveOnceListener`.
+  - Enhanced `AdvancedEvent/IEventBus/IWatchable` etc, add out variable.
 - **_Breaking Change_**: rewrite `EventBus` family, including `IEventBus/EventBus/DebugEventBus/DelayedEventBus`.
   - Use typed event bus. Fix #14.
   - Add `DebugEventBusMode.All`.
@@ -11,7 +13,6 @@
 - **_Breaking Change_**: rewrite `CommandBus`, including `ICommandBus/CommandBus/ICommandRepo/CommandRepo`.
   - Remove `DebugCommandBus/DelayedCommandBus`.
 - Feat: add `IDictionaryExtension`.
-- Feat: enhanced `AdvancedEvent/IEventBus/IWatchable` etc, add out variable.
 - Feat: add `System.Runtime.CompilerServices.IsExternalInit` to make records working.
 - Feat: add `GameObject.GetOrAddComponent`.
 - Feat: `DebugEventBus` can be renamed.
