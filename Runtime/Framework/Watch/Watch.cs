@@ -92,16 +92,12 @@ namespace DT.UniStart {
     /// <summary>
     /// Apply a function to the value without trigger the onChange event.
     /// </summary>
-    public void ReadOnlyApply(UnityAction<T> f) {
-      f(this.value);
-    }
+    public void ReadOnlyApply(UnityAction<T> f) => f(this.value);
 
     /// <summary>
     /// Apply a function to the value without trigger the onChange event.
     /// </summary>
-    public R ReadOnlyApply<R>(Func<T, R> f) {
-      return f(this.value);
-    }
+    public R ReadOnlyApply<R>(Func<T, R> f) => f(this.value);
 
     /// <summary>
     /// Add a listener that will be called when the value changes.
@@ -119,9 +115,7 @@ namespace DT.UniStart {
     /// <summary>
     /// Invoke all events.
     /// </summary>
-    protected void InvokeEvent() {
-      this.onChange.Invoke(this);
-    }
+    protected void InvokeEvent() => this.onChange.Invoke(this);
   }
 
   /// <summary>
@@ -192,8 +186,6 @@ namespace DT.UniStart {
       return this;
     }
 
-    void Update() {
-      this.needUpdate = true;
-    }
+    void Update() => this.needUpdate = true;
   }
 }
