@@ -8,7 +8,7 @@ namespace DT.UniStart {
   /// <summary>
   /// Watch a list-like type for changes.
   /// </summary>
-  public class WatchIList<L, T> : WatchRef<L>, IList<T>, IWatchable, IWatchable<ReadOnlyCollection<T>>, IOnceWatchable, IOnceWatchable<ReadOnlyCollection<T>> where L : IList<T> {
+  public class WatchIList<L, T> : WatchRef<L>, IList<T>, IWatchable, IWatchable<ReadOnlyCollection<T>> where L : IList<T> {
     LazyComputed<ReadOnlyCollection<T>> readOnlyList;
     AdvancedEvent<ReadOnlyCollection<T>> onChange;
 
@@ -80,7 +80,7 @@ namespace DT.UniStart {
   /// <summary>
   /// Watch a dictionary-like type for changes.
   /// </summary>
-  public class WatchIDictionary<D, K, V> : WatchRef<D>, IDictionary<K, V>, IWatchable, IWatchable<ReadOnlyDictionary<K, V>>, IOnceWatchable, IOnceWatchable<ReadOnlyDictionary<K, V>> where D : IDictionary<K, V> {
+  public class WatchIDictionary<D, K, V> : WatchRef<D>, IDictionary<K, V>, IWatchable, IWatchable<ReadOnlyDictionary<K, V>> where D : IDictionary<K, V> {
     LazyComputed<ReadOnlyDictionary<K, V>> readOnlyDictionary;
     AdvancedEvent<ReadOnlyDictionary<K, V>> onChange;
 

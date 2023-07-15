@@ -1,7 +1,8 @@
 # CHANGELOG
 
-## v7.1.0
+## v8.0.0
 
+- **_Breaking Change_**: remove `IOnceWatchable`, use `IWatchable` instead.
 - Feat: add `Model/IModel/IReadonlyModel`.
 - Optimize code.
 

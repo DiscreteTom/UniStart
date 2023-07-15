@@ -8,7 +8,7 @@ namespace DT.UniStart {
   /// This class should be used for immutable types (int, float, bool, string, etc) only.
   /// </summary>
   [Serializable]
-  public class Watch<T> : IWatchable, IWatchable<T>, IWatchable<T, T>, IOnceWatchable, IOnceWatchable<T>, IOnceWatchable<T, T> {
+  public class Watch<T> : IWatchable, IWatchable<T>, IWatchable<T, T> {
     [SerializeField] protected T value;
     AdvancedEvent<T> onChange1;
     AdvancedEvent<T, T> onChange2;
@@ -55,7 +55,7 @@ namespace DT.UniStart {
   /// Watch a **reference** type for changes.
   /// </summary>
   [Serializable]
-  public class WatchRef<T> : IWatchable, IWatchable<WatchRef<T>>, IOnceWatchable, IOnceWatchable<WatchRef<T>> {
+  public class WatchRef<T> : IWatchable, IWatchable<WatchRef<T>> {
     [SerializeField] protected T value;
     AdvancedEvent<WatchRef<T>> onChange;
 
