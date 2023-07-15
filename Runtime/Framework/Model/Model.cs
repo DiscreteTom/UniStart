@@ -35,22 +35,10 @@ namespace DT.UniStart {
     }
 
     public UnityAction AddListener<T>(UnityAction listener) => (this.dict[typeof(T)] as ModelItem<T>).listeners.AddListener(listener);
-    public UnityAction AddListener<T>(out UnityAction named, UnityAction listener) => (this.dict[typeof(T)] as ModelItem<T>).listeners.AddListener(out named, listener);
     public UnityAction<T> AddListener<T>(UnityAction<T> listener) => (this.dict[typeof(T)] as ModelItem<T>).listeners.AddListener(listener);
-    public UnityAction<T> AddListener<T>(out UnityAction<T> named, UnityAction<T> listener) => (this.dict[typeof(T)] as ModelItem<T>).listeners.AddListener(out named, listener);
     public UnityAction AddOnceListener<T>(UnityAction listener) => (this.dict[typeof(T)] as ModelItem<T>).listeners.AddOnceListener(listener);
-    public UnityAction AddOnceListener<T>(out UnityAction named, UnityAction listener) => (this.dict[typeof(T)] as ModelItem<T>).listeners.AddOnceListener(out named, listener);
     public UnityAction<T> AddOnceListener<T>(UnityAction<T> listener) => (this.dict[typeof(T)] as ModelItem<T>).listeners.AddOnceListener(listener);
-    public UnityAction<T> AddOnceListener<T>(out UnityAction<T> named, UnityAction<T> listener) => (this.dict[typeof(T)] as ModelItem<T>).listeners.AddOnceListener(out named, listener);
     public UnityAction RemoveListener<T>(UnityAction listener) => (this.dict[typeof(T)] as ModelItem<T>).listeners.RemoveListener(listener);
-    public UnityAction RemoveListener<T>(out UnityAction named, UnityAction listener) {
-      named = null;
-      return (this.dict[typeof(T)] as ModelItem<T>).listeners.RemoveListener(out named, listener);
-    }
     public UnityAction<T> RemoveListener<T>(UnityAction<T> listener) => (this.dict[typeof(T)] as ModelItem<T>).listeners.RemoveListener(listener);
-    public UnityAction<T> RemoveListener<T>(out UnityAction<T> named, UnityAction<T> listener) {
-      named = null;
-      return (this.dict[typeof(T)] as ModelItem<T>).listeners.RemoveListener(out named, listener);
-    }
   }
 }
