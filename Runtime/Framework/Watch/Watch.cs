@@ -132,6 +132,7 @@ namespace DT.UniStart {
   public class Computed<T> : Watch<T>, IWatchable, IWatchable<T>, IWatchable<T, T> {
     Func<T> compute;
 
+    // use new Value to block write access
     public new T Value {
       get => this.value;
     }
