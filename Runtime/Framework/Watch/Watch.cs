@@ -149,10 +149,13 @@ namespace DT.UniStart {
       return this;
     }
 
-    void Update() {
-      // use parent class's value setter to trigger events
-      base.Value = this.compute();
+    public Computed<T> UnWatch(IWatchable target) {
+      target.RemoveListener(this.Update);
+      return this;
     }
+
+    // use parent class's value setter to trigger events
+    void Update() => base.Value = this.compute();
   }
 
   /// <summary>

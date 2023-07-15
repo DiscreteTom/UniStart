@@ -4,6 +4,7 @@
 
 - **_Breaking Change_**: remove `IOnceWatchable`, use `IWatchable` instead.
 - Feat: add `Model/IModel/IReadonlyModel`.
+- Feat: add `Computed.UnWatch`.
 - Optimize code.
 
 ## v7.0.0
