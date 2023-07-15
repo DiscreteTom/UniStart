@@ -137,4 +137,250 @@ namespace DT.UniStart {
     protected void OnEnable() => this._onEnable.RawValue?.Invoke();
     #endregion
   }
+
+  public static class ComposableBehaviourExtension {
+    #region Helper Methods for IWatchable
+    /// <summary>
+    /// Watch a watchable for changes.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public static UnityAction Watch(this ComposableBehaviour self, IWatchable watchable, UnityAction action) {
+      watchable.AddListener(action);
+      self.onDestroy.AddOnceListener(() => watchable.RemoveListener(action));
+      return action;
+    }
+    /// <summary>
+    /// Watch a watchable for changes.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public static UnityAction Watch(this ComposableBehaviour self, out UnityAction named, IWatchable watchable, UnityAction action) {
+      named = action;
+      return self.Watch(watchable, action);
+    }
+    /// <summary>
+    /// Watch a watchable for changes.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public static UnityAction<T0> Watch<T0>(this ComposableBehaviour self, IWatchable<T0> watchable, UnityAction<T0> action) {
+      watchable.AddListener(action);
+      self.onDestroy.AddOnceListener(() => watchable.RemoveListener(action));
+      return action;
+    }
+    /// <summary>
+    /// Watch a watchable for changes.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public static UnityAction<T0> Watch<T0>(this ComposableBehaviour self, out UnityAction<T0> named, IWatchable<T0> watchable, UnityAction<T0> action) {
+      named = action;
+      return self.Watch(watchable, action);
+    }
+    /// <summary>
+    /// Watch a watchable for changes.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public static UnityAction<T0, T1> Watch<T0, T1>(this ComposableBehaviour self, IWatchable<T0, T1> watchable, UnityAction<T0, T1> action) {
+      watchable.AddListener(action);
+      self.onDestroy.AddOnceListener(() => watchable.RemoveListener(action));
+      return action;
+    }
+    /// <summary>
+    /// Watch a watchable for changes.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public static UnityAction<T0, T1> Watch<T0, T1>(this ComposableBehaviour self, out UnityAction<T0, T1> named, IWatchable<T0, T1> watchable, UnityAction<T0, T1> action) {
+      named = action;
+      return self.Watch(watchable, action);
+    }
+    /// <summary>
+    /// Watch a watchable for changes.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public static UnityAction<T0, T1, T2> Watch<T0, T1, T2>(this ComposableBehaviour self, IWatchable<T0, T1, T2> watchable, UnityAction<T0, T1, T2> action) {
+      watchable.AddListener(action);
+      self.onDestroy.AddOnceListener(() => watchable.RemoveListener(action));
+      return action;
+    }
+    /// <summary>
+    /// Watch a watchable for changes.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public static UnityAction<T0, T1, T2> Watch<T0, T1, T2>(this ComposableBehaviour self, out UnityAction<T0, T1, T2> named, IWatchable<T0, T1, T2> watchable, UnityAction<T0, T1, T2> action) {
+      named = action;
+      return self.Watch(watchable, action);
+    }
+    /// <summary>
+    /// Watch a watchable for changes.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public static UnityAction<T0, T1, T2, T3> Watch<T0, T1, T2, T3>(this ComposableBehaviour self, IWatchable<T0, T1, T2, T3> watchable, UnityAction<T0, T1, T2, T3> action) {
+      watchable.AddListener(action);
+      self.onDestroy.AddOnceListener(() => watchable.RemoveListener(action));
+      return action;
+    }
+    /// <summary>
+    /// Watch a watchable for changes.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public static UnityAction<T0, T1, T2, T3> Watch<T0, T1, T2, T3>(this ComposableBehaviour self, out UnityAction<T0, T1, T2, T3> named, IWatchable<T0, T1, T2, T3> watchable, UnityAction<T0, T1, T2, T3> action) {
+      named = action;
+      return self.Watch(watchable, action);
+    }
+    /// <summary>
+    /// Watch a watchable for changes once.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public static UnityAction OnceWatch(this ComposableBehaviour self, IWatchable watchable, UnityAction action) {
+      watchable.AddOnceListener(action);
+      self.onDestroy.AddOnceListener(() => watchable.RemoveListener(action));
+      return action;
+    }
+    /// <summary>
+    /// Watch a watchable for changes once.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public static UnityAction OnceWatch(this ComposableBehaviour self, out UnityAction named, IWatchable watchable, UnityAction action) {
+      named = action;
+      return self.OnceWatch(watchable, action);
+    }
+    /// <summary>
+    /// Watch a watchable for changes once.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public static UnityAction<T0> OnceWatch<T0>(this ComposableBehaviour self, IWatchable<T0> watchable, UnityAction<T0> action) {
+      watchable.AddOnceListener(action);
+      self.onDestroy.AddOnceListener(() => watchable.RemoveListener(action));
+      return action;
+    }
+    /// <summary>
+    /// Watch a watchable for changes once.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public static UnityAction<T0> OnceWatch<T0>(this ComposableBehaviour self, out UnityAction<T0> named, IWatchable<T0> watchable, UnityAction<T0> action) {
+      named = action;
+      return self.OnceWatch(watchable, action);
+    }
+    /// <summary>
+    /// Watch a watchable for changes once.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public static UnityAction<T0, T1> OnceWatch<T0, T1>(this ComposableBehaviour self, IWatchable<T0, T1> watchable, UnityAction<T0, T1> action) {
+      watchable.AddOnceListener(action);
+      self.onDestroy.AddOnceListener(() => watchable.RemoveListener(action));
+      return action;
+    }
+    /// <summary>
+    /// Watch a watchable for changes once.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public static UnityAction<T0, T1> OnceWatch<T0, T1>(this ComposableBehaviour self, out UnityAction<T0, T1> named, IWatchable<T0, T1> watchable, UnityAction<T0, T1> action) {
+      named = action;
+      return self.OnceWatch(watchable, action);
+    }
+    /// <summary>
+    /// Watch a watchable for changes once.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public static UnityAction<T0, T1, T2> OnceWatch<T0, T1, T2>(this ComposableBehaviour self, IWatchable<T0, T1, T2> watchable, UnityAction<T0, T1, T2> action) {
+      watchable.AddOnceListener(action);
+      self.onDestroy.AddOnceListener(() => watchable.RemoveListener(action));
+      return action;
+    }
+    /// <summary>
+    /// Watch a watchable for changes once.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public static UnityAction<T0, T1, T2> OnceWatch<T0, T1, T2>(this ComposableBehaviour self, out UnityAction<T0, T1, T2> named, IWatchable<T0, T1, T2> watchable, UnityAction<T0, T1, T2> action) {
+      named = action;
+      return self.OnceWatch(watchable, action);
+    }
+    /// <summary>
+    /// Watch a watchable for changes once.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public static UnityAction<T0, T1, T2, T3> OnceWatch<T0, T1, T2, T3>(this ComposableBehaviour self, IWatchable<T0, T1, T2, T3> watchable, UnityAction<T0, T1, T2, T3> action) {
+      watchable.AddOnceListener(action);
+      self.onDestroy.AddOnceListener(() => watchable.RemoveListener(action));
+      return action;
+    }
+    /// <summary>
+    /// Watch a watchable for changes once.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public static UnityAction<T0, T1, T2, T3> OnceWatch<T0, T1, T2, T3>(this ComposableBehaviour self, out UnityAction<T0, T1, T2, T3> named, IWatchable<T0, T1, T2, T3> watchable, UnityAction<T0, T1, T2, T3> action) {
+      named = action;
+      return self.OnceWatch(watchable, action);
+    }
+    #endregion
+
+    #region Helper Methods for IEventListener
+    /// <summary>
+    /// Watch an event bus for events.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public static UnityAction Watch<T>(this ComposableBehaviour self, IEventListener eventBus, UnityAction action) {
+      eventBus.AddListener<T>(action);
+      self.onDestroy.AddOnceListener(() => eventBus.RemoveListener<T>(action));
+      return action;
+    }
+    /// <summary>
+    /// Watch an event bus for events.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public static UnityAction Watch<T>(this ComposableBehaviour self, out UnityAction named, IEventListener eventBus, UnityAction action) {
+      named = action;
+      return self.Watch<T>(eventBus, action);
+    }
+    /// <summary>
+    /// Watch an event bus for events.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public static UnityAction<T> Watch<T>(this ComposableBehaviour self, IEventListener eventBus, UnityAction<T> action) {
+      eventBus.AddListener(action);
+      self.onDestroy.AddOnceListener(() => eventBus.RemoveListener(action));
+      return action;
+    }
+    /// <summary>
+    /// Watch an event bus for events.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public static UnityAction<T> Watch<T>(this ComposableBehaviour self, out UnityAction<T> named, IEventListener eventBus, UnityAction<T> action) {
+      named = action;
+      return self.Watch<T>(eventBus, action);
+    }
+    /// <summary>
+    /// Watch an event bus for events.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public static UnityAction<T> OnceWatch<T>(this ComposableBehaviour self, IEventListener eventBus, UnityAction<T> action) {
+      eventBus.AddOnceListener(action);
+      self.onDestroy.AddOnceListener(() => eventBus.RemoveListener(action));
+      return action;
+    }
+    /// <summary>
+    /// Watch an event bus for events.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public static UnityAction<T> OnceWatch<T>(this ComposableBehaviour self, out UnityAction<T> named, IEventListener eventBus, UnityAction<T> action) {
+      named = action;
+      return self.OnceWatch<T>(eventBus, action);
+    }
+    /// <summary>
+    /// Watch an event bus for events.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public static UnityAction OnceWatch<T>(this ComposableBehaviour self, IEventListener eventBus, UnityAction action) {
+      eventBus.AddOnceListener<T>(action);
+      self.onDestroy.AddOnceListener(() => eventBus.RemoveListener<T>(action));
+      return action;
+    }
+    /// <summary>
+    /// Watch an event bus for events.
+    /// Remove the listener when the object is destroyed.
+    /// </summary>
+    public static UnityAction OnceWatch<T>(this ComposableBehaviour self, out UnityAction named, IEventListener eventBus, UnityAction action) {
+      named = action;
+      return self.OnceWatch<T>(eventBus, action);
+    }
+    #endregion
+  }
 }
