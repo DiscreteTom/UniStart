@@ -5,6 +5,7 @@
 - **_Breaking Change_**: remove `IOnceWatchable`, use `IWatchable` instead.
 - Feat: add `Model/IModel/IReadonlyModel`.
 - Feat: add `Computed.UnWatch`.
+- Feat: add `IIoCC.Contains/TryGet`.
 - Note: move helper methods for `IWatchable/IEventListener` from `UniStartBehaviour` to `ComposableBehaviourExtension`.
 - Optimize code.
 

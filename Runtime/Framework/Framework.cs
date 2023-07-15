@@ -27,18 +27,10 @@ namespace DT.UniStart {
     /// </summary>
     public T Add<T>(T instance) => this.context.Add<T>(instance);
     /// <summary>
-    /// Register a type and auto create an instance.
-    /// </summary>
-    public T Add<T>() where T : new() => this.context.Add<T>();
-    /// <summary>
     /// Get the instance of a type.
     /// </summary>
     public T Get<T>() => this.context.Get<T>();
-    /// <summary>
-    /// Try to get the instance of a type.
-    /// If the type is not registered, return `default(T)`.
-    /// </summary>
-    public T GetOrDefault<T>() => this.context.GetOrDefault<T>();
+    public bool TryGet<T>(out T instance) => this.context.TryGet<T>(out instance);
     #endregion
   }
 

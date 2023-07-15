@@ -12,20 +12,26 @@ namespace DT.UniStart {
     T Add<T>(T instance);
 
     /// <summary>
-    /// Register a type and auto create an instance.
-    /// </summary>
-    T Add<T>() where T : new();
-
-    /// <summary>
     /// Get the instance of a type.
     /// </summary>
     T Get<T>();
+
+    bool TryGet<T>(out T instance);
+  }
+
+  public static class IIoCCExtension {
+    /// <summary>
+    /// Register a type and auto create an instance.
+    /// </summary>
+    public static T Add<T>(this IIoCC ioc) where T : new() => ioc.Add<T>(new T());
+
+    public static bool Contains<T>(this IIoCC ioc) => ioc.TryGet<T>(out var _);
 
     /// <summary>
     /// Try to get the instance of a type.
     /// If the type is not registered, return `default(T)`.
     /// </summary>
-    T GetOrDefault<T>();
+    public static T GetOrDefault<T>(this IIoCC ioc) => ioc.TryGet<T>(out var instance) ? instance : default(T);
   }
 
 
@@ -48,19 +54,14 @@ namespace DT.UniStart {
     }
 
     /// <summary>
-    /// Register a type and auto create an instance.
-    /// </summary>
-    public T Add<T>() where T : new() => this.Add<T>(new T());
-
-    /// <summary>
     /// Get the instance of a type.
     /// </summary>
     public T Get<T>() => (T)this.dict[typeof(T)];
 
-    /// <summary>
-    /// Try to get the instance of a type.
-    /// If the type is not registered, return `default(T)`.
-    /// </summary>
-    public T GetOrDefault<T>() => (T)this.dict.GetOrDefault(typeof(T));
+    public bool TryGet<T>(out T instance) {
+      var res = this.dict.TryGetValue(typeof(T), out var obj);
+      instance = (T)obj;
+      return res;
+    }
   }
 }
