@@ -3,7 +3,6 @@
 ## v8.0.0
 
 - **_Breaking Change_**: remove `IOnceWatchable`, use `IWatchable` instead.
-- Feat: add `StateManager/State/IStateManager/IState/IStateCommitter`.
 - Feat: add `Computed.UnWatch`.
 - Feat: add `IIoCC.Contains/TryGet`.
 - Feat: add `Box`.
