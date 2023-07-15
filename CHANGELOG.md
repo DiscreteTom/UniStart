@@ -7,6 +7,7 @@
 - Feat: add `IIoCC.Contains/TryGet`.
 - Feat: add `Box`.
 - Feat: add `IGetValue/ISetValue/IGetSetValue`.
+- Feat: add `State` family.
 - Note: move helper methods for `IWatchable/IEventListener` from `UniStartBehaviour` to `ComposableBehaviourExtension`.
 - Optimize code.
 
