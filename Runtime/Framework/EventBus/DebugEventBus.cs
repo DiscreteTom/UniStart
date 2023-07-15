@@ -36,50 +36,26 @@ namespace DT.UniStart {
       if (this.isAddListenerModeEnabled) Debug.Log($"{this.name}.AddListener: event = {typeof(T)}");
       return this.bus.AddListener<T>(action);
     }
-    public UnityAction AddListener<T>(out UnityAction named, UnityAction action) {
-      if (this.isAddListenerModeEnabled) Debug.Log($"{this.name}.AddListener: event = {typeof(T)}");
-      return this.bus.AddListener<T>(out named, action);
-    }
     public UnityAction<T> AddListener<T>(UnityAction<T> action) {
       if (this.isAddListenerModeEnabled) Debug.Log($"{this.name}.AddListener: event = {typeof(T)}");
       return this.bus.AddListener(action);
-    }
-    public UnityAction<T> AddListener<T>(out UnityAction<T> named, UnityAction<T> action) {
-      if (this.isAddListenerModeEnabled) Debug.Log($"{this.name}.AddListener: event = {typeof(T)}");
-      return this.bus.AddListener(out named, action);
     }
     public UnityAction AddOnceListener<T>(UnityAction action) {
       if (this.isAddListenerModeEnabled) Debug.Log($"{this.name}.AddOnceListener: event = {typeof(T)}");
       return this.bus.AddOnceListener<T>(action);
     }
-    public UnityAction AddOnceListener<T>(out UnityAction named, UnityAction action) {
-      if (this.isAddListenerModeEnabled) Debug.Log($"{this.name}.AddOnceListener: event = {typeof(T)}");
-      return this.bus.AddOnceListener<T>(out named, action);
-    }
     public UnityAction<T> AddOnceListener<T>(UnityAction<T> action) {
       if (this.isAddListenerModeEnabled) Debug.Log($"{this.name}.AddOnceListener: event = {typeof(T)}");
       return this.bus.AddOnceListener(action);
-    }
-    public UnityAction<T> AddOnceListener<T>(out UnityAction<T> named, UnityAction<T> action) {
-      if (this.isAddListenerModeEnabled) Debug.Log($"{this.name}.AddOnceListener: event = {typeof(T)}");
-      return this.bus.AddOnceListener(out named, action);
     }
 
     public UnityAction RemoveListener<T>(UnityAction action) {
       if (this.isRemoveListenerModeEnabled) Debug.Log($"{this.name}.RemoveListener: event = {typeof(T)}");
       return this.bus.RemoveListener<T>(action);
     }
-    public UnityAction RemoveListener<T>(out UnityAction named, UnityAction action) {
-      if (this.isRemoveListenerModeEnabled) Debug.Log($"{this.name}.RemoveListener: event = {typeof(T)}");
-      return this.bus.RemoveListener<T>(out named, action);
-    }
     public UnityAction<T> RemoveListener<T>(UnityAction<T> action) {
       if (this.isRemoveListenerModeEnabled) Debug.Log($"{this.name}.RemoveListener: event = {typeof(T)}");
       return this.bus.RemoveListener(action);
-    }
-    public UnityAction<T> RemoveListener<T>(out UnityAction<T> named, UnityAction<T> action) {
-      if (this.isRemoveListenerModeEnabled) Debug.Log($"{this.name}.RemoveListener: event = {typeof(T)}");
-      return this.bus.RemoveListener(out named, action);
     }
 
     public void Invoke<T>(T e) {
@@ -92,6 +68,5 @@ namespace DT.UniStart {
       }
       this.bus.Invoke(e);
     }
-    public void Invoke<T>() where T : new() => this.Invoke(new T());
   }
 }
