@@ -37,7 +37,7 @@ namespace DT.UniStart {
   public class Entry<Ctx> : UniStartBehaviour<Ctx> where Ctx : class, IIoCC, new() {
     Ctx _context = new Ctx();
     protected override Ctx context {
-      get { return _context; }
+      get => _context;
       set { _context = value; }
     }
 
