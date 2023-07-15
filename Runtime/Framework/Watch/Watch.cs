@@ -115,7 +115,7 @@ namespace DT.UniStart {
     /// <summary>
     /// Invoke all events.
     /// </summary>
-    protected void InvokeEvent() => this.onChange.Invoke(this);
+    public void InvokeEvent() => this.onChange.Invoke(this);
   }
 
   /// <summary>
