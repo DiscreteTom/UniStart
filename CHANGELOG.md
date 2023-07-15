@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v7.1.0
+
+- Feat: add `Model/IModel/IReadonlyModel`.
+
 ## v7.0.0
 
 - **_Breaking Change_**: rewrite `AdvancedEvent`, remove `RemoveOnceListener`.
