@@ -8,7 +8,7 @@ namespace DT.UniStart {
   /// <summary>
   /// Watch a list-like type for changes.
   /// </summary>
-  public class WatchIList<L, T> : WatchRef<L>, IList<T>, IReadOnlyList<T>, IWatchable, IWatchable<ReadOnlyCollection<T>>, IGetValue<ReadOnlyCollection<T>>, ICommittableList<T> where L : IList<T> {
+  public class WatchIList<L, T> : WatchRef<L>, IList<T>, IReadOnlyList<T>, IWatchable, IWatchable<ReadOnlyCollection<T>>, ICommittableList<T> where L : IList<T> {
     ReadOnlyCollection<T> readOnlyList;
     AdvancedEvent<ReadOnlyCollection<T>> onChange;
 
@@ -78,7 +78,7 @@ namespace DT.UniStart {
   /// <summary>
   /// Watch a dictionary-like type for changes.
   /// </summary>
-  public class WatchIDictionary<D, K, V> : WatchRef<D>, IDictionary<K, V>, IReadOnlyDictionary<K, V>, IWatchable, IWatchable<ReadOnlyDictionary<K, V>>, IGetValue<ReadOnlyDictionary<K, V>>, IDictionaryState<K, V>, ICommittableDictionary<K, V> where D : IDictionary<K, V> {
+  public class WatchIDictionary<D, K, V> : WatchRef<D>, IDictionary<K, V>, IReadOnlyDictionary<K, V>, IWatchable, IWatchable<ReadOnlyDictionary<K, V>>, IGetValue<ReadOnlyDictionary<K, V>>, IDictionaryState<K, V>, IWritableDictionaryState<K, V> where D : IDictionary<K, V> {
     ReadOnlyDictionary<K, V> readOnlyDictionary;
     AdvancedEvent<ReadOnlyDictionary<K, V>> onChange;
 
@@ -155,7 +155,7 @@ namespace DT.UniStart {
   /// Watch a list for changes.
   /// </summary>
   [Serializable]
-  public class WatchList<T> : WatchIList<List<T>, T>, IWatchable, IWatchable<ReadOnlyCollection<T>>, IListState<T> {
+  public class WatchList<T> : WatchIList<List<T>, T>, IWatchable, IWatchable<ReadOnlyCollection<T>>, IWritableListState<T> {
     public WatchList() : base(new List<T>()) { }
     public WatchList(List<T> value) : base(value) { }
 
@@ -169,7 +169,7 @@ namespace DT.UniStart {
   /// Watch an array for changes.
   /// </summary>
   [Serializable]
-  public class WatchArray<T> : WatchIList<T[], T>, IWatchable, IWatchable<ReadOnlyCollection<T>>, IListState<T> {
+  public class WatchArray<T> : WatchIList<T[], T>, IWatchable, IWatchable<ReadOnlyCollection<T>>, IWritableListState<T> {
     public WatchArray(int n) : base(new T[n]) { }
     public WatchArray(T[] value) : base(value) { }
 
@@ -182,7 +182,7 @@ namespace DT.UniStart {
   /// <summary>
   /// Watch a dictionary for changes.
   /// </summary>
-  public class WatchDictionary<K, V> : WatchIDictionary<Dictionary<K, V>, K, V>, IWatchable, IWatchable<ReadOnlyDictionary<K, V>>, IDictionaryState<K, V> {
+  public class WatchDictionary<K, V> : WatchIDictionary<Dictionary<K, V>, K, V>, IWatchable, IWatchable<ReadOnlyDictionary<K, V>> {
     public WatchDictionary() : base(new Dictionary<K, V>()) { }
     public WatchDictionary(Dictionary<K, V> value) : base(value) { }
   }

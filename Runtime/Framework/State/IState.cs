@@ -17,9 +17,7 @@ namespace DT.UniStart {
     int BinarySearch(int index, int count, T item, IComparer<T> comparer);
   }
   public interface IDictionaryState<K, V> : IReadOnlyDictionary<K, V>, IWatchable, IWatchable<ReadOnlyDictionary<K, V>>, IGetValue<ReadOnlyDictionary<K, V>> { }
-  #endregion
 
-  #region State Manager
   public interface ICommittableList<T> {
     void Commit(UnityAction<IList<T>> action);
   }
@@ -27,6 +25,12 @@ namespace DT.UniStart {
     void Commit(UnityAction<IDictionary<K, V>> action);
   }
 
+  public interface IWritableState<T> : IState<T>, ISetValue<T> { }
+  public interface IWritableListState<T> : IListState<T>, IList<T>, ICommittableList<T> { }
+  public interface IWritableDictionaryState<K, V> : IDictionaryState<K, V>, IDictionary<K, V>, ICommittableDictionary<K, V> { }
+  #endregion
+
+  #region State Manager
   public interface IStateCommitter { }
 
   public static class IStateCommitterExtension {
@@ -58,12 +62,18 @@ namespace DT.UniStart {
   public interface IStateManager : IStateCommitter { }
 
   public static class IStateManagerExtension {
-    public static IState<T> Add<T>(this IStateManager _, T value) => new Watch<T>(value);
-    public static IListState<T> AddList<T>(this IStateManager _) => new WatchList<T>();
-    public static IListState<T> AddList<T>(this IStateManager _, List<T> value) => new WatchList<T>(value);
-    public static IListState<T> AddArray<T>(this IStateManager _, int n) => new WatchArray<T>(n);
-    public static IListState<T> AddArray<T>(this IStateManager _, T[] value) => new WatchArray<T>(value);
-    public static IDictionaryState<K, V> AddDictionary<K, V>(this IStateManager _) => new WatchDictionary<K, V>();
+    // Add with interface checker
+    public static IState<T> SafeAdd<T>(this IStateManager _, IWritableState<T> state) => state;
+    public static IListState<T> SafeAddList<T>(this IStateManager _, IWritableListState<T> state) => state;
+    public static IDictionaryState<K, V> SafeAddDictionary<K, V>(this IStateManager _, IWritableDictionaryState<K, V> state) => state;
+
+    // helper methods, also check the interface of Watch family
+    public static IState<T> Add<T>(this IStateManager self, T value) => self.SafeAdd(new Watch<T>(value));
+    public static IListState<T> AddList<T>(this IStateManager self) => self.SafeAddList(new WatchList<T>());
+    public static IListState<T> AddList<T>(this IStateManager self, List<T> value) => self.SafeAddList(new WatchList<T>(value));
+    public static IListState<T> AddArray<T>(this IStateManager self, int n) => self.SafeAddList(new WatchArray<T>(n));
+    public static IListState<T> AddArray<T>(this IStateManager self, T[] value) => self.SafeAddList(new WatchArray<T>(value));
+    public static IDictionaryState<K, V> AddDictionary<K, V>(this IStateManager self) => self.SafeAddDictionary(new WatchDictionary<K, V>());
   }
   #endregion
 }
