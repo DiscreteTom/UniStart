@@ -8,7 +8,7 @@ namespace DT.UniStart {
   /// <summary>
   /// Watch a list-like type for changes.
   /// </summary>
-  public class WatchIList<L, T> : WatchRef<L>, IList<T>, IReadOnlyList<T>, IWatchable, IWatchable<ReadOnlyCollection<T>>, IGetValue<ReadOnlyCollection<T>> where L : IList<T> {
+  public class WatchIList<L, T> : WatchRef<L>, IList<T>, IReadOnlyList<T>, IWatchable, IWatchable<ReadOnlyCollection<T>>, IGetValue<ReadOnlyCollection<T>>, IListApply<T> where L : IList<T> {
     ReadOnlyCollection<T> readOnlyList;
     AdvancedEvent<ReadOnlyCollection<T>> onChange;
 
@@ -30,6 +30,9 @@ namespace DT.UniStart {
       base.InvokeEvent();
       this.onChange.Invoke(this.Value);
     }
+
+    // IListApply
+    public void Apply(UnityAction<IList<T>> f) => base.Apply((v) => f.Invoke(v));
 
     #region re-expose methods from the list interface
     public void Add(T item) {
@@ -75,7 +78,7 @@ namespace DT.UniStart {
   /// <summary>
   /// Watch a dictionary-like type for changes.
   /// </summary>
-  public class WatchIDictionary<D, K, V> : WatchRef<D>, IDictionary<K, V>, IReadOnlyDictionary<K, V>, IWatchable, IWatchable<ReadOnlyDictionary<K, V>>, IGetValue<ReadOnlyDictionary<K, V>>, IDictionaryState<K, V> where D : IDictionary<K, V> {
+  public class WatchIDictionary<D, K, V> : WatchRef<D>, IDictionary<K, V>, IReadOnlyDictionary<K, V>, IWatchable, IWatchable<ReadOnlyDictionary<K, V>>, IGetValue<ReadOnlyDictionary<K, V>>, IDictionaryState<K, V>, IDictionaryApply<K, V> where D : IDictionary<K, V> {
     ReadOnlyDictionary<K, V> readOnlyDictionary;
     AdvancedEvent<ReadOnlyDictionary<K, V>> onChange;
 
@@ -97,6 +100,9 @@ namespace DT.UniStart {
       base.InvokeEvent();
       this.onChange.Invoke(this.Value);
     }
+
+    // IDictionaryApply
+    public void Apply(UnityAction<IDictionary<K, V>> f) => base.Apply((v) => f.Invoke(v));
 
     #region re-expose methods from the dictionary interface
     public void Add(K key, V value) {
@@ -163,7 +169,7 @@ namespace DT.UniStart {
   /// Watch an array for changes.
   /// </summary>
   [Serializable]
-  public class WatchArray<T> : WatchIList<T[], T>, IWatchable, IWatchable<ReadOnlyCollection<T>>, IArrayState<T> {
+  public class WatchArray<T> : WatchIList<T[], T>, IWatchable, IWatchable<ReadOnlyCollection<T>>, IListState<T> {
     public WatchArray(int n) : base(new T[n]) { }
     public WatchArray(T[] value) : base(value) { }
 

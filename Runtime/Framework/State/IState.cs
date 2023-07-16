@@ -16,20 +16,23 @@ namespace DT.UniStart {
     int BinarySearch(T item, IComparer<T> comparer);
     int BinarySearch(int index, int count, T item, IComparer<T> comparer);
   }
-  public interface IArrayState<T> : IListState<T> { }
   public interface IDictionaryState<K, V> : IReadOnlyDictionary<K, V>, IWatchable, IWatchable<ReadOnlyDictionary<K, V>>, IGetValue<ReadOnlyDictionary<K, V>> { }
   #endregion
 
   #region State Manager
+  public interface IListApply<T> {
+    void Apply(UnityAction<IList<T>> action);
+  }
+  public interface IDictionaryApply<K, V> {
+    void Apply(UnityAction<IDictionary<K, V>> action);
+  }
   public interface IStateCommitter {
     IStateCommitter Commit<T>(IState<T> s, T value);
-    IStateCommitter Commit<T>(IListState<T> s, UnityAction<WatchList<T>> f);
-    IStateCommitter Commit<T>(IArrayState<T> s, UnityAction<WatchArray<T>> f);
-    IStateCommitter Commit<K, V>(IDictionaryState<K, V> s, UnityAction<WatchDictionary<K, V>> f);
+    IStateCommitter Commit<T>(IListState<T> s, UnityAction<IList<T>> f);
+    IStateCommitter Commit<K, V>(IDictionaryState<K, V> s, UnityAction<IDictionary<K, V>> f);
 
-    IStateCommitter Apply<T>(IListState<T> s, UnityAction<List<T>> f);
-    IStateCommitter Apply<T>(IArrayState<T> s, UnityAction<T[]> f);
-    IStateCommitter Apply<K, V>(IDictionaryState<K, V> s, UnityAction<Dictionary<K, V>> f);
+    IStateCommitter Apply<T>(IListState<T> s, UnityAction<IList<T>> f);
+    IStateCommitter Apply<K, V>(IDictionaryState<K, V> s, UnityAction<IDictionary<K, V>> f);
   }
 
   public interface IStateManager : IStateCommitter { }
@@ -38,8 +41,8 @@ namespace DT.UniStart {
     public static IState<T> Add<T>(this IStateManager _, T value) => new Watch<T>(value);
     public static IListState<T> AddList<T>(this IStateManager _) => new WatchList<T>();
     public static IListState<T> AddList<T>(this IStateManager _, List<T> value) => new WatchList<T>(value);
-    public static IArrayState<T> AddArray<T>(this IStateManager _, int n) => new WatchArray<T>(n);
-    public static IArrayState<T> AddArray<T>(this IStateManager _, T[] value) => new WatchArray<T>(value);
+    public static IListState<T> AddArray<T>(this IStateManager _, int n) => new WatchArray<T>(n);
+    public static IListState<T> AddArray<T>(this IStateManager _, T[] value) => new WatchArray<T>(value);
     public static IDictionaryState<K, V> AddDictionary<K, V>(this IStateManager _) => new WatchDictionary<K, V>();
   }
   #endregion
