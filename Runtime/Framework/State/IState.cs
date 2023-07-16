@@ -26,15 +26,33 @@ namespace DT.UniStart {
   public interface ICommittableDictionary<K, V> {
     void Commit(UnityAction<IDictionary<K, V>> action);
   }
-  public interface IStateCommitter {
+
+  public interface IStateCommitter { }
+
+  public static class IStateCommitterExtension {
     // Commit will trigger change event once.
-    IStateCommitter Commit<T>(IState<T> s, T value);
-    IStateCommitter Commit<T>(IListState<T> s, UnityAction<IList<T>> f);
-    IStateCommitter Commit<K, V>(IDictionaryState<K, V> s, UnityAction<IDictionary<K, V>> f);
+    public static IStateCommitter Commit<T>(this IStateCommitter self, IState<T> item, T value) {
+      (item as ISetValue<T>).Value = value;
+      return self;
+    }
+    public static IStateCommitter Commit<T>(this IStateCommitter self, IListState<T> item, UnityAction<IList<T>> f) {
+      (item as ICommittableList<T>).Commit(f);
+      return self;
+    }
+    public static IStateCommitter Commit<K, V>(this IStateCommitter self, IDictionaryState<K, V> item, UnityAction<IDictionary<K, V>> f) {
+      (item as ICommittableDictionary<K, V>).Commit(f);
+      return self;
+    }
 
     // Apply may trigger change event multiple times.
-    IStateCommitter Apply<T>(IListState<T> s, UnityAction<IList<T>> f);
-    IStateCommitter Apply<K, V>(IDictionaryState<K, V> s, UnityAction<IDictionary<K, V>> f);
+    public static IStateCommitter Apply<T>(this IStateCommitter self, IListState<T> item, UnityAction<IList<T>> f) {
+      f.Invoke(item as IList<T>);
+      return self;
+    }
+    public static IStateCommitter Apply<K, V>(this IStateCommitter self, IDictionaryState<K, V> item, UnityAction<IDictionary<K, V>> f) {
+      f.Invoke(item as IDictionary<K, V>);
+      return self;
+    }
   }
 
   public interface IStateManager : IStateCommitter { }
