@@ -24,5 +24,20 @@ namespace DT.UniStart {
       f.Invoke(item as WatchDictionary<K, V>);
       return this;
     }
+
+    public IStateCommitter Apply<T>(IListState<T> item, UnityAction<List<T>> f) {
+      (item as WatchList<T>).Apply(f);
+      return this;
+    }
+
+    public IStateCommitter Apply<T>(IArrayState<T> item, UnityAction<T[]> f) {
+      (item as WatchArray<T>).Apply(f);
+      return this;
+    }
+
+    public IStateCommitter Apply<K, V>(IDictionaryState<K, V> item, UnityAction<Dictionary<K, V>> f) {
+      (item as WatchDictionary<K, V>).Apply(f);
+      return this;
+    }
   }
 }

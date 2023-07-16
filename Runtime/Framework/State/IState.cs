@@ -26,6 +26,10 @@ namespace DT.UniStart {
     IStateCommitter Commit<T>(IListState<T> s, UnityAction<WatchList<T>> f);
     IStateCommitter Commit<T>(IArrayState<T> s, UnityAction<WatchArray<T>> f);
     IStateCommitter Commit<K, V>(IDictionaryState<K, V> s, UnityAction<WatchDictionary<K, V>> f);
+
+    IStateCommitter Apply<T>(IListState<T> s, UnityAction<List<T>> f);
+    IStateCommitter Apply<T>(IArrayState<T> s, UnityAction<T[]> f);
+    IStateCommitter Apply<K, V>(IDictionaryState<K, V> s, UnityAction<Dictionary<K, V>> f);
   }
 
   public interface IStateManager : IStateCommitter { }
