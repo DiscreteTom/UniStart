@@ -11,22 +11,22 @@ namespace DT.UniStart {
     }
 
     public IStateCommitter Commit<T>(IListState<T> item, UnityAction<IList<T>> f) {
-      f.Invoke(item as IList<T>);
+      (item as ICommittableList<T>).Commit(f);
       return this;
     }
 
     public IStateCommitter Commit<K, V>(IDictionaryState<K, V> item, UnityAction<IDictionary<K, V>> f) {
-      f.Invoke(item as IDictionary<K, V>);
+      (item as ICommittableDictionary<K, V>).Commit(f);
       return this;
     }
 
     public IStateCommitter Apply<T>(IListState<T> item, UnityAction<IList<T>> f) {
-      (item as IListApply<T>).Apply(f);
+      f.Invoke(item as IList<T>);
       return this;
     }
 
     public IStateCommitter Apply<K, V>(IDictionaryState<K, V> item, UnityAction<IDictionary<K, V>> f) {
-      (item as IDictionaryApply<K, V>).Apply(f);
+      f.Invoke(item as IDictionary<K, V>);
       return this;
     }
   }

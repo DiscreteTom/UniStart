@@ -20,17 +20,19 @@ namespace DT.UniStart {
   #endregion
 
   #region State Manager
-  public interface IListApply<T> {
-    void Apply(UnityAction<IList<T>> action);
+  public interface ICommittableList<T> {
+    void Commit(UnityAction<IList<T>> action);
   }
-  public interface IDictionaryApply<K, V> {
-    void Apply(UnityAction<IDictionary<K, V>> action);
+  public interface ICommittableDictionary<K, V> {
+    void Commit(UnityAction<IDictionary<K, V>> action);
   }
   public interface IStateCommitter {
+    // Commit will trigger change event once.
     IStateCommitter Commit<T>(IState<T> s, T value);
     IStateCommitter Commit<T>(IListState<T> s, UnityAction<IList<T>> f);
     IStateCommitter Commit<K, V>(IDictionaryState<K, V> s, UnityAction<IDictionary<K, V>> f);
 
+    // Apply may trigger change event multiple times.
     IStateCommitter Apply<T>(IListState<T> s, UnityAction<IList<T>> f);
     IStateCommitter Apply<K, V>(IDictionaryState<K, V> s, UnityAction<IDictionary<K, V>> f);
   }

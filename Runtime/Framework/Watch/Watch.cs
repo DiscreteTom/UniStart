@@ -73,31 +73,31 @@ namespace DT.UniStart {
     }
 
     /// <summary>
-    /// Apply a function to the value and trigger the onChange event.
+    /// Make changes and trigger the onChange event once.
     /// </summary>
-    public void Apply(UnityAction<T> f) {
-      f(this.value);
+    public void Commit(UnityAction<T> f) {
+      f.Invoke(this.value);
       this.InvokeEvent();
     }
 
     /// <summary>
-    /// Apply a function to the value and trigger the onChange event.
+    /// Make changes and trigger the onChange event once.
     /// </summary>
-    public R Apply<R>(Func<T, R> f) {
-      var result = f(this.value);
+    public R Commit<R>(Func<T, R> f) {
+      var result = f.Invoke(this.value);
       this.InvokeEvent();
       return result;
     }
 
     /// <summary>
-    /// Apply a function to the value without trigger the onChange event.
+    /// Make changes without trigger the onChange event.
     /// </summary>
-    public void ReadOnlyApply(UnityAction<T> f) => f(this.value);
+    public void ReadOnlyCommit(UnityAction<T> f) => f.Invoke(this.value);
 
     /// <summary>
-    /// Apply a function to the value without trigger the onChange event.
+    /// Make changes without trigger the onChange event.
     /// </summary>
-    public R ReadOnlyApply<R>(Func<T, R> f) => f(this.value);
+    public R ReadOnlyCommit<R>(Func<T, R> f) => f.Invoke(this.value);
 
     /// <summary>
     /// Add a listener that will be called when the value changes.

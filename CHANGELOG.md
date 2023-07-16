@@ -3,6 +3,7 @@
 ## v8.0.0
 
 - **_Breaking Change_**: remove `IOnceWatchable`, use `IWatchable` instead.
+- **_Breaking Change_**: rename `WatchRef.Apply` to `WatchRef.Commit`.
 - Feat: add `Computed/LazyComputed.UnWatch`.
 - Feat: add `IIoCC.Contains/TryGet`.
 - Feat: add `Box`.

@@ -8,7 +8,7 @@ namespace DT.UniStart {
   /// <summary>
   /// Watch a list-like type for changes.
   /// </summary>
-  public class WatchIList<L, T> : WatchRef<L>, IList<T>, IReadOnlyList<T>, IWatchable, IWatchable<ReadOnlyCollection<T>>, IGetValue<ReadOnlyCollection<T>>, IListApply<T> where L : IList<T> {
+  public class WatchIList<L, T> : WatchRef<L>, IList<T>, IReadOnlyList<T>, IWatchable, IWatchable<ReadOnlyCollection<T>>, IGetValue<ReadOnlyCollection<T>>, ICommittableList<T> where L : IList<T> {
     ReadOnlyCollection<T> readOnlyList;
     AdvancedEvent<ReadOnlyCollection<T>> onChange;
 
@@ -31,8 +31,8 @@ namespace DT.UniStart {
       this.onChange.Invoke(this.Value);
     }
 
-    // IListApply
-    public void Apply(UnityAction<IList<T>> f) => base.Apply((v) => f.Invoke(v));
+    // ICommittableList
+    public void Commit(UnityAction<IList<T>> f) => base.Commit((v) => f.Invoke(v));
 
     #region re-expose methods from the list interface
     public void Add(T item) {
@@ -78,7 +78,7 @@ namespace DT.UniStart {
   /// <summary>
   /// Watch a dictionary-like type for changes.
   /// </summary>
-  public class WatchIDictionary<D, K, V> : WatchRef<D>, IDictionary<K, V>, IReadOnlyDictionary<K, V>, IWatchable, IWatchable<ReadOnlyDictionary<K, V>>, IGetValue<ReadOnlyDictionary<K, V>>, IDictionaryState<K, V>, IDictionaryApply<K, V> where D : IDictionary<K, V> {
+  public class WatchIDictionary<D, K, V> : WatchRef<D>, IDictionary<K, V>, IReadOnlyDictionary<K, V>, IWatchable, IWatchable<ReadOnlyDictionary<K, V>>, IGetValue<ReadOnlyDictionary<K, V>>, IDictionaryState<K, V>, ICommittableDictionary<K, V> where D : IDictionary<K, V> {
     ReadOnlyDictionary<K, V> readOnlyDictionary;
     AdvancedEvent<ReadOnlyDictionary<K, V>> onChange;
 
@@ -101,8 +101,8 @@ namespace DT.UniStart {
       this.onChange.Invoke(this.Value);
     }
 
-    // IDictionaryApply
-    public void Apply(UnityAction<IDictionary<K, V>> f) => base.Apply((v) => f.Invoke(v));
+    // ICommittableDictionary
+    public void Commit(UnityAction<IDictionary<K, V>> f) => base.Commit((v) => f.Invoke(v));
 
     #region re-expose methods from the dictionary interface
     public void Add(K key, V value) {
