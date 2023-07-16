@@ -9,25 +9,24 @@ namespace DT.UniStart {
   /// Watch a list-like type for changes.
   /// </summary>
   public class WatchIList<L, T> : WatchRef<L>, IList<T>, IReadOnlyList<T>, IWatchable, IWatchable<ReadOnlyCollection<T>>, IGetValue<ReadOnlyCollection<T>> where L : IList<T> {
-    LazyComputed<ReadOnlyCollection<T>> readOnlyList;
+    ReadOnlyCollection<T> readOnlyList;
     AdvancedEvent<ReadOnlyCollection<T>> onChange;
 
-
     public WatchIList(L value) : base(value) {
-      this.readOnlyList = new LazyComputed<ReadOnlyCollection<T>>(() => new ReadOnlyCollection<T>(this.value)).Watch(this);
+      this.readOnlyList = new ReadOnlyCollection<T>(this.value);
       this.onChange = new AdvancedEvent<ReadOnlyCollection<T>>();
     }
 
     /// <summary>
     /// Get the list as a read-only list and cache it for future calls.
     /// </summary>
-    public ReadOnlyCollection<T> Value => this.readOnlyList.Value;
+    public ReadOnlyCollection<T> Value => this.readOnlyList;
 
     public UnityAction<ReadOnlyCollection<T>> AddListener(UnityAction<ReadOnlyCollection<T>> f) => this.onChange.AddListener(f);
     public UnityAction<ReadOnlyCollection<T>> AddOnceListener(UnityAction<ReadOnlyCollection<T>> f) => this.onChange.AddOnceListener(f);
     public UnityAction<ReadOnlyCollection<T>> RemoveListener(UnityAction<ReadOnlyCollection<T>> f) => this.onChange.RemoveListener(f);
 
-    protected new void InvokeEvent() {
+    public override void InvokeEvent() {
       base.InvokeEvent();
       this.onChange.Invoke(this.Value);
     }
@@ -77,24 +76,24 @@ namespace DT.UniStart {
   /// Watch a dictionary-like type for changes.
   /// </summary>
   public class WatchIDictionary<D, K, V> : WatchRef<D>, IDictionary<K, V>, IReadOnlyDictionary<K, V>, IWatchable, IWatchable<ReadOnlyDictionary<K, V>>, IGetValue<ReadOnlyDictionary<K, V>>, IDictionaryState<K, V> where D : IDictionary<K, V> {
-    LazyComputed<ReadOnlyDictionary<K, V>> readOnlyDictionary;
+    ReadOnlyDictionary<K, V> readOnlyDictionary;
     AdvancedEvent<ReadOnlyDictionary<K, V>> onChange;
 
     public WatchIDictionary(D value) : base(value) {
-      this.readOnlyDictionary = new LazyComputed<ReadOnlyDictionary<K, V>>(() => new ReadOnlyDictionary<K, V>(this.value)).Watch(this);
+      this.readOnlyDictionary = new ReadOnlyDictionary<K, V>(this.value);
       this.onChange = new AdvancedEvent<ReadOnlyDictionary<K, V>>();
     }
 
     /// <summary>
     /// Get the dictionary as a read-only dictionary and cache it for future calls.
     /// </summary>
-    public ReadOnlyDictionary<K, V> Value => this.readOnlyDictionary.Value;
+    public ReadOnlyDictionary<K, V> Value => this.readOnlyDictionary;
 
     public UnityAction<ReadOnlyDictionary<K, V>> AddListener(UnityAction<ReadOnlyDictionary<K, V>> f) => this.onChange.AddListener(f);
     public UnityAction<ReadOnlyDictionary<K, V>> AddOnceListener(UnityAction<ReadOnlyDictionary<K, V>> f) => this.onChange.AddOnceListener(f);
     public UnityAction<ReadOnlyDictionary<K, V>> RemoveListener(UnityAction<ReadOnlyDictionary<K, V>> f) => this.onChange.RemoveListener(f);
 
-    protected new void InvokeEvent() {
+    public override void InvokeEvent() {
       base.InvokeEvent();
       this.onChange.Invoke(this.Value);
     }

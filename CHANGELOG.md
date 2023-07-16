@@ -8,7 +8,7 @@
 - Feat: add `Box`.
 - Feat: add `IGetValue/ISetValue/IGetSetValue`.
 - Feat: add `State` family.
-- Feat: expose `WatchRef.InvokeEvent`.
+- Fix: make `WatchRef.InvokeEvent` virtual and public, make watch collections override `InvokeEvent` to fix `Apply`.
 - Note: move helper methods for `IWatchable/IEventListener` from `UniStartBehaviour` to `ComposableBehaviourExtension`.
 - Optimize code.
 
