@@ -5,13 +5,12 @@ namespace DT.UniStart {
   /// <summary>
   /// A wrapper around an IEventBus which delays all events until InvokeDelayed is called.
   /// </summary>
-  public class DelayedEventBus : IEventBus {
+  public class DelayedEventBus : InterceptEventBus {
     UnityAction delayedActions;
-    IEventBus bus;
 
-    public DelayedEventBus(IEventBus bus = null) {
-      this.bus = bus ?? new EventBus();
+    public DelayedEventBus(IEventBus bus = null) : base(bus, InterceptEventBusMode.Invoke) {
       this.delayedActions = () => { };
+      this.OnInvoke((type, parameter, proceed) => this.delayedActions += proceed);
     }
 
     /// <summary>
@@ -21,15 +20,5 @@ namespace DT.UniStart {
       this.delayedActions.Invoke();
       this.delayedActions = () => { };
     }
-
-    public UnityAction AddListener<T>(UnityAction action) => this.bus.AddListener<T>(action);
-    public UnityAction<T> AddListener<T>(UnityAction<T> action) => this.bus.AddListener(action);
-    public UnityAction AddOnceListener<T>(UnityAction action) => this.bus.AddOnceListener<T>(action);
-    public UnityAction<T> AddOnceListener<T>(UnityAction<T> action) => this.bus.AddOnceListener(action);
-
-    public UnityAction RemoveListener<T>(UnityAction action) => this.bus.RemoveListener<T>(action);
-    public UnityAction<T> RemoveListener<T>(UnityAction<T> action) => this.bus.RemoveListener(action);
-
-    public void Invoke<T>(T e) => this.delayedActions += () => this.bus.Invoke(e);
   }
 }

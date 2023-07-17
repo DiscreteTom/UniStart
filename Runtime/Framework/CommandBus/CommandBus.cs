@@ -22,7 +22,7 @@ namespace DT.UniStart {
 
   // helper classes
   public class DebugCommandBus : CommandBus {
-    public DebugCommandBus(DebugEventBusMode mode = DebugEventBusMode.Invoke) : base(new DebugEventBus(name: "DebugCommandBus", mode: mode)) { }
+    public DebugCommandBus(InterceptEventBusMode mode = InterceptEventBusMode.Invoke) : base(new DebugEventBus(name: "DebugCommandBus", mode: mode)) { }
   }
   public class DelayedCommandBus : CommandBus {
     public DelayedCommandBus() : base(new DelayedEventBus()) { }

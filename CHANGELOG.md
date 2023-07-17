@@ -8,6 +8,9 @@
   - Remove `CommandRepo`, `ICommandRepo.Invoke`.
   - `ICommandRepo.Add` return the `UnityAction` instead of `ICommandRepo`.
   - Add `DebugCommandBus/DelayedCommandBus`.
+- **_Breaking Change_**: remove `DebugEventBusMode`, use `InterceptEventBusMode` instead.
+  - Add `InterceptEventBus`. Fix #2.
+  - Rewrite `DebugEventBus/DelayedEventBus` using `InterceptEventBus`.
 - Feat: add `Computed/LazyComputed.UnWatch`.
 - Feat: add `IIoCC.Contains/TryGet`.
 - Feat: add `Box`.
