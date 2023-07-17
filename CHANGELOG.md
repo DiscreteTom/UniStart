@@ -4,6 +4,10 @@
 
 - **_Breaking Change_**: remove `IOnceWatchable`, use `IWatchable` instead.
 - **_Breaking Change_**: rename `WatchRef.Apply` to `WatchRef.Commit`.
+- **_Breaking Change_**: rewrite `CommandBus` family.
+  - Remove `CommandRepo`, `ICommandRepo.Invoke`.
+  - `ICommandRepo.Add` return the `UnityAction` instead of `ICommandRepo`.
+  - Add `DebugCommandBus/DelayedCommandBus`.
 - Feat: add `Computed/LazyComputed.UnWatch`.
 - Feat: add `IIoCC.Contains/TryGet`.
 - Feat: add `Box`.
