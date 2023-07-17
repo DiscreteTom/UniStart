@@ -124,20 +124,20 @@ public class WithMonoBehaviour : MonoBehaviour {
 
   void Start() {
     // init vars at start
-    rb = this.GetComponent<Rigidbody>();
-    sr = this.GetComponent<SpriteRenderer>();
+    this.rb = this.GetComponent<Rigidbody>();
+    this.sr = this.GetComponent<SpriteRenderer>();
   }
 
   void Update() {
     // update logic
-    rb.AddForce(Vector3.up * 10);
-    sr.color = Color.red;
+    this.rb.AddForce(Vector3.up * 10);
+    this.sr.color = Color.red;
   }
 
   void OnDestroy() {
     // clean up
-    Destroy(rb);
-    Destroy(sr);
+    Destroy(this.rb);
+    Destroy(this.sr);
   }
 }
 
@@ -201,7 +201,7 @@ public class EntryApp : Entry {
 
     // Add an existing instance to the app.
     // In addition, Add will return the instance.
-    var model = this.Add(new Model(1));
+    var model = this.Add(new ModelManager());
 
     // Add an existing instance to the app
     // but register it as an interface instead of a class.
@@ -239,80 +239,9 @@ With this design, you will have an explicit place to initialize your context, in
 
 > This is inspired by [QFramework](https://github.com/liangxiegame/QFramework)'s IoC container, and [jackutea](https://github.com/jackutea)'s deterministic lifecycle management.
 
-### Responsive Containers
+### Event Bus
 
-In UniStart, we have many built-in responsive containers/collections:
-
-```cs
-public class Model : MonoBehaviour {
-  public Watch<int> Count;
-  public WatchList<int> List;
-  public WatchArray<bool> Array;
-  public WatchDictionary<string, int> Dictionary;
-
-  public Computed<int> Computed;
-  public LazyComputed<int> LazyComputed;
-
-  public Model Setup(int count) {
-    // set the initial value
-    this.Count = new Watch<int>(count);
-    this.List = new WatchList<int>(); // init an empty list
-    this.Array = new WatchArray<bool>(10); // init an array with 10 elements
-    this.Dictionary = new WatchDictionary<string, int>(); // init an empty dictionary
-
-    // For computed values, we need to watch the values that are used to compute the value.
-    this.Computed = new Computed<int>(() => this.Count.Value * 2).Watch(this.Count);
-    this.LazyComputed = new LazyComputed<int>(() => this.Count.Value * 2).Watch(this.Count);
-
-    return this;
-  }
-}
-```
-
-Register `Model` to `Entry`:
-
-```cs
-public class App : Entry {
-  void Awake() {
-    this.Add(this.GetComponent<Model>().Setup(1));
-  }
-}
-```
-
-Then we can `AddListener` to those responsive containers, and they will be called when the value changes.
-
-```cs
-// CBC: ComposableBehaviour with Context injected.
-public class WithContext : CBC {
-  void Start() {
-    // Retrieve the instance of Model from the app.
-    var model = this.Get<Model>();
-
-    // For value types, there are 3 AddListener overloads:
-    model.Count.AddListener(() => print("WithContext: " + model.Count.Value));
-    model.Count.AddListener((value) => print("WithContext: " + value));
-    model.Count.AddListener((value, oldValue) => print("WithContext: " + value + ", " + oldValue));
-
-    // For collections, there are 2 AddListener overloads:
-    model.List.AddListener(() => print("WithContext: " + model.List.Value));
-    model.List.AddListener((value) => print("WithContext: " + value));
-
-    // Trigger the events for value types.
-    model.Count.Value = 2;
-
-    // Trigger the events for collections.
-    model.List.Add(1); // built-in methods are supported
-    model.List.Contains(1); // readonly methods won't trigger events
-    model.List[0] = 2; // you can also use indexers
-  }
-}
-```
-
-> This is inspired by [QFramework](https://github.com/liangxiegame/QFramework)'s `BindableProperty`.
-
-### EventBus
-
-Responsive containers can help you to write your logic in a more declarative way. But sometimes you may want to use this idea in your own logic. In this case, you can use the `EventBus` class.
+You can register `EventBus` to app to realize cross-component communication. `EventBus` can intercept events and realize additional logics like logging, and you can also use it to decouple your components.
 
 ```cs
 // define your own event types
@@ -335,7 +264,7 @@ public class EventBusApp : Entry {
     eb.AddListener<EventWithParams>(() => print(1));
     // once listener
     var once = eb.AddOnceListener<EventWithParams>((e) => print(e.b));
-    eb.RemoveListener(once);
+    eb.RemoveListener(once); // remove once listener
 
     // trigger events
     eb.Invoke<EventWithoutParams>();
@@ -373,6 +302,200 @@ Besides, there are 2 base interface of `IEventBus`: `IEventListener` and `IEvent
 
 > This is inspired by [QFramework](https://github.com/liangxiegame/QFramework)'s event system.
 
+### Command Bus
+
+`EventBus` lets you add listeners anywhere, but you may have some pre-defined `Commands` which should be listened centrally. `CommandBus` is designed for this.
+
+```cs
+public record SimpleCommand { }
+public record ComplexCommand(int a, int b);
+
+public class CommandBusEntry : Entry {
+  void Awake() {
+    // register commands' listeners centrally
+    var cb = new CommandBus();
+    cb.Add<SimpleCommand>(() => print(1));
+    cb.Add<ComplexCommand>((e) => print(e.a));
+    // register command bus into app as readonly ICommandBus
+    this.Add<ICommandBus>(cb);
+
+    // there is an IEventBus in the CommandBus
+    // so you can use custom event bus
+    new CommandBus(new DebugEventBus(name: "DebugCommandBus"));
+    // we also have helper command bus
+    new DebugCommandBus(); // equals to new CommandBus(new DebugEventBus(name: "DebugCommandBus"))
+    new DelayedCommandBus(); // equals to new CommandBus(new DelayedEventBus())
+  }
+}
+
+public class CommandBusApp : CBC {
+  void Start() {
+    var cb = this.Get<ICommandBus>();
+
+    // execute commands
+    cb.Push<SimpleCommand>();
+    cb.Push(new ComplexCommand(1, 2));
+  }
+}
+```
+
+Thus, you can separate your game logics in the `CommandBus` from the views in `CBC`. If you modify your view in `CBC` you can still reuse your logics in `CommandBus`.
+
+> This is inspired by [QFramework](https://github.com/liangxiegame/QFramework)'s command system.
+
+### Responsive Containers
+
+In UniStart, we have many built-in responsive containers/collections to help you build responsive app:
+
+```cs
+public class ResponsiveApp : MonoBehaviour {
+  void Start() {
+    // responsive containers
+    var count = new Watch<int>(0);
+    var list = new WatchList<int>(); // empty list
+    var array = new WatchArray<int>(10); // array with 10 elements
+    var dictionary = new WatchDictionary<string, int>(); // empty dictionary
+
+    // For computed values, we need to watch the values that are used to compute the value.
+    var computed = new Computed<int>(() => count.Value * 2).Watch(count);
+    var lazyComputed = new LazyComputed<int>(() => count.Value * 2).Watch(count);
+
+    // For value types, there are 3 AddListener overloads:
+    count.AddListener(() => print(count.Value));
+    count.AddListener((value) => print(value));
+    count.AddListener((value, oldValue) => print(value));
+
+    // For collections, there are 2 AddListener overloads:
+    list.AddListener(() => print(list.Value));
+    list.AddListener((value) => print(value));
+
+    // you can add listeners to computed values, but not lazy computed values
+    computed.AddListener(() => print(computed.Value));
+
+    // Trigger change event for value types.
+    count.Value = 2;
+
+    // Trigger change event for collections.
+    list.Add(1); // built-in methods are supported
+    list.Contains(1); // readonly methods won't trigger events
+    list[0] = 2; // you can also use indexers
+
+    // commit many changes in one transaction using Commit
+    // this will trigger the change event only once
+    list.Commit((l) => {
+      l.Add(1);
+      l.Add(2);
+    });
+
+    // use readonly commit and manually trigger events
+    list.ReadOnlyCommit((l) => {
+      l.Add(3);
+      l.Add(4);
+    });
+    list.InvokeEvent();
+  }
+}
+```
+
+> This is inspired by [QFramework](https://github.com/liangxiegame/QFramework)'s `BindableProperty`.
+
+### State Management
+
+Usually we need to manage the state (or `Model`) of the game, we also want to watch for changes of the state, and commit changes to the state.
+
+Unlike those responsive containers, we don't want the state to be changed by other classes, only the state manager can commit changes to the state.
+
+```cs
+public class Model {
+  // state is readonly and watchable
+  public IState<int> Count { get; protected set; }
+  public IListState<int> List { get; protected set; }
+  public IDictionaryState<string, int> Dictionary { get; protected set; }
+  public IListState<bool> Array { get; protected set; }
+
+  public Computed<int> Computed { get; protected set; }
+  public LazyComputed<int> LazyComputed { get; protected set; }
+
+  // prevent external instantiation
+  protected Model() { }
+}
+
+// make ModelManager inherit Model to manage states,
+// also implement IStateManager to use extension methods
+public class ModelManager : Model, IStateManager {
+  public ModelManager() {
+    // you can use responsive containers as the state,
+    // you can also use your custom classes as long as the interface is implemented
+    this.Count = this.SafeAdd(new Watch<int>(0));
+    this.List = this.SafeAddList(new WatchList<int>());
+    this.Dictionary = this.SafeAddDictionary(new WatchDictionary<string, int>());
+    // there is no SafeAddArray/IArrayState
+    this.Array = this.SafeAddList(new WatchArray<bool>(10));
+
+    // we also have shorthand methods for the above
+    this.Count = this.Add(0); // use Watch
+    this.List = this.AddList<int>(); // use WatchList
+    this.Array = this.AddArray<bool>(10); // use WatchArray
+    this.Dictionary = this.AddDictionary<string, int>(); // use WatchDictionary
+
+    // you can still use computed values
+    this.Computed = new Computed<int>(() => this.Count.Value * 2).Watch(this.Count);
+    this.LazyComputed = new LazyComputed<int>(() => this.Count.Value * 2).Watch(this.Count);
+  }
+}
+
+public class ModelAppEntry : Entry {
+  void Awake() {
+    var cb = new CommandBus();
+    this.Add<ICommandBus>(cb);
+
+    // register readonly model to app
+    var model = new ModelManager();
+    this.Add<Model>(model);
+
+    // update model through commands
+    cb.Add<SimpleCommand>(() => {
+      // use commit to update value type's value
+      model.Commit(model.Count, 123);
+
+      // commits can be cascaded
+      model.Commit(model.Count, 123).Commit(model.Count, 456);
+
+      // for collections, you can use Commit or Apply
+      model.Apply(model.List, (list) => {
+        // if you use Apply,
+        // every write action will trigger the change event
+        list.Add(1);
+        list.Add(2);
+      }).Commit(model.List, (list) => {
+        // if you use Commit,
+        // the change event will only be triggered once
+        list.Add(3);
+        list.Add(4);
+      });
+    });
+  }
+}
+
+public class ModelApp : CBC {
+  void Start() {
+    var cb = this.Get<ICommandBus>();
+    // get readonly model from app
+    var model = this.Get<Model>();
+
+    // watch model for changes
+    model.List.AddListener((l) => print(l.Count));
+
+    // check model value
+    this.onUpdate.AddListener(() => print(model.Count.Value));
+
+    // you can't update model directly
+    // but you can use commands to update model
+    cb.Push<SimpleCommand>();
+  }
+}
+```
+
 ### RemoveListener on Destroy
 
 ```cs
@@ -408,54 +531,6 @@ public class RemoveListenerApp : CBC {
   }
 }
 ```
-
-### CommandBus
-
-Though you can modify your `Model` in any place, we recommend you to use `CommandBus` to modify your `Model` in a more centralized way.
-
-```cs
-public record SimpleCommand { }
-public record ComplexCommand(int a, int b);
-
-public class CommandBusApp : Entry {
-  void Awake() {
-    // first, create a command repo
-    var repo = new CommandRepo();
-    // register commands
-    repo.Add<SimpleCommand>(() => print(1));
-    repo.Add<ComplexCommand>((e) => print(e.a));
-    // register command bus into app
-    this.Add<ICommandBus>(new CommandBus(repo));
-
-    // there is an IEventBus in the CommandRepo
-    // so you can use custom event bus
-    new CommandRepo(new DebugEventBus(name: "DebugCommandBus"));
-
-    // re-use existing command with out variable
-    repo.Add<SimpleCommand>(out var named, () => print(1));
-    repo.Add<ComplexCommand>(() => named.Invoke());
-
-    // if you are a one-liner
-    this.Add<ICommandBus>(new CommandBus(new CommandRepo().Add<SimpleCommand>(out var l1, () => {
-      print(1);
-    }).Add<ComplexCommand>((e) => {
-      l1.Invoke();
-      print(e.a);
-    })));
-  }
-}
-```
-
-Thus, you can separate your game logics in the `CommandRepo` from the views in `CBC`. If you modify your view in `CBC` you can still reuse your logics in `CommandRepo`.
-
-The data flow should be like:
-
-1. Capture input/physics/other events in `CBC`.
-2. Push commands into command bus in `CBC`.
-3. Execute game logics in commands, change model, trigger events, etc.
-4. Watch model/events in `CBC`, update views.
-
-> This is inspired by [QFramework](https://github.com/liangxiegame/QFramework)'s command system.
 
 ## Related
 
