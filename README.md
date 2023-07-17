@@ -8,6 +8,10 @@ An experimental Unity3D framework which can boost your development speed several
 
 _Progressive, responsive, decoupled, and functional._
 
+## Architecture Overview
+
+![architecture](img/architecture.png)
+
 ## Installation
 
 Add package from git URL:
@@ -273,14 +277,14 @@ public class EventBusApp : Entry {
 
     // you can define wrappers to proxy events with other functionality,
     // we have predefined DebugEventBus to print the event name and parameters.
-    this.Add<IEventBus>(new DebugEventBus(new EventBus(), DebugEventBusMode.Invoke));
+    this.Add<IEventBus>(new DebugEventBus(new EventBus(), InterceptEventBusMode.Invoke));
     // the default inner bus is EventBus, and the default mode is Invoke,
     // so you can omit them.
     this.Add<IEventBus>(new DebugEventBus());
     // you can also use your own event bus
     this.Add<IEventBus>(new DebugEventBus(new MyEventBus()));
     // or change the mode use keyword args
-    this.Add<IEventBus>(new DebugEventBus(mode: DebugEventBusMode.AddListener));
+    this.Add<IEventBus>(new DebugEventBus(mode: InterceptEventBusMode.AddListener));
 
     // we also have predefined DelayedEventBus to delay the event invocation
     this.Add<IEventBus>(new DelayedEventBus(new EventBus()));
@@ -528,6 +532,80 @@ public class RemoveListenerApp : CBC {
     // so if you plan to destroy the script before destroying the game object,
     // maybe you also need to destroy the listener too.
     this.Watch(this.onUpdate, () => print(this));
+  }
+}
+```
+
+### Put Them Together
+
+Finally, keep the architecture diagram in mind, and put all the pieces together.
+
+![architecture](img/architecture.png)
+
+```cs
+using DT.UniStart;
+using UnityEngine;
+
+namespace Project {
+  public class Model {
+    // store states in readonly model
+    public IState<int> Count { get; protected set; }
+    // prevent external instantiation
+    protected Model() { }
+  }
+
+  public class ModelManager : Model, IStateManager {
+    public ModelManager() {
+      // init states
+      this.Count = this.Add(0);
+    }
+  }
+
+  // define commands & events
+  public record SomeCommand(int a, int b);
+  public record SomeEvent(int a, int b);
+
+  // attach the entry script to the root game object
+  public class App : Entry {
+    void Awake() {
+      // register context
+      var eb = this.Add<IEventBus>(new DebugEventBus());
+      var model = new ModelManager();
+      this.Add<Model>(model);
+      var cb = new CommandBus();
+      this.Add<ICommandBus>(cb);
+
+      // register commands
+      cb.Add<SomeCommand>((e) => {
+        // update model in commands
+        model.Commit(model.Count, e.a + e.b);
+        // publish event to controllers
+        eb.Invoke(new SomeEvent(e.a, e.b));
+      });
+    }
+  }
+
+  // attach the controller script to other game object
+  public class Controller : CBC {
+    void Start() {
+      // get context
+      var eb = this.Get<IEventBus>();
+      var model = this.Get<Model>();
+      var cb = this.Get<ICommandBus>();
+
+      // update view when model changes
+      // or when events are published
+      this.Watch(model.Count, (v) => print(v));
+      this.Watch(eb, (SomeEvent e) => print(e));
+
+      // use composable behaviour's update event
+      this.onUpdate.AddListener(() => {
+        if (Input.GetKeyDown(KeyCode.Space)) {
+          // send commands
+          cb.Push(new SomeCommand(1, 2));
+        }
+      });
+    }
   }
 }
 ```
