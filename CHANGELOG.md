@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v9.0.0
+
+- **_Breaking Change_**: rewrite `IState/IStateManager`.
+  - Remove `ICommittableList/ICommittableDictionary/IWritableState/IWritableListState/IWritableDictionaryState/IStateCommitter`.
+  - Rewrite `IStateManager`.
+
 ## v8.0.0
 
 - **_Breaking Change_**: remove `IOnceWatchable`, use `IWatchable` instead.
