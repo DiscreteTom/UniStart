@@ -205,7 +205,7 @@ public class EntryApp : Entry {
 
     // Add an existing instance to the app.
     // In addition, Add will return the instance.
-    var model = this.Add(new ModelManager());
+    var model = this.Add(new MyModel());
 
     // Add an existing instance to the app
     // but register it as an interface instead of a class.
@@ -311,7 +311,9 @@ Besides, there are 2 base interface of `IEventBus`: `IEventListener` and `IEvent
 `EventBus` lets you add listeners anywhere, but you may have some pre-defined `Commands` which should be listened centrally. `CommandBus` is designed for this.
 
 ```cs
-public record SimpleCommand { }
+using DT.UniStart;
+
+public record SimpleCommand;
 public record ComplexCommand(int a, int b);
 
 public class CommandBusEntry : Entry {
@@ -412,72 +414,72 @@ Unlike those responsive containers, we don't want the state to be changed by oth
 ```cs
 public class Model {
   // state is readonly and watchable
-  public IState<int> Count { get; protected set; }
-  public IListState<int> List { get; protected set; }
-  public IDictionaryState<string, int> Dictionary { get; protected set; }
-  public IListState<bool> Array { get; protected set; }
+  public IState<int> count { get; protected set; }
+  public IListState<int> list { get; protected set; }
+  public IDictionaryState<string, int> dict { get; protected set; }
+  // there is no IArrayState, use IListState instead
+  public IListState<bool> array { get; protected set; }
 
-  public Computed<int> Computed { get; protected set; }
-  public LazyComputed<int> LazyComputed { get; protected set; }
+  // computed values are also readonly and watchable
+  public Computed<int> computed { get; protected set; }
+  public LazyComputed<int> lazyComputed { get; protected set; }
 
   // prevent external instantiation
   protected Model() { }
 }
 
-// make ModelManager inherit Model to manage states,
+// make ModelManager inherit Model to init states,
 // also implement IStateManager to use extension methods
 public class ModelManager : Model, IStateManager {
-  public ModelManager() {
+  public ModelManager(IWritableCommandBus cb, IEventInvoker eb) {
     // you can use responsive containers as the state,
-    // you can also use your custom classes as long as the interface is implemented
-    this.Count = this.SafeAdd(new Watch<int>(0));
-    this.List = this.SafeAddList(new WatchList<int>());
-    this.Dictionary = this.SafeAddDictionary(new WatchDictionary<string, int>());
-    // there is no SafeAddArray/IArrayState
-    this.Array = this.SafeAddList(new WatchArray<bool>(10));
+    // you can also use your custom classes as long as the state interface is implemented
+    this.count = new Watch<int>(0);
+    this.list = new WatchList<int>();
 
-    // we also have shorthand methods for the above
-    this.Count = this.Add(0); // use Watch
-    this.List = this.AddList<int>(); // use WatchList
-    this.Array = this.AddArray<bool>(10); // use WatchArray
-    this.Dictionary = this.AddDictionary<string, int>(); // use WatchDictionary
+    // when you assign values to states, they are readonly,
+    // if you want to modify states in commands,
+    // you need to use the responsive containers directly
+    var count = new Watch<int>(0); // this is writable
+    cb.Add<SimpleCommand>(() => {
+      // you can update state values in commands
+      count.Value = 123;
+    });
+    this.count = count; // make it readonly
 
-    // you can still use computed values
-    this.Computed = new Computed<int>(() => this.Count.Value * 2).Watch(this.Count);
-    this.LazyComputed = new LazyComputed<int>(() => this.Count.Value * 2).Watch(this.Count);
+    // we have helper methods for you,
+    // which can assign values for states,
+    // and echo the responsive containers using out parameters
+    this.count = this.Add(out count, 0);
+    this.list = this.AddList<int>(out var list);
+    this.array = this.AddArray<bool>(out var array, 1);
+    this.dict = this.AddDictionary<string, int>(out var dict);
+    // non-echoed methods and parameter-reversed methods are also available
+    this.count = this.Add(0); // non-echoed
+    this.count = this.Add(0, out count); // parameter-reversed
+
+    // now you can update states in commands
+    cb.Add<SimpleCommand>(() => {
+      list.Add(1); // make changes
+      eb.Invoke<EventWithoutParams>(); // publish events
+      cb.Push<SimpleCommand>(); // call other commands
+    });
+
+    // computed values are already readonly and watchable,
+    // you can use them directly
+    this.computed = new Computed<int>(() => this.count.Value * 2).Watch(this.count);
+    this.lazyComputed = new LazyComputed<int>(() => this.count.Value * 2).Watch(this.count);
   }
 }
 
 public class ModelAppEntry : Entry {
   void Awake() {
     var cb = new CommandBus();
+    var eb = new EventBus();
+    var model = new ModelManager(cb, eb); // writable model
+
     this.Add<ICommandBus>(cb);
-
-    // register readonly model to app
-    var model = new ModelManager();
-    this.Add<Model>(model);
-
-    // update model through commands
-    cb.Add<SimpleCommand>(() => {
-      // use commit to update value type's value
-      model.Commit(model.Count, 123);
-
-      // commits can be cascaded
-      model.Commit(model.Count, 123).Commit(model.Count, 456);
-
-      // for collections, you can use Commit or Apply
-      model.Apply(model.List, (list) => {
-        // if you use Apply,
-        // every write action will trigger the change event
-        list.Add(1);
-        list.Add(2);
-      }).Commit(model.List, (list) => {
-        // if you use Commit,
-        // the change event will only be triggered once
-        list.Add(3);
-        list.Add(4);
-      });
-    });
+    this.Add<Model>(model); // register readonly model to app
   }
 }
 
@@ -488,10 +490,10 @@ public class ModelApp : CBC {
     var model = this.Get<Model>();
 
     // watch model for changes
-    model.List.AddListener((l) => print(l.Count));
+    model.list.AddListener((l) => print(l.Count));
 
     // check model value
-    this.onUpdate.AddListener(() => print(model.Count.Value));
+    this.onUpdate.AddListener(() => print(model.count.Value));
 
     // you can't update model directly
     // but you can use commands to update model
@@ -549,39 +551,45 @@ using UnityEngine;
 namespace Project {
   public class Model {
     // store states in readonly model
-    public IState<int> Count { get; protected set; }
+    public IState<int> count { get; protected set; }
     // prevent external instantiation
     protected Model() { }
   }
 
   public class ModelManager : Model, IStateManager {
-    public ModelManager() {
-      // init states
-      this.Count = this.Add(0);
+    public ModelManager(IWritableCommandBus cb, IEventInvoker eb) {
+      // init states, get writable responsive containers
+      this.count = this.Add(0, out var count);
+
+      // register model-related commands
+      cb.Add<SomeCommand>((e) => {
+        // update model in commands
+        count.Value = e.a + e.b;
+        // publish event to controllers
+        eb.Invoke(new SomeEvent(e.a, e.b));
+        // call other commands
+        cb.Push<SimpleCommand>();
+      });
     }
   }
 
   // define commands & events
+  public record SimpleCommand;
   public record SomeCommand(int a, int b);
   public record SomeEvent(int a, int b);
 
   // attach the entry script to the root game object
   public class App : Entry {
     void Awake() {
-      // register context
-      var eb = this.Add<IEventBus>(new DebugEventBus());
-      var model = new ModelManager();
-      this.Add<Model>(model);
+      // init context
+      var eb = new EventBus();
       var cb = new CommandBus();
-      this.Add<ICommandBus>(cb);
+      var model = new ModelManager(cb, eb);
 
-      // register commands
-      cb.Add<SomeCommand>((e) => {
-        // update model in commands
-        model.Commit(model.Count, e.a + e.b);
-        // publish event to controllers
-        eb.Invoke(new SomeEvent(e.a, e.b));
-      });
+      // register context
+      this.Add<ICommandBus>(cb);
+      this.Add<IEventListener>(eb);
+      this.Add<Model>(model);
     }
   }
 
@@ -589,16 +597,19 @@ namespace Project {
   public class Controller : CBC {
     void Start() {
       // get context
-      var eb = this.Get<IEventBus>();
-      var model = this.Get<Model>();
       var cb = this.Get<ICommandBus>();
+      var eb = this.Get<IEventListener>();
+      var model = this.Get<Model>();
 
       // update view when model changes
       // or when events are published
-      this.Watch(model.Count, (v) => print(v));
+      this.Watch(model.count, (v) => print(v));
       this.Watch(eb, (SomeEvent e) => print(e));
 
-      // use composable behaviour's update event
+      // read model values each frame
+      this.onUpdate.AddListener(() => print(model.count.Value));
+
+      // update model when user input
       this.onUpdate.AddListener(() => {
         if (Input.GetKeyDown(KeyCode.Space)) {
           // send commands
