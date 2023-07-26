@@ -23,6 +23,13 @@ namespace DT.UniStart {
   public interface IStateManager { }
 
   public static class IStateManagerExtension {
+    public static IState<T> Add<T>(this IStateManager manager, T value) => new Watch<T>(value);
+    public static IListState<T> AddArray<T>(this IStateManager manager, int count) => new WatchArray<T>(count);
+    public static IListState<T> AddArray<T>(this IStateManager manager, T[] value) => new WatchArray<T>(value);
+    public static IListState<T> AddList<T>(this IStateManager manager) => new WatchList<T>();
+    public static IListState<T> AddList<T>(this IStateManager manager, List<T> value) => new WatchList<T>(value);
+    public static IDictionaryState<K, V> AddDictionary<K, V>(this IStateManager manager) => new WatchDictionary<K, V>();
+    public static IDictionaryState<K, V> AddDictionary<K, V>(this IStateManager manager, Dictionary<K, V> value) => new WatchDictionary<K, V>(value);
     public static IState<T> Add<T>(this IStateManager manager, out Watch<T> echoed, T value) {
       var state = new Watch<T>(value);
       echoed = state;
@@ -58,6 +65,13 @@ namespace DT.UniStart {
       echoed = state;
       return state;
     }
+    #region Reversed
+    public static IState<T> Add<T>(this IStateManager manager, T value, out Watch<T> echoed) => manager.Add(out echoed, value);
+    public static IListState<T> AddArray<T>(this IStateManager manager, int count, out WatchArray<T> echoed) => manager.AddArray(out echoed, count);
+    public static IListState<T> AddArray<T>(this IStateManager manager, T[] value, out WatchArray<T> echoed) => manager.AddArray(out echoed, value);
+    public static IListState<T> AddList<T>(this IStateManager manager, List<T> value, out WatchList<T> echoed) => manager.AddList(out echoed, value);
+    public static IDictionaryState<K, V> AddDictionary<K, V>(this IStateManager manager, Dictionary<K, V> value, out WatchDictionary<K, V> echoed) => manager.AddDictionary(out echoed, value);
+    #endregion
   }
   #endregion
 }
