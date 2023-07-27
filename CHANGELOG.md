@@ -6,6 +6,7 @@
   - Remove `ICommittableList/ICommittableDictionary/IWritableState/IWritableListState/IWritableDictionaryState/IStateCommitter`.
   - Rewrite `IStateManager`.
 - Feat: add `Timer/RepeatedTimer/TimerManager`.
+- Note: add a sample `UniSnake`.
 
 ## v8.0.0
 

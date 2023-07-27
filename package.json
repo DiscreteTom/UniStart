@@ -13,5 +13,12 @@
     "url": "https://github.com/DiscreteTom"
   },
   "changelogUrl": "https://github.com/DiscreteTom/UniStart/blob/main/CHANGELOG.md",
-  "documentationUrl": "https://github.com/DiscreteTom/UniStart"
+  "documentationUrl": "https://github.com/DiscreteTom/UniStart",
+  "samples": [
+    {
+      "displayName": "UniSnake",
+      "description": "A sample snake game.",
+      "path": "Samples~/UniSnake"
+    }
+  ]
 }
