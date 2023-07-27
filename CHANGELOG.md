@@ -5,6 +5,7 @@
 - **_Breaking Change_**: rewrite `IState/IStateManager`.
   - Remove `ICommittableList/ICommittableDictionary/IWritableState/IWritableListState/IWritableDictionaryState/IStateCommitter`.
   - Rewrite `IStateManager`.
+- Feat: add `Timer/RepeatedTimer/TimerManager`.
 
 ## v8.0.0
 
