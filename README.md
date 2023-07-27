@@ -621,9 +621,73 @@ namespace Project {
 }
 ```
 
+## Other Utils
+
+### Timer Manager
+
+Though you can use `MonoBehaviour.Invoke/InvokeRepeating` to realize timers, it's not easy to manage them (e.g. stop them or check the progress). `TimerManager` is designed for this.
+
+```cs
+using DT.UniStart;
+using UnityEngine;
+
+public class TimerApp : Entry {
+  void Awake() {
+    // create a timer with 10s duration
+    var timer = new Timer(10);
+    // update the timer every frame
+    this.onUpdate.AddListener(() => timer.Update(Time.deltaTime));
+    // stop/start the timer
+    // once stopped, the timer will not update
+    timer.Stop();
+    timer.Start();
+    // check timer status
+    print(timer.duration);
+    print(timer.elapsed);
+    print(timer.progress);
+    print(timer.finished);
+    print(timer.stopped);
+    // reset the timer
+    timer.Reset();
+    // register a callback when the timer finishes
+    timer.onFinished.AddListener(() => print("Timer finished!"));
+
+    // you can also create a repeated timer
+    // which is a subclass of Timer.
+    // when the repeated timer finishes, it will restart itself
+    var repeatedTimer = new RepeatedTimer(1);
+
+    // however, the easiest way to use timer is to use TimerManager
+    // which will update all timers automatically.
+    // you can mount the timer manager to the app entry to drive timers
+    new TimerManager().Mount(this);
+    // shorthand
+    var tm = new TimerManager(this);
+    // create timer
+    tm.Add(10);
+    tm.AddRepeated(10);
+    // with callback
+    tm.Add(10, () => print("Timer finished!"));
+    // remove timer when `this` is destroyed
+    tm.Add(this, 10, () => print("Timer finished!"));
+  }
+}
+```
+
+### Extensions
+
+See [this](https://github.com/DiscreteTom/UniStart/tree/main/Runtime/Extensions) folder.
+
+### Static Utils
+
+See [this](https://github.com/DiscreteTom/UniStart/tree/main/Runtime/Utils) folder.
+
+## Sample Game
+
+See [UniSnake](https://github.com/DiscreteTom/UniStart/tree/main/Samples~/UniSnake). You can also import this sample via Unity3D's package manager.
+
 ## Related
 
-- [CannonVsMosquito](https://github.com/DiscreteTom/CannonVsMosquito) - A demo game.
 - [QFramework](https://github.com/liangxiegame/QFramework) - Which inspired this project.
 - [jackutea](https://github.com/jackutea) - Who helped me a lot.
 
