@@ -8,16 +8,16 @@ namespace DT.UniStart {
       this.bus = bus ?? new EventBus();
     }
 
-    public UnityAction Add<T>(UnityAction command) {
+    public UnityAction Add<T>(UnityAction command) where T : ICommand {
       this.bus.AddListener<T>(command);
       return command;
     }
-    public UnityAction<T> Add<T>(UnityAction<T> command) {
+    public UnityAction<T> Add<T>(UnityAction<T> command) where T : ICommand {
       this.bus.AddListener(command);
       return command;
     }
 
-    public void Push<T>(T arg) => this.bus.Invoke(arg);
+    public void Push<T>(T arg) where T : ICommand => this.bus.Invoke(arg);
   }
 
   // helper classes

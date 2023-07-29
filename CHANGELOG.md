@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v10.0.0
+
+- **_Breaking Change_**: add `ICommand/IEvent` for `CommandBus/EventBus` family for better intellisense. Fix #20.
+  - All commands and events should implement `ICommand/IEvent`.
+
 ## v9.0.0
 
 - **_Breaking Change_**: rewrite `IState/IStateManager`.

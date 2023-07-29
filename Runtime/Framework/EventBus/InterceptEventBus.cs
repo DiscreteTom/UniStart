@@ -51,39 +51,39 @@ namespace DT.UniStart {
       return this;
     }
 
-    public UnityAction AddListener<T>(UnityAction action) {
+    public UnityAction AddListener<T>(UnityAction action) where T : IEvent {
       if (this.isAddListenerModeEnabled) this.onAddListener.Invoke(typeof(T), () => this.bus.AddListener<T>(action));
       else this.bus.AddListener<T>(action);
       return action;
     }
-    public UnityAction<T> AddListener<T>(UnityAction<T> action) {
+    public UnityAction<T> AddListener<T>(UnityAction<T> action) where T : IEvent {
       if (this.isAddListenerModeEnabled) this.onAddListener.Invoke(typeof(T), () => this.bus.AddListener(action));
       else this.bus.AddListener(action);
       return action;
     }
-    public UnityAction AddOnceListener<T>(UnityAction action) {
+    public UnityAction AddOnceListener<T>(UnityAction action) where T : IEvent {
       if (this.isAddListenerModeEnabled) this.onAddListener.Invoke(typeof(T), () => this.bus.AddOnceListener<T>(action));
       else this.bus.AddOnceListener<T>(action);
       return action;
     }
-    public UnityAction<T> AddOnceListener<T>(UnityAction<T> action) {
+    public UnityAction<T> AddOnceListener<T>(UnityAction<T> action) where T : IEvent {
       if (this.isAddListenerModeEnabled) this.onAddListener.Invoke(typeof(T), () => this.bus.AddOnceListener(action));
       else this.bus.AddOnceListener(action);
       return action;
     }
 
-    public UnityAction RemoveListener<T>(UnityAction action) {
+    public UnityAction RemoveListener<T>(UnityAction action) where T : IEvent {
       if (this.isRemoveListenerModeEnabled) this.onRemoveListener.Invoke(typeof(T), () => this.bus.RemoveListener<T>(action));
       else this.bus.RemoveListener<T>(action);
       return action;
     }
-    public UnityAction<T> RemoveListener<T>(UnityAction<T> action) {
+    public UnityAction<T> RemoveListener<T>(UnityAction<T> action) where T : IEvent {
       if (this.isRemoveListenerModeEnabled) this.onRemoveListener.Invoke(typeof(T), () => this.bus.RemoveListener(action));
       else this.bus.RemoveListener(action);
       return action;
     }
 
-    public void Invoke<T>(T e) {
+    public void Invoke<T>(T e) where T : IEvent {
       if (this.isInvokeModeEnabled) this.onInvoke.Invoke(typeof(T), e, () => this.bus.Invoke(e));
       else this.bus.Invoke(e);
     }
