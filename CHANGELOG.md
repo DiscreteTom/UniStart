@@ -4,6 +4,7 @@
 
 - **_Breaking Change_**: add `ICommand/IEvent` for `CommandBus/EventBus` family for better intellisense. Fix #20.
   - All commands and events should implement `ICommand/IEvent`.
+- Feat: customizable remover for `ComposableBehaviour.Watch`. Fix #23.
 
 ## v9.0.0
 
