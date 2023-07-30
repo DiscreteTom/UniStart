@@ -120,4 +120,113 @@ namespace DT.UniStart {
     }
     #endregion
   }
+
+  public static class IUnityEventExtension {
+    #region Echoed AddListener
+    public static UnityAction AddListener(this UnityEvent self, out UnityAction named, UnityAction f) {
+      named = f;
+      self.AddListener(f);
+      return f;
+    }
+    public static UnityAction<T0> AddListener<T0>(this UnityEvent<T0> self, out UnityAction<T0> named, UnityAction<T0> f) {
+      named = f;
+      self.AddListener(f);
+      return f;
+    }
+    public static UnityAction<T0, T1> AddListener<T0, T1>(this UnityEvent<T0, T1> self, out UnityAction<T0, T1> named, UnityAction<T0, T1> f) {
+      named = f;
+      self.AddListener(f);
+      return f;
+    }
+    public static UnityAction<T0, T1, T2> AddListener<T0, T1, T2>(this UnityEvent<T0, T1, T2> self, out UnityAction<T0, T1, T2> named, UnityAction<T0, T1, T2> f) {
+      named = f;
+      self.AddListener(f);
+      return f;
+    }
+    public static UnityAction<T0, T1, T2, T3> AddListener<T0, T1, T2, T3>(this UnityEvent<T0, T1, T2, T3> self, out UnityAction<T0, T1, T2, T3> named, UnityAction<T0, T1, T2, T3> f) {
+      named = f;
+      self.AddListener(f);
+      return f;
+    }
+    #endregion
+
+    #region Echoed RemoveListener
+    public static UnityAction RemoveListener(this UnityEvent self, out UnityAction named, UnityAction f) {
+      named = f;
+      self.RemoveListener(f);
+      return f;
+    }
+    public static UnityAction<T0> RemoveListener<T0>(this UnityEvent<T0> self, out UnityAction<T0> named, UnityAction<T0> f) {
+      named = f;
+      self.RemoveListener(f);
+      return f;
+    }
+    public static UnityAction<T0, T1> RemoveListener<T0, T1>(this UnityEvent<T0, T1> self, out UnityAction<T0, T1> named, UnityAction<T0, T1> f) {
+      named = f;
+      self.RemoveListener(f);
+      return f;
+    }
+    public static UnityAction<T0, T1, T2> RemoveListener<T0, T1, T2>(this UnityEvent<T0, T1, T2> self, out UnityAction<T0, T1, T2> named, UnityAction<T0, T1, T2> f) {
+      named = f;
+      self.RemoveListener(f);
+      return f;
+    }
+    public static UnityAction<T0, T1, T2, T3> RemoveListener<T0, T1, T2, T3>(this UnityEvent<T0, T1, T2, T3> self, out UnityAction<T0, T1, T2, T3> named, UnityAction<T0, T1, T2, T3> f) {
+      named = f;
+      self.RemoveListener(f);
+      return f;
+    }
+    #endregion
+
+    #region AddOnceListener
+    public static UnityAction AddOnceListener(this UnityEvent self, UnityAction f) {
+      self.AddListener(f);
+      self.AddListener(() => self.RemoveListener(f));
+      return f;
+    }
+    public static UnityAction<T0> AddOnceListener<T0>(this UnityEvent<T0> self, UnityAction<T0> f) {
+      self.AddListener(f);
+      self.AddListener((_) => self.RemoveListener(f));
+      return f;
+    }
+    public static UnityAction<T0, T1> AddOnceListener<T0, T1>(this UnityEvent<T0, T1> self, UnityAction<T0, T1> f) {
+      self.AddListener(f);
+      self.AddListener((_, __) => self.RemoveListener(f));
+      return f;
+    }
+    public static UnityAction<T0, T1, T2> AddOnceListener<T0, T1, T2>(this UnityEvent<T0, T1, T2> self, UnityAction<T0, T1, T2> f) {
+      self.AddListener(f);
+      self.AddListener((_, __, ___) => self.RemoveListener(f));
+      return f;
+    }
+    public static UnityAction<T0, T1, T2, T3> AddOnceListener<T0, T1, T2, T3>(this UnityEvent<T0, T1, T2, T3> self, UnityAction<T0, T1, T2, T3> f) {
+      self.AddListener(f);
+      self.AddListener((_, __, ___, ____) => self.RemoveListener(f));
+      return f;
+    }
+    #endregion
+
+    #region Echoed AddOnceListener
+    public static UnityAction AddOnceListener(this UnityEvent self, out UnityAction named, UnityAction f) {
+      named = f;
+      return self.AddOnceListener(f);
+    }
+    public static UnityAction<T0> AddOnceListener<T0>(this UnityEvent<T0> self, out UnityAction<T0> named, UnityAction<T0> f) {
+      named = f;
+      return self.AddOnceListener(f);
+    }
+    public static UnityAction<T0, T1> AddOnceListener<T0, T1>(this UnityEvent<T0, T1> self, out UnityAction<T0, T1> named, UnityAction<T0, T1> f) {
+      named = f;
+      return self.AddOnceListener(f);
+    }
+    public static UnityAction<T0, T1, T2> AddOnceListener<T0, T1, T2>(this UnityEvent<T0, T1, T2> self, out UnityAction<T0, T1, T2> named, UnityAction<T0, T1, T2> f) {
+      named = f;
+      return self.AddOnceListener(f);
+    }
+    public static UnityAction<T0, T1, T2, T3> AddOnceListener<T0, T1, T2, T3>(this UnityEvent<T0, T1, T2, T3> self, out UnityAction<T0, T1, T2, T3> named, UnityAction<T0, T1, T2, T3> f) {
+      named = f;
+      return self.AddOnceListener(f);
+    }
+    #endregion
+  }
 }
