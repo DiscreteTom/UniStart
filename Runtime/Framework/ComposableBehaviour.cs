@@ -252,7 +252,7 @@ namespace DT.UniStart {
     public static UnityAction<T0, T1> Watch<T0, T1>(this ComposableBehaviour self, out UnityAction<T0, T1> named, IWatchable<T0, T1> watchable, UnityAction<T0, T1> action) => self.Watch(out named, watchable, self.onDestroy, action);
     public static UnityAction<T0, T1, T2> Watch<T0, T1, T2>(this ComposableBehaviour self, out UnityAction<T0, T1, T2> named, IWatchable<T0, T1, T2> watchable, UnityAction<T0, T1, T2> action) => self.Watch(out named, watchable, self.onDestroy, action);
     public static UnityAction<T0, T1, T2, T3> Watch<T0, T1, T2, T3>(this ComposableBehaviour self, out UnityAction<T0, T1, T2, T3> named, IWatchable<T0, T1, T2, T3> watchable, UnityAction<T0, T1, T2, T3> action) => self.Watch(out named, watchable, self.onDestroy, action);
-    // echoed OnceWatch
+    // echoed WatchOnce
     public static UnityAction WatchOnce(this ComposableBehaviour self, out UnityAction named, IWatchable watchable, UnityAction action) => self.WatchOnce(out named, watchable, self.onDestroy, action);
     public static UnityAction<T0> WatchOnce<T0>(this ComposableBehaviour self, out UnityAction<T0> named, IWatchable<T0> watchable, UnityAction<T0> action) => self.WatchOnce(out named, watchable, self.onDestroy, action);
     public static UnityAction<T0, T1> WatchOnce<T0, T1>(this ComposableBehaviour self, out UnityAction<T0, T1> named, IWatchable<T0, T1> watchable, UnityAction<T0, T1> action) => self.WatchOnce(out named, watchable, self.onDestroy, action);
@@ -428,7 +428,7 @@ namespace DT.UniStart {
     public static Action<T0, T1> Watch<T0, T1>(this ComposableBehaviour self, out Action<T0, T1> named, Action<T0, T1> target, Action<T0, T1> action) => self.Watch(out named, target, self.onDestroy, action);
     public static Action<T0, T1, T2> Watch<T0, T1, T2>(this ComposableBehaviour self, out Action<T0, T1, T2> named, Action<T0, T1, T2> target, Action<T0, T1, T2> action) => self.Watch(out named, target, self.onDestroy, action);
     public static Action<T0, T1, T2, T3> Watch<T0, T1, T2, T3>(this ComposableBehaviour self, out Action<T0, T1, T2, T3> named, Action<T0, T1, T2, T3> target, Action<T0, T1, T2, T3> action) => self.Watch(out named, target, self.onDestroy, action);
-    // echoed OnceWatch
+    // echoed WatchOnce
     public static Action WatchOnce(this ComposableBehaviour self, out Action named, Action target, Action action) => self.WatchOnce(out named, target, self.onDestroy, action);
     public static Action<T0> WatchOnce<T0>(this ComposableBehaviour self, out Action<T0> named, Action<T0> target, Action<T0> action) => self.WatchOnce(out named, target, self.onDestroy, action);
     public static Action<T0, T1> WatchOnce<T0, T1>(this ComposableBehaviour self, out Action<T0, T1> named, Action<T0, T1> target, Action<T0, T1> action) => self.WatchOnce(out named, target, self.onDestroy, action);
