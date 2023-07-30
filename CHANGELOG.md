@@ -4,10 +4,15 @@
 
 - **_Breaking Change_**: add `ICommand/IEvent` for `CommandBus/EventBus` family for better intellisense. Fix #20.
   - All commands and events should implement `ICommand/IEvent`.
+- **_Breaking Change_**: rewrite `AdvancedEvent` family.
+  - Fix: generic `AdvancedEvent` can no longer call `Invoke` without params.
+  - Fix: once listeners will be cleared correctly.
+  - Note: use `IWatchable.RemoveOnceListener` to remove once listeners.
 - Feat: more `ArrayExtension` methods. Fix #21.
-- Feat: `ComposableBehaviour.Watch` support `Action`. Fix #22.
+- Feat: `ComposableBehaviour.Watch` support `Action/UnityEvent`. Fix #22.
 - Feat: customizable remover for `ComposableBehaviour.Watch`. Fix #23.
 - Feat: add `IListExtension.Fill`.
+- Feat: add `UnityEventExtension`.
 
 ## v9.0.0
 
