@@ -3,8 +3,8 @@ using UnityEngine.Events;
 
 namespace DT.UniStart {
   public class AdvancedEvent : IWatchable {
-    UnityEvent e;
-    UnityEvent once;
+    UnityEvent e = new UnityEvent();
+    UnityEvent once = new UnityEvent();
     public UnityAction AddListener(UnityAction action) {
       this.e.AddListener(action);
       return action;
