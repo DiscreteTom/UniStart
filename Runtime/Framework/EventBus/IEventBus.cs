@@ -6,10 +6,12 @@ namespace DT.UniStart {
   public interface IEventListener {
     UnityAction AddListener<T>(UnityAction action) where T : IEvent;
     UnityAction<T> AddListener<T>(UnityAction<T> action) where T : IEvent;
-    UnityAction AddOnceListener<T>(UnityAction action) where T : IEvent;
-    UnityAction<T> AddOnceListener<T>(UnityAction<T> action) where T : IEvent;
     UnityAction RemoveListener<T>(UnityAction action) where T : IEvent;
     UnityAction<T> RemoveListener<T>(UnityAction<T> action) where T : IEvent;
+    UnityAction AddOnceListener<T>(UnityAction action) where T : IEvent;
+    UnityAction<T> AddOnceListener<T>(UnityAction<T> action) where T : IEvent;
+    UnityAction RemoveOnceListener<T>(UnityAction action) where T : IEvent;
+    UnityAction<T> RemoveOnceListener<T>(UnityAction<T> action) where T : IEvent;
   }
 
   public static class IEventListenerExtension {
@@ -39,6 +41,15 @@ namespace DT.UniStart {
     public static UnityAction<T> AddOnceListener<T>(this IEventListener self, out UnityAction<T> named, UnityAction<T> action) where T : IEvent {
       named = action;
       return self.AddOnceListener(action);
+    }
+    // echoed RemoveOnceListener
+    public static UnityAction RemoveOnceListener<T>(this IEventListener self, out UnityAction named, UnityAction action) where T : IEvent {
+      named = action;
+      return self.RemoveOnceListener<T>(action);
+    }
+    public static UnityAction<T> RemoveOnceListener<T>(this IEventListener self, out UnityAction<T> named, UnityAction<T> action) where T : IEvent {
+      named = action;
+      return self.RemoveOnceListener(action);
     }
   }
 
