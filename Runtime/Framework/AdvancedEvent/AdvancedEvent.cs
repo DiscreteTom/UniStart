@@ -36,7 +36,7 @@ namespace DT.UniStart {
     }
   }
 
-  public class AdvancedEvent<T0> : IWatchable<T0> {
+  public class AdvancedEvent<T0> : IWatchable, IWatchable<T0> {
     AdvancedEvent e0 = new AdvancedEvent();
     UnityEvent<T0> e = new UnityEvent<T0>();
     UnityEvent<T0> once = new UnityEvent<T0>();
@@ -80,7 +80,7 @@ namespace DT.UniStart {
     }
   }
 
-  public class AdvancedEvent<T0, T1> : IWatchable<T0, T1> {
+  public class AdvancedEvent<T0, T1> : IWatchable, IWatchable<T0, T1> {
     AdvancedEvent e0 = new AdvancedEvent();
     UnityEvent<T0, T1> e = new UnityEvent<T0, T1>();
     UnityEvent<T0, T1> once = new UnityEvent<T0, T1>();
@@ -124,7 +124,7 @@ namespace DT.UniStart {
     }
   }
 
-  public class AdvancedEvent<T0, T1, T2> : IWatchable<T0, T1, T2> {
+  public class AdvancedEvent<T0, T1, T2> : IWatchable, IWatchable<T0, T1, T2> {
     AdvancedEvent e0 = new AdvancedEvent();
     UnityEvent<T0, T1, T2> e = new UnityEvent<T0, T1, T2>();
     UnityEvent<T0, T1, T2> once = new UnityEvent<T0, T1, T2>();
@@ -168,7 +168,7 @@ namespace DT.UniStart {
     }
   }
 
-  public class AdvancedEvent<T0, T1, T2, T3> : IWatchable<T0, T1, T2, T3> {
+  public class AdvancedEvent<T0, T1, T2, T3> : IWatchable, IWatchable<T0, T1, T2, T3> {
     AdvancedEvent e0 = new AdvancedEvent();
     UnityEvent<T0, T1, T2, T3> e = new UnityEvent<T0, T1, T2, T3>();
     UnityEvent<T0, T1, T2, T3> once = new UnityEvent<T0, T1, T2, T3>();
