@@ -7,6 +7,7 @@
 - Feat: more `ArrayExtension` methods. Fix #21.
 - Feat: `ComposableBehaviour.Watch` support `Action`. Fix #22.
 - Feat: customizable remover for `ComposableBehaviour.Watch`. Fix #23.
+- Feat: add `IListExtension.Fill`.
 
 ## v9.0.0
 
