@@ -4,6 +4,7 @@
 
 - **_Breaking Change_**: add `ICommand/IEvent` for `CommandBus/EventBus` family for better intellisense. Fix #20.
   - All commands and events should implement `ICommand/IEvent`.
+- Feat: more `ArrayExtension` methods. Fix #21.
 - Feat: `ComposableBehaviour.Watch` support `Action`. Fix #22.
 - Feat: customizable remover for `ComposableBehaviour.Watch`. Fix #23.
 
