@@ -57,9 +57,8 @@ public class AdvancedEventApp : MonoBehaviour {
     e.AddListener(() => print(1)).Invoke();
 
     // listeners that will only be invoked once
-    e.AddOnceListener((a) => print(a)).Invoke(1);
     var once = e.AddOnceListener(() => print(1));
-    e.RemoveListener(once);
+    e.RemoveOnceListener(once);
   }
 }
 ```
@@ -249,8 +248,8 @@ You can register `EventBus` to app to realize cross-component communication. `Ev
 
 ```cs
 // define your own event types
-public record EventWithoutParams { }
-public record EventWithParams(int a, int b);
+public record EventWithoutParams : IEvent;
+public record EventWithParams(int a, int b) : IEvent;
 
 public class EventBusApp : Entry {
   // Use Awake instead of Start to initialize your app.
@@ -268,7 +267,7 @@ public class EventBusApp : Entry {
     eb.AddListener<EventWithParams>(() => print(1));
     // once listener
     var once = eb.AddOnceListener<EventWithParams>((e) => print(e.b));
-    eb.RemoveListener(once); // remove once listener
+    eb.RemoveOnceListener(once); // remove once listener
 
     // trigger events
     eb.Invoke<EventWithoutParams>();
@@ -311,10 +310,8 @@ Besides, there are 2 base interface of `IEventBus`: `IEventListener` and `IEvent
 `EventBus` lets you add listeners anywhere, but you may have some pre-defined `Commands` which should be listened centrally. `CommandBus` is designed for this.
 
 ```cs
-using DT.UniStart;
-
-public record SimpleCommand;
-public record ComplexCommand(int a, int b);
+public record SimpleCommand : ICommand;
+public record ComplexCommand(int a, int b) : ICommand;
 
 public class CommandBusEntry : Entry {
   void Awake() {
@@ -514,20 +511,30 @@ public class RemoveListenerApp : CBC {
 
     // This function will capture `this` in a closure,
     // we need to remove the listener when the script is destroyed.
-    var cb = model.Count.AddListener((count) => print(this));
-    this.onDestroy.AddListener(() => model.Count.RemoveListener(cb));
+    var cb = model.count.AddListener((count) => print(this));
+    this.onDestroy.AddListener(() => model.count.RemoveListener(cb));
 
     // Helper function. Listener will be removed when the script is destroyed.
-    this.Watch(model.Count, (count) => print(this));
+    this.Watch(model.count, (count) => print(this));
 
     // You can watch other watchable objects.
-    this.Watch(model.List, () => print(this));
+    this.Watch(model.list, () => print(this));
     // Invoke your listener immediately.
-    this.Watch(model.List, () => print(this)).Invoke();
+    this.Watch(model.list, () => print(this)).Invoke();
     // Watch IEventListener/IEventBus
     this.Watch<EventWithParams>(el, () => print(this));
     this.Watch<EventWithParams>(eb, (e) => print(e.a));
     this.Watch(eb, (EventWithParams e) => print(e.a));
+
+    // remove listener on other events
+    this.Watch(model.count, this.onDisable, (count) => print(this));
+
+    // Action/UnityEvent can also be watched.
+    // Action may be used with Input System package,
+    // UnityEvent may be used with Unity3D's UI system.
+    Action a = () => { };
+    this.Watch(a, () => print(this));
+    this.Watch(this.GetComponent<Button>().onClick, () => print(this));
 
     // In addition, composable events are actually standalone components,
     // except onEnable/onDisable and onDestroy,
