@@ -530,11 +530,14 @@ public class RemoveListenerApp : CBC {
     this.Watch(model.count, this.onDisable, (count) => print(this));
 
     // Action/UnityEvent can also be watched.
-    // Action may be used with Input System package,
     // UnityEvent may be used with Unity3D's UI system.
     Action a = () => { };
     this.Watch(a, () => print(this));
     this.Watch(this.GetComponent<Button>().onClick, () => print(this));
+
+    // InputSystem event can also be watched.
+    var input = new PlayerControl();
+    this.Watch(input.Player.Fire, InputActionEventType.Started, (ctx) => print(this));
 
     // In addition, composable events are actually standalone components,
     // except onEnable/onDisable and onDestroy,
