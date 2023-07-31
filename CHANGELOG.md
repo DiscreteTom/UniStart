@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v10.1.0
+
+- Feat: `ComposableBehaviour.Watch` support `InputSystem.InputAction`. Fix 24.
+  - Add `InputActionEventType`.
+
 ## v10.0.0
 
 - **_Breaking Change_**: add `ICommand/IEvent` for `CommandBus/EventBus` family for better intellisense. Fix #20.
