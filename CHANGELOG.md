@@ -3,6 +3,7 @@
 ## v10.2.0
 
 - Feat: add `StepExecutor` family.
+- Feat: add `StateMachine` family.
 
 ## v10.1.0
 
