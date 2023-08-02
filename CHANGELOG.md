@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v10.2.0
+
+- Feat: add `StepExecutor` family.
+
 ## v10.1.0
 
 - Feat: `ComposableBehaviour.Watch` support `InputSystem.InputAction`. Fix 24.
