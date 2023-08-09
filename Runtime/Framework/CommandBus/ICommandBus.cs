@@ -4,6 +4,7 @@ namespace DT.UniStart {
   public interface ICommand : IEvent { }
 
   public interface ICommandRepo {
+    UnityAction Add<T>(UnityAction command) where T : ICommand;
     UnityAction<T> Add<T>(UnityAction<T> command) where T : ICommand;
   }
 

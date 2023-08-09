@@ -10,6 +10,10 @@ namespace DT.UniStart {
       this.dict = new Dictionary<Type, object>();
     }
 
+    public UnityAction AddListener<T>(UnityAction listener) where T : IEvent => (this.dict.GetOrAdd(typeof(T), () => new AdvancedEvent<T>()) as AdvancedEvent<T>).AddListener(listener);
+    public UnityAction RemoveListener<T>(UnityAction listener) where T : IEvent => (this.dict.GetOrDefault(typeof(T)) as AdvancedEvent<T>)?.RemoveListener(listener);
+    public UnityAction AddOnceListener<T>(UnityAction listener) where T : IEvent => (this.dict.GetOrAdd(typeof(T), () => new AdvancedEvent<T>()) as AdvancedEvent<T>).AddOnceListener(listener);
+    public UnityAction RemoveOnceListener<T>(UnityAction listener) where T : IEvent => (this.dict.GetOrDefault(typeof(T)) as AdvancedEvent<T>)?.RemoveOnceListener(listener);
     public UnityAction<T> AddListener<T>(UnityAction<T> listener) where T : IEvent => (this.dict.GetOrAdd(typeof(T), () => new AdvancedEvent<T>()) as AdvancedEvent<T>).AddListener(listener);
     public UnityAction<T> RemoveListener<T>(UnityAction<T> listener) where T : IEvent => (this.dict.GetOrDefault(typeof(T)) as AdvancedEvent<T>)?.RemoveListener(listener);
     public UnityAction<T> AddOnceListener<T>(UnityAction<T> listener) where T : IEvent => (this.dict.GetOrAdd(typeof(T), () => new AdvancedEvent<T>()) as AdvancedEvent<T>).AddOnceListener(listener);

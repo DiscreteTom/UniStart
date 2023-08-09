@@ -4,6 +4,10 @@ namespace DT.UniStart {
   public interface IEvent { }
 
   public interface IEventListener {
+    UnityAction AddListener<T>(UnityAction action) where T : IEvent;
+    UnityAction RemoveListener<T>(UnityAction action) where T : IEvent;
+    UnityAction AddOnceListener<T>(UnityAction action) where T : IEvent;
+    UnityAction RemoveOnceListener<T>(UnityAction action) where T : IEvent;
     UnityAction<T> AddListener<T>(UnityAction<T> action) where T : IEvent;
     UnityAction<T> RemoveListener<T>(UnityAction<T> action) where T : IEvent;
     UnityAction<T> AddOnceListener<T>(UnityAction<T> action) where T : IEvent;
