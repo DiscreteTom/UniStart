@@ -5,6 +5,7 @@
 - **_Breaking Change_**: remove echoed events.
   - `AddListener/RemoveListener/AddOnceListener/RemoveOnceListener` no long have `out` parameter.
 - **_Breaking Change_**: remove reversed functions in `IStateManager`.
+- **_Breaking Change_**: rewrite `onNextUpdate/onNextFixedUpdate/onNextLateUpdate`.
 - Feat: add `StepExecutor` family.
 - Feat: add `StateMachine` family.
 - Feat: add `IEnumState`.

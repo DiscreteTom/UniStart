@@ -37,9 +37,6 @@ namespace DT.UniStart {
     AdvancedEvent onMouseOver { get; }
     AdvancedEvent onMouseUp { get; }
     AdvancedEvent onMouseUpAsButton { get; }
-    AdvancedEvent onNextFixedUpdate { get; }
-    AdvancedEvent onNextLateUpdate { get; }
-    AdvancedEvent onNextUpdate { get; }
     AdvancedEvent<GameObject> onParticleCollision { get; }
     AdvancedEvent onParticleSystemStopped { get; }
     AdvancedEvent onParticleTrigger { get; }
@@ -94,9 +91,6 @@ namespace DT.UniStart {
     public AdvancedEvent onMouseOver => this.GetOrAddComponent<ComposableMouseOver>().@event;
     public AdvancedEvent onMouseUp => this.GetOrAddComponent<ComposableMouseUp>().@event;
     public AdvancedEvent onMouseUpAsButton => this.GetOrAddComponent<ComposableMouseUpAsButton>().@event;
-    public AdvancedEvent onNextFixedUpdate => this.GetOrAddComponent<ComposableNextFixedUpdate>().@event;
-    public AdvancedEvent onNextLateUpdate => this.GetOrAddComponent<ComposableNextLateUpdate>().@event;
-    public AdvancedEvent onNextUpdate => this.GetOrAddComponent<ComposableNextUpdate>().@event;
     public AdvancedEvent<GameObject> onParticleCollision => this.GetOrAddComponent<ComposableParticleCollision>().@event;
     public AdvancedEvent onParticleSystemStopped => this.GetOrAddComponent<ComposableParticleSystemStopped>().@event;
     public AdvancedEvent onParticleTrigger => this.GetOrAddComponent<ComposableParticleTrigger>().@event;
@@ -139,6 +133,13 @@ namespace DT.UniStart {
   }
 
   public static class ComposableBehaviourExtension {
+    #region Next Event
+    public static UnityAction onNextUpdate(this ComposableBehaviour self, UnityAction action) => self.onUpdate.AddOnceListener(action);
+    public static UnityAction onNextFixedUpdate(this ComposableBehaviour self, UnityAction action) => self.onFixedUpdate.AddOnceListener(action);
+    public static UnityAction onNextLateUpdate(this ComposableBehaviour self, UnityAction action) => self.onLateUpdate.AddOnceListener(action);
+    #endregion
+
+
     #region Helper Methods for IWatchable
     // Watch with remover
     public static UnityAction Watch(this ComposableBehaviour self, IWatchable watchable, IWatchable remover, UnityAction action) {
