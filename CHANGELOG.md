@@ -1,7 +1,9 @@
 # CHANGELOG
 
-## v10.2.0
+## v11.0.0
 
+- **_Breaking Change_**: remove echoed events.
+  - `AddListener/RemoveListener/AddOnceListener/RemoveOnceListener` no longer return the action, and no long have `out` parameter.
 - Feat: add `StepExecutor` family.
 - Feat: add `StateMachine` family.
 
