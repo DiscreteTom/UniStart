@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -35,32 +36,38 @@ namespace DT.UniStart {
   }
 
   public class Entry<Ctx> : UniStartBehaviour<Ctx> where Ctx : class, IIoCC, new() {
-    Ctx _context = new Ctx();
+    Ctx _context = new();
     protected override Ctx context {
       get => _context;
       set { _context = value; }
     }
 
+    // helper method to get the context from an entry
+    // this is because unity object should not be used with `?.`.
+    static Ctx GetContextSafe(Entry<Ctx> entry) => entry == null ? null : entry.context;
+
     public static Ctx GetContext(GameObject obj) {
-      Ctx context = null;
+      Ctx context;
       // first, try to find the context in the root object
-      context = obj.transform.root.GetComponent<Entry<Ctx>>()?.context;
+      context = GetContextSafe(obj.transform.root.GetComponent<Entry<Ctx>>());
       if (context != null) return context;
 
       // second, try to find the context in the parent object
-      context = obj.GetComponentInParent<Entry<Ctx>>()?.context;
+      context = GetContextSafe(obj.GetComponentInParent<Entry<Ctx>>());
       if (context != null) return context;
 
       // finally, try to find the context in the whole scene
-      context = GameObject.FindObjectOfType<Entry<Ctx>>()?.context;
+      context = GetContextSafe(FindObjectOfType<Entry<Ctx>>());
       if (context != null) return context;
 
       // if we can't find the context, throw an error
-      throw new System.Exception("Can't find context in the scene!");
+      throw new Exception("Can't find context in the scene!");
     }
 
+#pragma warning disable UNT0001
     // show a warning if the user want's to write a Start method
     protected void Start() { }
+#pragma warning restore UNT0001
   }
 
   public class Entry : Entry<IoCC> { }
@@ -73,8 +80,7 @@ namespace DT.UniStart {
     Ctx _context = null;
     protected override Ctx context {
       get {
-        if (this._context == null)
-          this._context = Entry<Ctx>.GetContext(this.gameObject);
+        this._context ??= Entry<Ctx>.GetContext(this.gameObject);
         return this._context;
       }
       set => this._context = value;
