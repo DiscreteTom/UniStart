@@ -8,6 +8,7 @@
 - Feat: add `StepExecutor` family.
 - Feat: add `StateMachine` family.
 - Feat: add `IEnumState`.
+- Feat: add `IStateManager.AddXArray` for const arrays.
 
 ## v10.1.0
 

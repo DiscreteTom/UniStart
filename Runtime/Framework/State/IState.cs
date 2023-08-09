@@ -75,6 +75,46 @@ namespace DT.UniStart {
       return state;
     }
     #endregion
+
+    #region Const Array
+    public static IReadOnlyList<T> AddConstArray<T>(this IStateManager manager, int count) {
+      return new T[count];
+    }
+    public static IReadOnlyList<T> AddConstArray<T>(this IStateManager manager, int count, T fill) {
+      var res = new T[count];
+      res.Fill(fill);
+      return res;
+    }
+    public static IReadOnlyList<T> AddConstArray<T>(this IStateManager manager, out T[] echoed, int count) {
+      echoed = new T[count];
+      return echoed;
+    }
+    public static IReadOnlyList<T> AddConstArray<T>(this IStateManager manager, out T[] echoed, int count, T fill) {
+      echoed = new T[count];
+      echoed.Fill(fill);
+      return echoed;
+    }
+    public static IReadOnlyList<IState<T>> AddStateArray<T>(this IStateManager manager, int count, T fill = default) {
+      var res = new Watch<T>[count];
+      res.Fill(new Watch<T>(fill));
+      return res;
+    }
+    public static IReadOnlyList<IState<T>> AddStateArray<T>(this IStateManager manager, out Watch<T>[] echoed, int count, T fill = default) {
+      echoed = new Watch<T>[count];
+      echoed.Fill(new Watch<T>(fill));
+      return echoed;
+    }
+    public static IReadOnlyList<IEnumState<T>> AddEnumArray<T>(this IStateManager manager, int count, T fill = default) where T : Enum {
+      var res = new StateMachine<T>[count];
+      res.Fill(new StateMachine<T>(default));
+      return res;
+    }
+    public static IReadOnlyList<IEnumState<T>> AddEnumArray<T>(this IStateManager manager, out StateMachine<T>[] echoed, int count, T fill = default) where T : Enum {
+      echoed = new StateMachine<T>[count];
+      echoed.Fill(new StateMachine<T>(fill));
+      return echoed;
+    }
+    #endregion
   }
   #endregion
 }
