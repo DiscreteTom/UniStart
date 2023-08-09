@@ -6,6 +6,7 @@ namespace DT.UniStart {
   public interface ICommandRepo {
     UnityAction Add<T>(UnityAction command) where T : ICommand;
     UnityAction<T> Add<T>(UnityAction<T> command) where T : ICommand;
+    UnityAction<T> Get<T>() where T : ICommand;
   }
 
   public interface ICommandBus {

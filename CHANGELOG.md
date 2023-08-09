@@ -10,6 +10,7 @@
 - Feat: add `StateMachine` family.
 - Feat: add `IEnumState`.
 - Feat: add `IStateManager.AddConstX/AddXArray` for const collections and watchable arrays.
+- Feat: add `ICommandRepo.Get`.
 
 ## v10.1.0
 
