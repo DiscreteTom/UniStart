@@ -94,6 +94,13 @@ namespace DT.UniStart {
       echoed.Fill(fill);
       return echoed;
     }
+    public static IReadOnlyDictionary<K, V> AddConstDictionary<K, V>(this IStateManager manager) {
+      return new Dictionary<K, V>();
+    }
+    public static IReadOnlyDictionary<K, V> AddConstDictionary<K, V>(this IStateManager manager, out Dictionary<K, V> echoed) {
+      echoed = new();
+      return echoed;
+    }
     public static IReadOnlyList<IState<T>> AddStateArray<T>(this IStateManager manager, int count, T fill = default) {
       var res = new Watch<T>[count];
       res.Fill(new Watch<T>(fill));
