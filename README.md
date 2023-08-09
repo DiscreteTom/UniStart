@@ -49,12 +49,13 @@ public class AdvancedEventApp : MonoBehaviour {
     // or store it and remove it later
     var listener = e.AddListener((a) => print(a));
     e.RemoveListener(listener);
-    // or use out var to store it
-    e.AddListener(out var named, (a) => print(a));
-    e.RemoveListener(named);
 
-    // listeners with zero params are always acceptable
-    e.AddListener(() => print(1)).Invoke();
+    // listeners with fewer params are also acceptable
+    var ee = new AdvancedEvent<int, int, int, int>();
+    ee.AddListener(() => print(1));
+    ee.AddListener((a) => print(1));
+    ee.AddListener((a, b) => print(1));
+    ee.AddListener((a, b, c) => print(1));
 
     // listeners that will only be invoked once
     var once = e.AddOnceListener(() => print(1));
@@ -82,9 +83,9 @@ public class ComposableApp : ComposableBehaviour {
     // Other events are also available, even with parameters.
     this.onCollisionEnter.AddListener((collision) => print("Test.onCollisionEnter"));
 
-    // We even have extra events to enhance the update loop,
-    // and it's lazy so it won't be called if there are no listeners.
-    this.onNextUpdate.AddListener(() => print("Test.onNextUpdate"));
+    // We also have helper methods for common use cases.
+    // E.g. onNextUpdate = onUpdate.AddOnceListener
+    this.onNextUpdate(() => print("Test.onNextUpdate"));
 
     // All events are AdvancedEvent,
     // so listeners with zero params are always acceptable,
@@ -94,7 +95,7 @@ public class ComposableApp : ComposableBehaviour {
     // Closures can capture variables, and value types will be boxed as reference types,
     // so you don't need to define variables as class's fields,
     // and you can use local vars safely in multi listeners.
-    int i = 0;
+    var i = 0;
     this.onUpdate.AddListener(() => print(i++));
     this.onCollisionEnter.AddListener((collision) => print(i));
 
@@ -293,7 +294,7 @@ public class EventBusApp : Entry {
     var deb = new DelayedEventBus();
     deb.Invoke(new EventWithParams(1, 2)); // won't invoke
     this.onLateUpdate.AddListener(deb.InvokeDelayed); // invoke all delayed actions
-    this.onNextUpdate.AddListener(deb.InvokeDelayed); // you can also use onNextUpdate
+    this.onNextUpdate(deb.InvokeDelayed); // you can also use onNextUpdate
 
     // use multi-wrappers
     this.Add<IEventBus>(new DebugEventBus(new DelayedEventBus(new MyEventBus())));
@@ -402,6 +403,39 @@ public class ResponsiveApp : MonoBehaviour {
 
 > This is inspired by [QFramework](https://github.com/liangxiegame/QFramework)'s `BindableProperty`.
 
+### State Machine
+
+For responsive enum values, it is recommended to use `StateMachine`:
+
+```cs
+public enum GameState {
+  Start,
+  Playing,
+  GameOver
+}
+
+public class StateMachineApp : CBC {
+  void Start() {
+    // create state machine
+    var sm = new StateMachine<GameState>(GameState.Start);
+
+    // listen for state changes
+    sm.AddListener(GameState.Playing, StateMachineEventType.OnEnter, (current, prev) => print(1));
+    sm.AddListener(GameState.Playing, StateMachineEventType.OnExit, (current, prev) => print(1));
+
+    // helper methods
+    sm.OnceEnter(GameState.Playing, (current, prev) => print(1));
+    sm.OnceExit(GameState.Playing, (current, prev) => print(1));
+
+    // read value
+    this.onUpdate.AddListener(() => print(sm.Value));
+
+    // change state, trigger state changes
+    sm.Value = GameState.Playing;
+  }
+}
+```
+
 ### State Management
 
 Usually we need to manage the state (or `Model`) of the game, we also want to watch for changes of the state, and commit changes to the state.
@@ -412,14 +446,28 @@ Unlike those responsive containers, we don't want the state to be changed by oth
 public class Model {
   // state is readonly and watchable
   public IState<int> count { get; protected set; }
+  public IEnumState<GameState> gameState { get; protected set; }
   public IListState<int> list { get; protected set; }
   public IDictionaryState<string, int> dict { get; protected set; }
   // there is no IArrayState, use IListState instead
   public IListState<bool> array { get; protected set; }
 
+  // you can also use System.Collections.Generic types.
+  // use this if they are const values since they are not watchable
+  public IReadOnlyList<int> constArray { get; protected set; }
+  public IReadOnlyDictionary<string, int> constDict { get; protected set; }
+
+  // or, a list of state, which is also readonly and watchable
+  // use this if the list's length is fixed
+  public IReadOnlyList<IState<int>> stateArray { get; protected set; }
+  public IReadOnlyList<IEnumState<GameState>> enumArray { get; protected set; }
+
   // computed values are also readonly and watchable
   public Computed<int> computed { get; protected set; }
   public LazyComputed<int> lazyComputed { get; protected set; }
+
+  // properties are readonly but not watchable.
+  public int property => this.count.Value;
 
   // prevent external instantiation
   protected Model() { }
@@ -428,7 +476,7 @@ public class Model {
 // make ModelManager inherit Model to init states,
 // also implement IStateManager to use extension methods
 public class ModelManager : Model, IStateManager {
-  public ModelManager(IWritableCommandBus cb, IEventInvoker eb) {
+  public ModelManager(ICommandRepo cb, IEventInvoker eb) {
     // you can use responsive containers as the state,
     // you can also use your custom classes as long as the state interface is implemented
     this.count = new Watch<int>(0);
@@ -448,18 +496,22 @@ public class ModelManager : Model, IStateManager {
     // which can assign values for states,
     // and echo the responsive containers using out parameters
     this.count = this.Add(out count, 0);
+    this.gameState = this.AddEnum(out var gameState, GameState.Start);
     this.list = this.AddList<int>(out var list);
     this.array = this.AddArray<bool>(out var array, 1);
     this.dict = this.AddDictionary<string, int>(out var dict);
-    // non-echoed methods and parameter-reversed methods are also available
+    this.constArray = this.AddConstArray<int>(out var constList, 10);
+    this.constDict = this.AddConstDictionary<string, int>(out var constDict);
+    this.stateArray = this.AddStateArray<int>(out var stateArray, 10);
+    this.enumArray = this.AddEnumArray<GameState>(out var enumArray, 10);
+    // non-echoed methods are also available
     this.count = this.Add(0); // non-echoed
-    this.count = this.Add(0, out count); // parameter-reversed
 
     // now you can update states in commands
     cb.Add<SimpleCommand>(() => {
       list.Add(1); // make changes
       eb.Invoke<EventWithoutParams>(); // publish events
-      cb.Push<SimpleCommand>(); // call other commands
+      cb.Get<SimpleCommand>().Invoke(new SimpleCommand()); // call other commands
     });
 
     // computed values are already readonly and watchable,
@@ -495,6 +547,58 @@ public class ModelApp : CBC {
     // you can't update model directly
     // but you can use commands to update model
     cb.Push<SimpleCommand>();
+  }
+}
+```
+
+### Step Executor
+
+You can use `StepExecutor` to realize cross-component ordered event handling.
+
+```cs
+public enum SomeEventStep {
+  Step1,
+  Step2
+}
+
+public class StepExecutorEntry : Entry {
+  void Awake() {
+    var se = this.Add<StepExecutor>();
+    this.onNextUpdate(() => se.Invoke<SomeEventStep>());
+  }
+}
+
+public class StepApp1 : CBC {
+  void Start() {
+    // this will be run first
+    this.Get<StepExecutor>().AddListener(SomeEventStep.Step1, () => print(1));
+  }
+}
+
+public class StepApp2 : CBC {
+  void Start() {
+    // this will be run second
+    this.Get<StepExecutor>().AddListener(SomeEventStep.Step2, () => print(1));
+  }
+}
+```
+
+You can also pass context in the event to the listeners.
+
+```cs
+public class StepExecutorApp : CBC {
+  void Start() {
+    var se = new StepExecutor();
+
+    // action will be invoked when EventWithParams is invoked
+    se.AddListener<EventWithParams>(SomeEventStep.Step1, (e) => print(e.a));
+    se.AddListener<EventWithParams>(SomeEventStep.Step2, (e) => print(e.b));
+
+    se.Invoke(new EventWithParams(1, 2));
+
+    // you can also use int as step
+    se.AddListener<EventWithParams>(0, () => print(1));
+    se.AddListener<EventWithParams>(1, () => print(1));
   }
 }
 ```
@@ -539,6 +643,12 @@ public class RemoveListenerApp : CBC {
     var input = new PlayerControl();
     this.Watch(input.Player.Fire, InputActionEventType.Started, (ctx) => print(this));
 
+    // StateMachine and StepExecutor
+    var sm = new StateMachine<GameState>(GameState.Start);
+    var se = new StepExecutor();
+    this.Watch(sm, GameState.Playing, StateMachineEventType.OnEnter, () => print(1));
+    this.Watch<EventWithParams>(se, SomeEventStep.Step1, (e) => print(e));
+
     // In addition, composable events are actually standalone components,
     // except onEnable/onDisable and onDestroy,
     // so if you plan to destroy the script before destroying the game object,
@@ -559,6 +669,11 @@ using DT.UniStart;
 using UnityEngine;
 
 namespace Project {
+  // define commands & events
+  public record SimpleCommand : ICommand;
+  public record SomeCommand(int a, int b) : ICommand;
+  public record SomeEvent(int a, int b) : IEvent;
+
   public class Model {
     // store states in readonly model
     public IState<int> count { get; protected set; }
@@ -567,9 +682,9 @@ namespace Project {
   }
 
   public class ModelManager : Model, IStateManager {
-    public ModelManager(IWritableCommandBus cb, IEventInvoker eb) {
+    public ModelManager(ICommandRepo cb, IEventInvoker eb) {
       // init states, get writable responsive containers
-      this.count = this.Add(0, out var count);
+      this.count = this.Add(out var count, 0);
 
       // register model-related commands
       cb.Add<SomeCommand>((e) => {
@@ -578,15 +693,10 @@ namespace Project {
         // publish event to controllers
         eb.Invoke(new SomeEvent(e.a, e.b));
         // call other commands
-        cb.Push<SimpleCommand>();
+        cb.Get<SimpleCommand>().Invoke(new());
       });
     }
   }
-
-  // define commands & events
-  public record SimpleCommand;
-  public record SomeCommand(int a, int b);
-  public record SomeEvent(int a, int b);
 
   // attach the entry script to the root game object
   public class App : Entry {
