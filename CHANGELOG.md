@@ -4,6 +4,7 @@
 
 - **_Breaking Change_**: remove echoed events.
   - `AddListener/RemoveListener/AddOnceListener/RemoveOnceListener` no long have `out` parameter.
+- **_Breaking Change_**: `AdvancedEvent` no longer accept empty params.
 - Feat: add `StepExecutor` family.
 - Feat: add `StateMachine` family.
 
