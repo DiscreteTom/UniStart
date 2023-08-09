@@ -4,7 +4,7 @@ using UnityEngine.Events;
 
 namespace DT.UniStart {
   public class TimerManager {
-    HashSet<Timer> timers;
+    readonly HashSet<Timer> timers;
 
     public TimerManager(IComposable mountTarget = null) {
       this.timers = new HashSet<Timer>();
@@ -25,7 +25,7 @@ namespace DT.UniStart {
     T AddTimer<T>(T t, UnityAction cb, IComposable mountTarget) where T : Timer {
       if (cb != null) t.onFinished.AddListener(cb);
       this.timers.Add(t);
-      if (mountTarget != null) mountTarget.onDestroy.AddListener(() => this.Remove(t));
+      mountTarget?.onDestroy.AddListener(() => this.Remove(t));
       return t;
     }
 
