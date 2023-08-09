@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.Events;
 
 namespace DT.UniStart {
-  public class StateMachine<T> : IStateMachine<T> where T : Enum {
+  public class StateMachine<T> : IStateMachine<T>, IEnumState<T> where T : Enum {
     public T Value {
       get => this.value;
       set {

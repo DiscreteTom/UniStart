@@ -7,6 +7,7 @@
 - **_Breaking Change_**: remove reversed functions in `IStateManager`.
 - Feat: add `StepExecutor` family.
 - Feat: add `StateMachine` family.
+- Feat: add `IEnumState`.
 
 ## v10.1.0
 

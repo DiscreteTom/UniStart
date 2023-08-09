@@ -7,6 +7,7 @@ using UnityEngine.Events;
 namespace DT.UniStart {
   #region State
   public interface IState<T> : IWatchable<T, T>, IGetValue<T> { }
+  public interface IEnumState<T> : IReadonlyStateMachine<T> where T : Enum { }
   public interface IListState<T> : IReadOnlyList<T>, IWatchable, IWatchable<ReadOnlyCollection<T>>, IGetValue<ReadOnlyCollection<T>> {
     bool Contains(T item);
     int IndexOf(T item);
@@ -24,6 +25,7 @@ namespace DT.UniStart {
 
   public static class IStateManagerExtension {
     public static IState<T> Add<T>(this IStateManager manager, T value) => new Watch<T>(value);
+    public static IEnumState<T> AddEnum<T>(this IStateManager manager, T value) where T : Enum => new StateMachine<T>(value);
     public static IListState<T> AddArray<T>(this IStateManager manager, int count) => new WatchArray<T>(count);
     public static IListState<T> AddArray<T>(this IStateManager manager, T[] value) => new WatchArray<T>(value);
     public static IListState<T> AddList<T>(this IStateManager manager) => new WatchList<T>();
@@ -34,6 +36,11 @@ namespace DT.UniStart {
     #region Echoed
     public static IState<T> Add<T>(this IStateManager manager, out Watch<T> echoed, T value) {
       var state = new Watch<T>(value);
+      echoed = state;
+      return state;
+    }
+    public static IEnumState<T> AddEnum<T>(this IStateManager manager, out StateMachine<T> echoed, T value) where T : Enum {
+      var state = new StateMachine<T>(value);
       echoed = state;
       return state;
     }
