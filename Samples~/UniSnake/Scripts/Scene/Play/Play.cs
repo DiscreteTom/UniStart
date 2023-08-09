@@ -16,8 +16,18 @@ namespace UniSnake.Scene.Play {
       this.Add<Model>(model);
       this.Add(tm);
 
-      // move snake
-      tm.AddRepeated(this, config.moveInterval, () => cb.Push<MoveSnakeCommand>());
+      // move snake when not paused
+      var timer = tm.AddRepeated(this, config.moveInterval, () => cb.Push<MoveSnakeCommand>());
+      model.gameState.OnEnter(GameState.Playing, () => timer.Start());
+      model.gameState.OnExit(GameState.Playing, () => timer.Stop());
+
+      // pause game when space is pressed
+      this.onUpdate.AddListener(() => {
+        if (Input.GetKeyDown(KeyCode.Space)) {
+          if (model.gameState.Value != GameState.GameOver)
+            cb.Push<TogglePauseCommand>();
+        }
+      });
 
       // handle input
       this.onUpdate.AddListener(() => {

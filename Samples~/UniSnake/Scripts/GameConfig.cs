@@ -3,7 +3,7 @@ using UnityEngine;
 namespace UniSnake {
   public class GameConfig : MonoBehaviour {
     [Header("Map")]
-    public Vector2Int mapDimensions = new Vector2Int(10, 10);
+    public Vector2Int mapDimensions = new(10, 10);
     public GameObject wallPrefab;
     public GameObject foodPrefab;
 

@@ -7,9 +7,7 @@ namespace UniSnake.Scene.Play {
       var config = this.Get<GameConfig>();
       var model = this.Get<Model>();
 
-      model.gameOver.AddListener((over) => {
-        if (over) UniStart.ReloadScene();
-      });
+      model.gameState.OnEnter(GameState.GameOver, UniStart.ReloadScene);
     }
   }
 }
