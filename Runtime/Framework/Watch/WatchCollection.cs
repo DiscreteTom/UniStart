@@ -8,11 +8,13 @@ namespace DT.UniStart {
   /// <summary>
   /// Watch a list-like type for changes.
   /// </summary>
-  public class WatchIList<L, T> : WatchRef<L>, IList<T>, IReadOnlyList<T>, IWatchable, IWatchable<ReadOnlyCollection<T>> where L : IList<T> {
-    ReadOnlyCollection<T> readOnlyList;
-    AdvancedEvent<ReadOnlyCollection<T>> onChange;
+  public class WatchIList<L, T> : IList<T>, IReadOnlyList<T>, IGetValue<ReadOnlyCollection<T>>, IWatchable<ReadOnlyCollection<T>> where L : IList<T> {
+    readonly ReadOnlyCollection<T> readOnlyList;
+    readonly AdvancedEvent<ReadOnlyCollection<T>> onChange;
+    protected readonly L value;
 
-    public WatchIList(L value) : base(value) {
+    public WatchIList(L value) {
+      this.value = value;
       this.readOnlyList = new ReadOnlyCollection<T>(this.value);
       this.onChange = new AdvancedEvent<ReadOnlyCollection<T>>();
     }
@@ -22,18 +24,43 @@ namespace DT.UniStart {
     /// </summary>
     public ReadOnlyCollection<T> Value => this.readOnlyList;
 
+    public UnityAction AddListener(UnityAction f) => this.onChange.AddListener(f);
+    public UnityAction RemoveListener(UnityAction f) => this.onChange.RemoveListener(f);
+    public UnityAction AddOnceListener(UnityAction f) => this.onChange.AddOnceListener(f);
+    public UnityAction RemoveOnceListener(UnityAction f) => this.onChange.RemoveOnceListener(f);
     public UnityAction<ReadOnlyCollection<T>> AddListener(UnityAction<ReadOnlyCollection<T>> f) => this.onChange.AddListener(f);
     public UnityAction<ReadOnlyCollection<T>> RemoveListener(UnityAction<ReadOnlyCollection<T>> f) => this.onChange.RemoveListener(f);
     public UnityAction<ReadOnlyCollection<T>> AddOnceListener(UnityAction<ReadOnlyCollection<T>> f) => this.onChange.AddOnceListener(f);
     public UnityAction<ReadOnlyCollection<T>> RemoveOnceListener(UnityAction<ReadOnlyCollection<T>> f) => this.onChange.RemoveOnceListener(f);
 
-    public override void InvokeEvent() {
-      base.InvokeEvent();
-      this.onChange.Invoke(this.Value);
+    public void InvokeEvent() => this.onChange.Invoke(this.Value);
+
+    /// <summary>
+    /// Make changes and trigger the onChange event once.
+    /// </summary>
+    public void Commit(UnityAction<L> f) {
+      f.Invoke(this.value);
+      this.InvokeEvent();
     }
 
-    // ICommittableList
-    public void Commit(UnityAction<IList<T>> f) => base.Commit((v) => f.Invoke(v));
+    /// <summary>
+    /// Make changes and trigger the onChange event once.
+    /// </summary>
+    public R Commit<R>(Func<L, R> f) {
+      var result = f.Invoke(this.value);
+      this.InvokeEvent();
+      return result;
+    }
+
+    /// <summary>
+    /// Make changes without trigger the onChange event.
+    /// </summary>
+    public void ReadOnlyCommit(UnityAction<L> f) => f.Invoke(this.value);
+
+    /// <summary>
+    /// Make changes without trigger the onChange event.
+    /// </summary>
+    public R ReadOnlyCommit<R>(Func<L, R> f) => f.Invoke(this.value);
 
     #region re-expose methods from the list interface
     public void Add(T item) {
@@ -79,11 +106,13 @@ namespace DT.UniStart {
   /// <summary>
   /// Watch a dictionary-like type for changes.
   /// </summary>
-  public class WatchIDictionary<D, K, V> : WatchRef<D>, IDictionary<K, V>, IReadOnlyDictionary<K, V>, IWatchable, IWatchable<ReadOnlyDictionary<K, V>>, IGetValue<ReadOnlyDictionary<K, V>>, IDictionaryState<K, V> where D : IDictionary<K, V> {
-    ReadOnlyDictionary<K, V> readOnlyDictionary;
-    AdvancedEvent<ReadOnlyDictionary<K, V>> onChange;
+  public class WatchIDictionary<D, K, V> : IDictionary<K, V>, IReadOnlyDictionary<K, V>, IGetValue<ReadOnlyDictionary<K, V>>, IWatchable<ReadOnlyDictionary<K, V>>, IDictionaryState<K, V> where D : IDictionary<K, V> {
+    readonly ReadOnlyDictionary<K, V> readOnlyDictionary;
+    readonly AdvancedEvent<ReadOnlyDictionary<K, V>> onChange;
+    protected readonly D value;
 
-    public WatchIDictionary(D value) : base(value) {
+    public WatchIDictionary(D value) {
+      this.value = value;
       this.readOnlyDictionary = new ReadOnlyDictionary<K, V>(this.value);
       this.onChange = new AdvancedEvent<ReadOnlyDictionary<K, V>>();
     }
@@ -93,18 +122,43 @@ namespace DT.UniStart {
     /// </summary>
     public ReadOnlyDictionary<K, V> Value => this.readOnlyDictionary;
 
+    public UnityAction AddListener(UnityAction f) => this.onChange.AddListener(f);
+    public UnityAction RemoveListener(UnityAction f) => this.onChange.RemoveListener(f);
+    public UnityAction AddOnceListener(UnityAction f) => this.onChange.AddOnceListener(f);
+    public UnityAction RemoveOnceListener(UnityAction f) => this.onChange.RemoveOnceListener(f);
     public UnityAction<ReadOnlyDictionary<K, V>> AddListener(UnityAction<ReadOnlyDictionary<K, V>> f) => this.onChange.AddListener(f);
     public UnityAction<ReadOnlyDictionary<K, V>> RemoveListener(UnityAction<ReadOnlyDictionary<K, V>> f) => this.onChange.RemoveListener(f);
     public UnityAction<ReadOnlyDictionary<K, V>> AddOnceListener(UnityAction<ReadOnlyDictionary<K, V>> f) => this.onChange.AddOnceListener(f);
     public UnityAction<ReadOnlyDictionary<K, V>> RemoveOnceListener(UnityAction<ReadOnlyDictionary<K, V>> f) => this.onChange.RemoveOnceListener(f);
 
-    public override void InvokeEvent() {
-      base.InvokeEvent();
-      this.onChange.Invoke(this.Value);
+    public void InvokeEvent() => this.onChange.Invoke(this.Value);
+
+    /// <summary>
+    /// Make changes and trigger the onChange event once.
+    /// </summary>
+    public void Commit(UnityAction<D> f) {
+      f.Invoke(this.value);
+      this.InvokeEvent();
     }
 
-    // ICommittableDictionary
-    public void Commit(UnityAction<IDictionary<K, V>> f) => base.Commit((v) => f.Invoke(v));
+    /// <summary>
+    /// Make changes and trigger the onChange event once.
+    /// </summary>
+    public R Commit<R>(Func<D, R> f) {
+      var result = f.Invoke(this.value);
+      this.InvokeEvent();
+      return result;
+    }
+
+    /// <summary>
+    /// Make changes without trigger the onChange event.
+    /// </summary>
+    public void ReadOnlyCommit(UnityAction<D> f) => f.Invoke(this.value);
+
+    /// <summary>
+    /// Make changes without trigger the onChange event.
+    /// </summary>
+    public R ReadOnlyCommit<R>(Func<D, R> f) => f.Invoke(this.value);
 
     #region re-expose methods from the dictionary interface
     public void Add(K key, V value) {
