@@ -380,5 +380,37 @@ namespace DT.UniStart {
     public static UnityAction OnceWatch<T>(this ComposableBehaviour self, IStateMachine<T> machine, T value, StateMachineEventType type, UnityAction action) where T : Enum => self.OnceWatch<T>(machine, value, type, self.onDestroy, action);
     public static UnityAction<T, T> OnceWatch<T>(this ComposableBehaviour self, IStateMachine<T> machine, T value, StateMachineEventType type, UnityAction<T, T> action) where T : Enum => self.OnceWatch(machine, value, type, self.onDestroy, action);
     #endregion
+
+    #region Helper Methods for IStepListener
+    // watch with remover
+    public static UnityAction Watch<T>(this ComposableBehaviour self, IStepListener listener, IConvertible step, IWatchable remover, UnityAction action) where T : IEvent {
+      listener.AddListener<T>(step, action);
+      remover.AddOnceListener(() => listener.RemoveListener<T>(step, action));
+      return action;
+    }
+    public static UnityAction<T> Watch<T>(this ComposableBehaviour self, IStepListener listener, IConvertible step, IWatchable remover, UnityAction<T> action) where T : IEvent {
+      listener.AddListener(step, action);
+      remover.AddOnceListener(() => listener.RemoveListener(step, action));
+      return action;
+    }
+    // watch once with remover
+    public static UnityAction OnceWatch<T>(this ComposableBehaviour self, IStepListener listener, IConvertible step, IWatchable remover, UnityAction action) where T : IEvent {
+      listener.AddOnceListener<T>(step, action);
+      remover.AddOnceListener(() => listener.RemoveListener<T>(step, action));
+      return action;
+    }
+    public static UnityAction<T> OnceWatch<T>(this ComposableBehaviour self, IStepListener listener, IConvertible step, IWatchable remover, UnityAction<T> action) where T : IEvent {
+      listener.AddOnceListener(step, action);
+      remover.AddOnceListener(() => listener.RemoveListener(step, action));
+      return action;
+    }
+    // remove listener on destroy
+    public static UnityAction Watch<T>(this ComposableBehaviour self, IStepListener listener, IConvertible step, UnityAction action) where T : IEvent => self.Watch<T>(listener, step, self.onDestroy, action);
+    public static UnityAction<T> Watch<T>(this ComposableBehaviour self, IStepListener listener, IConvertible step, UnityAction<T> action) where T : IEvent => self.Watch(listener, step, self.onDestroy, action);
+    // remove once listener on destroy
+    public static UnityAction OnceWatch<T>(this ComposableBehaviour self, IStepListener listener, IConvertible step, UnityAction action) where T : IEvent => self.OnceWatch<T>(listener, step, self.onDestroy, action);
+    public static UnityAction<T> OnceWatch<T>(this ComposableBehaviour self, IStepListener listener, IConvertible step, UnityAction<T> action) where T : IEvent => self.OnceWatch(listener, step, self.onDestroy, action);
+
+    #endregion
   }
 }
