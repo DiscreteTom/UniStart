@@ -2,22 +2,34 @@ using System;
 using UnityEngine.Events;
 
 namespace DT.UniStart {
-  public class BaseAdvancedEvent<Event, Action> where Event : UnityEventBase, new() {
-    protected readonly Event E = new();
-    protected readonly Event Once = new();
+  public class BaseAdvancedEvent<EventType, ActionType> where EventType : UnityEventBase, new() {
+    protected readonly EventType E = new();
+    protected readonly EventType Once = new();
 
-    readonly Action<Event, Action> addListenerFunc;
-    readonly Action<Event, Action> removeListenerFunc;
+    readonly Action<EventType, ActionType> addListenerAction;
+    readonly Action<EventType, ActionType> removeListenerAction;
 
-    public BaseAdvancedEvent(Action<Event, Action> addListenerFunc, Action<Event, Action> removeListenerFunc) {
-      this.addListenerFunc = addListenerFunc;
-      this.removeListenerFunc = removeListenerFunc;
+    public BaseAdvancedEvent(Action<EventType, ActionType> addListenerFunc, Action<EventType, ActionType> removeListenerFunc) {
+      this.addListenerAction = addListenerFunc;
+      this.removeListenerAction = removeListenerFunc;
     }
 
-    public void AddListener(Action action) => this.addListenerFunc.Invoke(E, action);
-    public void RemoveListener(Action action) => this.removeListenerFunc.Invoke(E, action);
-    public void AddOnceListener(Action action) => this.addListenerFunc.Invoke(Once, action);
-    public void RemoveOnceListener(Action action) => this.removeListenerFunc.Invoke(Once, action);
+    public ActionType AddListener(ActionType action) {
+      this.addListenerAction.Invoke(E, action);
+      return action;
+    }
+    public ActionType RemoveListener(ActionType action) {
+      this.removeListenerAction.Invoke(E, action);
+      return action;
+    }
+    public ActionType AddOnceListener(ActionType action) {
+      this.addListenerAction.Invoke(Once, action);
+      return action;
+    }
+    public ActionType RemoveOnceListener(ActionType action) {
+      this.removeListenerAction.Invoke(Once, action);
+      return action;
+    }
 
     public void RemoveAllListeners() {
       this.E.RemoveAllListeners();
