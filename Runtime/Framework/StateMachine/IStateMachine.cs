@@ -48,7 +48,6 @@ namespace DT.UniStart {
       return values[index];
     }
 
-    public static void SetState<T>(this IStateMachine<T> self, T value) where T : Enum => (self as ISetValue<T>).Value = value;
-    public static void ToNextState<T>(this IStateMachine<T> self) where T : Enum => self.SetState(self.GetNextState());
+    public static void ToNextState<T>(this IStateMachine<T> self) where T : Enum => self.SetValue(self.GetNextState());
   }
 }
