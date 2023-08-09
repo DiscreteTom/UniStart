@@ -14,6 +14,17 @@ namespace DT.UniStart {
     UnityAction<T> RemoveListener<T>(IConvertible step, UnityAction<T> action);
   }
 
+  public static class IStepListenerExtension {
+    public static UnityAction AddListener<T>(this IStepListener self, T step, UnityAction action) where T : Enum => self.AddListener(step, action);
+    public static UnityAction AddOnceListener<T>(this IStepListener self, T step, UnityAction action) where T : Enum => self.AddOnceListener(step, action);
+    public static UnityAction RemoveListener<T>(this IStepListener self, T step, UnityAction action) where T : Enum => self.RemoveListener(step, action);
+    public static UnityAction RemoveOnceListener<T>(this IStepListener self, T step, UnityAction action) where T : Enum => self.RemoveOnceListener(step, action);
+    public static UnityAction<T> AddListener<T>(this IStepListener self, T step, UnityAction<T> action) where T : Enum => self.AddListener(step, action);
+    public static UnityAction<T> AddOnceListener<T>(this IStepListener self, T step, UnityAction<T> action) where T : Enum => self.AddOnceListener(step, action);
+    public static UnityAction<T> RemoveOnceListener<T>(this IStepListener self, T step, UnityAction<T> action) where T : Enum => self.RemoveOnceListener(step, action);
+    public static UnityAction<T> RemoveListener<T>(this IStepListener self, T step, UnityAction<T> action) where T : Enum => self.RemoveListener(step, action);
+  }
+
   public interface IStepInvoker {
     void Invoke<T>(T value);
   }
