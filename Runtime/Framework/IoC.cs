@@ -23,15 +23,15 @@ namespace DT.UniStart {
     /// <summary>
     /// Register a type and auto create an instance.
     /// </summary>
-    public static T Add<T>(this IIoCC ioc) where T : new() => ioc.Add<T>(new T());
+    public static T Add<T>(this IIoCC ioc) where T : new() => ioc.Add(new T());
 
     public static bool Contains<T>(this IIoCC ioc) => ioc.TryGet<T>(out var _);
 
     /// <summary>
     /// Try to get the instance of a type.
-    /// If the type is not registered, return `default(T)`.
+    /// If the type is not registered, return `default(T)` which is usually `null`.
     /// </summary>
-    public static T GetOrDefault<T>(this IIoCC ioc) => ioc.TryGet<T>(out var instance) ? instance : default(T);
+    public static T GetOrDefault<T>(this IIoCC ioc) => ioc.TryGet<T>(out var instance) ? instance : default;
   }
 
 
@@ -39,7 +39,7 @@ namespace DT.UniStart {
   /// IoC Container.
   /// </summary>
   public class IoCC : IIoCC {
-    Dictionary<Type, object> dict;
+    readonly Dictionary<Type, object> dict;
 
     public IoCC() {
       this.dict = new Dictionary<Type, object>();
