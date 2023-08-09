@@ -23,9 +23,9 @@ namespace DT.UniStart {
     protected bool isRemoveListenerModeEnabled;
     protected bool isInvokeModeEnabled;
 
-    AdvancedEvent<Type, UnityAction> onAddListener;
-    AdvancedEvent<Type, UnityAction> onRemoveListener;
-    AdvancedEvent<Type, object, UnityAction> onInvoke;
+    readonly AdvancedEvent<Type, UnityAction> onAddListener;
+    readonly AdvancedEvent<Type, UnityAction> onRemoveListener;
+    readonly AdvancedEvent<Type, object, UnityAction> onInvoke;
 
     public InterceptEventBus(IEventBus bus = null, InterceptEventBusMode mode = InterceptEventBusMode.Invoke) {
       this.bus = bus ?? new EventBus();
@@ -38,57 +38,37 @@ namespace DT.UniStart {
       this.onInvoke = new AdvancedEvent<Type, object, UnityAction>();
     }
 
-    public InterceptEventBus OnAddListener(UnityAction<Type, UnityAction> action) {
+    protected InterceptEventBus OnAddListener(UnityAction<Type, UnityAction> action) {
       this.onAddListener.AddListener(action);
       return this;
     }
-    public InterceptEventBus OnRemoveListener(UnityAction<Type, UnityAction> action) {
+    protected InterceptEventBus OnRemoveListener(UnityAction<Type, UnityAction> action) {
       this.onRemoveListener.AddListener(action);
       return this;
     }
-    public InterceptEventBus OnInvoke(UnityAction<Type, object, UnityAction> action) {
+    protected InterceptEventBus OnInvoke(UnityAction<Type, object, UnityAction> action) {
       this.onInvoke.AddListener(action);
       return this;
     }
 
-    public UnityAction AddListener<T>(UnityAction action) where T : IEvent {
-      if (this.isAddListenerModeEnabled) this.onAddListener.Invoke(typeof(T), () => this.bus.AddListener<T>(action));
-      else this.bus.AddListener<T>(action);
-      return action;
-    }
     public UnityAction<T> AddListener<T>(UnityAction<T> action) where T : IEvent {
       if (this.isAddListenerModeEnabled) this.onAddListener.Invoke(typeof(T), () => this.bus.AddListener(action));
       else this.bus.AddListener(action);
       return action;
     }
 
-    public UnityAction RemoveListener<T>(UnityAction action) where T : IEvent {
-      if (this.isRemoveListenerModeEnabled) this.onRemoveListener.Invoke(typeof(T), () => this.bus.RemoveListener<T>(action));
-      else this.bus.RemoveListener<T>(action);
-      return action;
-    }
     public UnityAction<T> RemoveListener<T>(UnityAction<T> action) where T : IEvent {
       if (this.isRemoveListenerModeEnabled) this.onRemoveListener.Invoke(typeof(T), () => this.bus.RemoveListener(action));
       else this.bus.RemoveListener(action);
       return action;
     }
 
-    public UnityAction AddOnceListener<T>(UnityAction action) where T : IEvent {
-      if (this.isAddListenerModeEnabled) this.onAddListener.Invoke(typeof(T), () => this.bus.AddOnceListener<T>(action));
-      else this.bus.AddOnceListener<T>(action);
-      return action;
-    }
     public UnityAction<T> AddOnceListener<T>(UnityAction<T> action) where T : IEvent {
       if (this.isAddListenerModeEnabled) this.onAddListener.Invoke(typeof(T), () => this.bus.AddOnceListener(action));
       else this.bus.AddOnceListener(action);
       return action;
     }
 
-    public UnityAction RemoveOnceListener<T>(UnityAction action) where T : IEvent {
-      if (this.isRemoveListenerModeEnabled) this.onRemoveListener.Invoke(typeof(T), () => this.bus.RemoveOnceListener<T>(action));
-      else this.bus.RemoveOnceListener<T>(action);
-      return action;
-    }
     public UnityAction<T> RemoveOnceListener<T>(UnityAction<T> action) where T : IEvent {
       if (this.isRemoveListenerModeEnabled) this.onRemoveListener.Invoke(typeof(T), () => this.bus.RemoveOnceListener(action));
       else this.bus.RemoveOnceListener(action);

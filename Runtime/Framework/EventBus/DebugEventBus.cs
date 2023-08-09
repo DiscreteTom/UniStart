@@ -7,7 +7,7 @@ namespace DT.UniStart {
   /// DebugEventBus is a wrapper around an IEventBus which logs all calls to AddListener, RemoveListener and Invoke.
   /// </summary>
   public class DebugEventBus : InterceptEventBus {
-    string name;
+    readonly string name;
 
     public DebugEventBus(IEventBus bus = null, InterceptEventBusMode mode = InterceptEventBusMode.Invoke, string name = "DebugEventBus") : base(bus, mode) {
       this.name = name;
