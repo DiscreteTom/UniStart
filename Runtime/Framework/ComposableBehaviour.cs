@@ -342,44 +342,44 @@ namespace DT.UniStart {
 
     #region Helper Methods for IReadonlyStateMachine
     // watch with remover
-    public static UnityAction Watch<T>(this ComposableBehaviour self, IStateMachine<T> machine, T value, StateMachineEventType type, IWatchable remover, UnityAction action) where T : Enum {
+    public static UnityAction Watch<T>(this ComposableBehaviour self, IReadonlyStateMachine<T> machine, T value, StateMachineEventType type, IWatchable remover, UnityAction action) where T : Enum {
       machine.AddListener(value, type, action);
       remover.AddOnceListener(() => machine.RemoveListener(value, type, action));
       return action;
     }
-    public static UnityAction<T> Watch<T>(this ComposableBehaviour self, IStateMachine<T> machine, T value, StateMachineEventType type, IWatchable remover, UnityAction<T> action) where T : Enum {
+    public static UnityAction<T> Watch<T>(this ComposableBehaviour self, IReadonlyStateMachine<T> machine, T value, StateMachineEventType type, IWatchable remover, UnityAction<T> action) where T : Enum {
       machine.AddListener(value, type, action);
       remover.AddOnceListener(() => machine.RemoveListener(value, type, action));
       return action;
     }
-    public static UnityAction<T, T> Watch<T>(this ComposableBehaviour self, IStateMachine<T> machine, T value, StateMachineEventType type, IWatchable remover, UnityAction<T, T> action) where T : Enum {
+    public static UnityAction<T, T> Watch<T>(this ComposableBehaviour self, IReadonlyStateMachine<T> machine, T value, StateMachineEventType type, IWatchable remover, UnityAction<T, T> action) where T : Enum {
       machine.AddListener(value, type, action);
       remover.AddOnceListener(() => machine.RemoveListener(value, type, action));
       return action;
     }
     // watch once with remover
-    public static UnityAction OnceWatch<T>(this ComposableBehaviour self, IStateMachine<T> machine, T value, StateMachineEventType type, IWatchable remover, UnityAction action) where T : Enum {
+    public static UnityAction OnceWatch<T>(this ComposableBehaviour self, IReadonlyStateMachine<T> machine, T value, StateMachineEventType type, IWatchable remover, UnityAction action) where T : Enum {
       machine.AddOnceListener(value, type, action);
       remover.AddOnceListener(() => machine.RemoveListener(value, type, action));
       return action;
     }
-    public static UnityAction<T> OnceWatch<T>(this ComposableBehaviour self, IStateMachine<T> machine, T value, StateMachineEventType type, IWatchable remover, UnityAction<T> action) where T : Enum {
+    public static UnityAction<T> OnceWatch<T>(this ComposableBehaviour self, IReadonlyStateMachine<T> machine, T value, StateMachineEventType type, IWatchable remover, UnityAction<T> action) where T : Enum {
       machine.AddOnceListener(value, type, action);
       remover.AddOnceListener(() => machine.RemoveListener(value, type, action));
       return action;
     }
-    public static UnityAction<T, T> OnceWatch<T>(this ComposableBehaviour self, IStateMachine<T> machine, T value, StateMachineEventType type, IWatchable remover, UnityAction<T, T> action) where T : Enum {
+    public static UnityAction<T, T> OnceWatch<T>(this ComposableBehaviour self, IReadonlyStateMachine<T> machine, T value, StateMachineEventType type, IWatchable remover, UnityAction<T, T> action) where T : Enum {
       machine.AddOnceListener(value, type, action);
       remover.AddOnceListener(() => machine.RemoveListener(value, type, action));
       return action;
     }
     // remove listener on destroy
-    public static UnityAction Watch<T>(this ComposableBehaviour self, IStateMachine<T> machine, T value, StateMachineEventType type, UnityAction action) where T : Enum => self.Watch<T>(machine, value, type, self.onDestroy, action);
-    public static UnityAction<T> Watch<T>(this ComposableBehaviour self, IStateMachine<T> machine, T value, StateMachineEventType type, UnityAction<T> action) where T : Enum => self.Watch(machine, value, type, self.onDestroy, action);
-    public static UnityAction<T, T> Watch<T>(this ComposableBehaviour self, IStateMachine<T> machine, T value, StateMachineEventType type, UnityAction<T, T> action) where T : Enum => self.Watch(machine, value, type, self.onDestroy, action);
+    public static UnityAction Watch<T>(this ComposableBehaviour self, IReadonlyStateMachine<T> machine, T value, StateMachineEventType type, UnityAction action) where T : Enum => self.Watch<T>(machine, value, type, self.onDestroy, action);
+    public static UnityAction<T> Watch<T>(this ComposableBehaviour self, IReadonlyStateMachine<T> machine, T value, StateMachineEventType type, UnityAction<T> action) where T : Enum => self.Watch(machine, value, type, self.onDestroy, action);
+    public static UnityAction<T, T> Watch<T>(this ComposableBehaviour self, IReadonlyStateMachine<T> machine, T value, StateMachineEventType type, UnityAction<T, T> action) where T : Enum => self.Watch(machine, value, type, self.onDestroy, action);
     // remove once listener on destroy
-    public static UnityAction OnceWatch<T>(this ComposableBehaviour self, IStateMachine<T> machine, T value, StateMachineEventType type, UnityAction action) where T : Enum => self.OnceWatch<T>(machine, value, type, self.onDestroy, action);
-    public static UnityAction<T, T> OnceWatch<T>(this ComposableBehaviour self, IStateMachine<T> machine, T value, StateMachineEventType type, UnityAction<T, T> action) where T : Enum => self.OnceWatch(machine, value, type, self.onDestroy, action);
+    public static UnityAction OnceWatch<T>(this ComposableBehaviour self, IReadonlyStateMachine<T> machine, T value, StateMachineEventType type, UnityAction action) where T : Enum => self.OnceWatch<T>(machine, value, type, self.onDestroy, action);
+    public static UnityAction<T, T> OnceWatch<T>(this ComposableBehaviour self, IReadonlyStateMachine<T> machine, T value, StateMachineEventType type, UnityAction<T, T> action) where T : Enum => self.OnceWatch(machine, value, type, self.onDestroy, action);
     #endregion
 
     #region Helper Methods for IStepListener

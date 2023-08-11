@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v11.1.0
+
+- Feat: `ComposableBehaviour.Watch` support `IReadonlyStateMachine` instead of `IStateMachine`.
+
 ## v11.0.0
 
 - **_Breaking Change_**: remove echoed events.
