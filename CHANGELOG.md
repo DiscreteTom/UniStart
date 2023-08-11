@@ -4,6 +4,7 @@
 
 - Feat: `ComposableBehaviour.Watch` support `IReadonlyStateMachine` instead of `IStateMachine`. #29
 - Fix: `ComposableBehaviour.OnceWatch` should call `RemoveOnceListener`. #31
+- Fix: remove `ComposableBehaviour.OnceWatch` for `Action`.
 
 ## v11.0.0
 

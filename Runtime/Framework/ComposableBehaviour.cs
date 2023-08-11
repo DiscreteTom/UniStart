@@ -265,44 +265,12 @@ namespace DT.UniStart {
       remover.AddOnceListener(() => target -= action);
       return action;
     }
-    // OnceWatch with remover
-    public static Action OnceWatch(this ComposableBehaviour self, Action target, IWatchable remover, Action action) {
-      target += action;
-      remover.AddOnceListener(() => target -= action);
-      return action;
-    }
-    public static Action<T0> OnceWatch<T0>(this ComposableBehaviour self, Action<T0> target, IWatchable remover, Action<T0> action) {
-      target += action;
-      remover.AddOnceListener(() => target -= action);
-      return action;
-    }
-    public static Action<T0, T1> OnceWatch<T0, T1>(this ComposableBehaviour self, Action<T0, T1> target, IWatchable remover, Action<T0, T1> action) {
-      target += action;
-      remover.AddOnceListener(() => target -= action);
-      return action;
-    }
-    public static Action<T0, T1, T2> OnceWatch<T0, T1, T2>(this ComposableBehaviour self, Action<T0, T1, T2> target, IWatchable remover, Action<T0, T1, T2> action) {
-      target += action;
-      remover.AddOnceListener(() => target -= action);
-      return action;
-    }
-    public static Action<T0, T1, T2, T3> OnceWatch<T0, T1, T2, T3>(this ComposableBehaviour self, Action<T0, T1, T2, T3> target, IWatchable remover, Action<T0, T1, T2, T3> action) {
-      target += action;
-      remover.AddOnceListener(() => target -= action);
-      return action;
-    }
     // remove listener on destroy
     public static Action Watch(this ComposableBehaviour self, Action target, Action action) => self.Watch(target, self.onDestroy, action);
     public static Action<T0> Watch<T0>(this ComposableBehaviour self, Action<T0> target, Action<T0> action) => self.Watch(target, self.onDestroy, action);
     public static Action<T0, T1> Watch<T0, T1>(this ComposableBehaviour self, Action<T0, T1> target, Action<T0, T1> action) => self.Watch(target, self.onDestroy, action);
     public static Action<T0, T1, T2> Watch<T0, T1, T2>(this ComposableBehaviour self, Action<T0, T1, T2> target, Action<T0, T1, T2> action) => self.Watch(target, self.onDestroy, action);
     public static Action<T0, T1, T2, T3> Watch<T0, T1, T2, T3>(this ComposableBehaviour self, Action<T0, T1, T2, T3> target, Action<T0, T1, T2, T3> action) => self.Watch(target, self.onDestroy, action);
-    // remove once listener on destroy
-    public static Action OnceWatch(this ComposableBehaviour self, Action target, Action action) => self.OnceWatch(target, self.onDestroy, action);
-    public static Action<T0> OnceWatch<T0>(this ComposableBehaviour self, Action<T0> target, Action<T0> action) => self.OnceWatch(target, self.onDestroy, action);
-    public static Action<T0, T1> OnceWatch<T0, T1>(this ComposableBehaviour self, Action<T0, T1> target, Action<T0, T1> action) => self.OnceWatch(target, self.onDestroy, action);
-    public static Action<T0, T1, T2> OnceWatch<T0, T1, T2>(this ComposableBehaviour self, Action<T0, T1, T2> target, Action<T0, T1, T2> action) => self.OnceWatch(target, self.onDestroy, action);
-    public static Action<T0, T1, T2, T3> OnceWatch<T0, T1, T2, T3>(this ComposableBehaviour self, Action<T0, T1, T2, T3> target, Action<T0, T1, T2, T3> action) => self.OnceWatch(target, self.onDestroy, action);
     #endregion
 
     #region Helper Methods for UnityEvent
