@@ -2,7 +2,8 @@
 
 ## v11.1.0
 
-- Feat: `ComposableBehaviour.Watch` support `IReadonlyStateMachine` instead of `IStateMachine`.
+- Feat: `ComposableBehaviour.Watch` support `IReadonlyStateMachine` instead of `IStateMachine`. #29
+- Fix: `ComposableBehaviour.OnceWatch` should call `RemoveOnceListener`. #31
 
 ## v11.0.0
 
