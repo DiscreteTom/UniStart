@@ -27,8 +27,20 @@ namespace DT.UniStart {
     public static IState<T> Add<T>(this IStateManager manager, T value) => new Watch<T>(value);
     public static IEnumState<T> AddEnum<T>(this IStateManager manager, T value) where T : Enum => new StateMachine<T>(value);
     public static IListState<T> AddArray<T>(this IStateManager manager, int count) => new WatchArray<T>(count);
+    public static IListState<T> AddArray<T>(this IStateManager manager, int count, T fill) {
+      var array = new WatchArray<T>(count);
+      array.Fill(fill);
+      return array;
+    }
     public static IListState<T> AddArray<T>(this IStateManager manager, T[] value) => new WatchArray<T>(value);
     public static IListState<T> AddList<T>(this IStateManager manager) => new WatchList<T>();
+    public static IListState<T> AddList<T>(this IStateManager manager, int count, T fill) {
+      var list = new WatchList<T>();
+      for (var i = 0; i < count; i++) {
+        list.Add(fill);
+      }
+      return list;
+    }
     public static IListState<T> AddList<T>(this IStateManager manager, List<T> value) => new WatchList<T>(value);
     public static IDictionaryState<K, V> AddDictionary<K, V>(this IStateManager manager) => new WatchDictionary<K, V>();
     public static IDictionaryState<K, V> AddDictionary<K, V>(this IStateManager manager, Dictionary<K, V> value) => new WatchDictionary<K, V>(value);
@@ -49,6 +61,12 @@ namespace DT.UniStart {
       echoed = state;
       return state;
     }
+    public static IListState<T> AddArray<T>(this IStateManager manager, out WatchArray<T> echoed, int count, T fill) {
+      var state = new WatchArray<T>(count);
+      state.Fill(fill);
+      echoed = state;
+      return state;
+    }
     public static IListState<T> AddArray<T>(this IStateManager manager, out WatchArray<T> echoed, T[] value) {
       var state = new WatchArray<T>(value);
       echoed = state;
@@ -56,6 +74,14 @@ namespace DT.UniStart {
     }
     public static IListState<T> AddList<T>(this IStateManager manager, out WatchList<T> echoed) {
       var state = new WatchList<T>();
+      echoed = state;
+      return state;
+    }
+    public static IListState<T> AddList<T>(this IStateManager manager, out WatchList<T> echoed, int count, T fill) {
+      var state = new WatchList<T>();
+      for (var i = 0; i < count; i++) {
+        state.Add(fill);
+      }
       echoed = state;
       return state;
     }

@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v11.2.0
+
+- Feat: add `fill` for `IStateManager.AddList/AddArray`. #32
+
 ## v11.1.0
 
 - Feat: `ComposableBehaviour.Watch` support `IReadonlyStateMachine` instead of `IStateMachine`. #29
