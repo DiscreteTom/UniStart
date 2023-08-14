@@ -32,13 +32,21 @@ namespace DT.UniStart {
       array.Fill(fill);
       return array;
     }
+    public static IListState<T> AddArray<T>(this IStateManager manager, int count, Func<T> factory) {
+      var array = new WatchArray<T>(count);
+      array.Fill(factory);
+      return array;
+    }
     public static IListState<T> AddArray<T>(this IStateManager manager, T[] value) => new WatchArray<T>(value);
     public static IListState<T> AddList<T>(this IStateManager manager) => new WatchList<T>();
     public static IListState<T> AddList<T>(this IStateManager manager, int count, T fill) {
       var list = new WatchList<T>();
-      for (var i = 0; i < count; i++) {
-        list.Add(fill);
-      }
+      list.Fill(fill);
+      return list;
+    }
+    public static IListState<T> AddList<T>(this IStateManager manager, int count, Func<T> factory) {
+      var list = new WatchList<T>();
+      list.Fill(factory);
       return list;
     }
     public static IListState<T> AddList<T>(this IStateManager manager, List<T> value) => new WatchList<T>(value);
@@ -67,6 +75,12 @@ namespace DT.UniStart {
       echoed = state;
       return state;
     }
+    public static IListState<T> AddArray<T>(this IStateManager manager, out WatchArray<T> echoed, int count, Func<T> factory) {
+      var state = new WatchArray<T>(count);
+      state.Fill(factory);
+      echoed = state;
+      return state;
+    }
     public static IListState<T> AddArray<T>(this IStateManager manager, out WatchArray<T> echoed, T[] value) {
       var state = new WatchArray<T>(value);
       echoed = state;
@@ -79,9 +93,13 @@ namespace DT.UniStart {
     }
     public static IListState<T> AddList<T>(this IStateManager manager, out WatchList<T> echoed, int count, T fill) {
       var state = new WatchList<T>();
-      for (var i = 0; i < count; i++) {
-        state.Add(fill);
-      }
+      state.Fill(fill);
+      echoed = state;
+      return state;
+    }
+    public static IListState<T> AddList<T>(this IStateManager manager, out WatchList<T> echoed, int count, Func<T> factory) {
+      var state = new WatchList<T>();
+      state.Fill(factory);
       echoed = state;
       return state;
     }
@@ -111,6 +129,11 @@ namespace DT.UniStart {
       res.Fill(fill);
       return res;
     }
+    public static IReadOnlyList<T> AddConstArray<T>(this IStateManager manager, int count, Func<T> factory) {
+      var res = new T[count];
+      res.Fill(factory);
+      return res;
+    }
     public static IReadOnlyList<T> AddConstArray<T>(this IStateManager manager, out T[] echoed, int count) {
       echoed = new T[count];
       return echoed;
@@ -118,6 +141,11 @@ namespace DT.UniStart {
     public static IReadOnlyList<T> AddConstArray<T>(this IStateManager manager, out T[] echoed, int count, T fill) {
       echoed = new T[count];
       echoed.Fill(fill);
+      return echoed;
+    }
+    public static IReadOnlyList<T> AddConstArray<T>(this IStateManager manager, out T[] echoed, int count, Func<T> factory) {
+      echoed = new T[count];
+      echoed.Fill(factory);
       return echoed;
     }
     public static IReadOnlyDictionary<K, V> AddConstDictionary<K, V>(this IStateManager manager) {

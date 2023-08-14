@@ -3,6 +3,7 @@
 ## v11.3.0
 
 - Feat: `Array/IList.Fill` support `factory` as parameter to create reference types.
+  - `IStateManager.AddList/AddArray/AddConstArray` support `factory` as parameter to create reference types.
 
 ## v11.2.0
 
