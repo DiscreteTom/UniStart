@@ -26,7 +26,17 @@ namespace DT.UniStart {
     public static void Copy(this Array sourceArray, Array destinationArray, int length) => Array.Copy(sourceArray, destinationArray, length);
     public static bool Exists<T>(this T[] array, Predicate<T> match) => Array.Exists(array, match);
     public static void Fill<T>(this T[] array, T value) => Array.Fill(array, value);
+    public static void Fill<T>(this T[] array, Func<T> factory) {
+      for (var i = 0; i < array.Length; i++) {
+        array[i] = factory.Invoke();
+      }
+    }
     public static void Fill<T>(this T[] array, T value, int startIndex, int count) => Array.Fill(array, value, startIndex, count);
+    public static void Fill<T>(this T[] array, Func<T> factory, int startIndex, int count) {
+      for (var i = startIndex; i < startIndex + count; i++) {
+        array[i] = factory.Invoke();
+      }
+    }
     public static T? Find<T>(this T[] array, Predicate<T> match) => Array.Find(array, match);
     public static T[] FindAll<T>(this T[] array, Predicate<T> match) => Array.FindAll(array, match);
     public static int FindIndex<T>(this T[] array, int startIndex, int count, Predicate<T> match) => Array.FindIndex(array, startIndex, count, match);
