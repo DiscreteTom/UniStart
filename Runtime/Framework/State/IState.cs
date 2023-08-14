@@ -157,22 +157,22 @@ namespace DT.UniStart {
     }
     public static IReadOnlyList<IState<T>> AddStateArray<T>(this IStateManager manager, int count, T fill = default) {
       var res = new Watch<T>[count];
-      res.Fill(new Watch<T>(fill));
+      res.Fill(() => new Watch<T>(fill));
       return res;
     }
     public static IReadOnlyList<IState<T>> AddStateArray<T>(this IStateManager manager, out Watch<T>[] echoed, int count, T fill = default) {
       echoed = new Watch<T>[count];
-      echoed.Fill(new Watch<T>(fill));
+      echoed.Fill(() => new Watch<T>(fill));
       return echoed;
     }
     public static IReadOnlyList<IEnumState<T>> AddEnumArray<T>(this IStateManager manager, int count, T fill = default) where T : Enum {
       var res = new StateMachine<T>[count];
-      res.Fill(new StateMachine<T>(default));
+      res.Fill(() => new StateMachine<T>(default));
       return res;
     }
     public static IReadOnlyList<IEnumState<T>> AddEnumArray<T>(this IStateManager manager, out StateMachine<T>[] echoed, int count, T fill = default) where T : Enum {
       echoed = new StateMachine<T>[count];
-      echoed.Fill(new StateMachine<T>(fill));
+      echoed.Fill(() => new StateMachine<T>(fill));
       return echoed;
     }
     #endregion
