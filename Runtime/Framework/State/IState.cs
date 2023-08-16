@@ -7,7 +7,7 @@ using UnityEngine.Events;
 namespace DT.UniStart {
   #region State
   public interface IState<T> : IWatchable<T, T>, IGetValue<T> { }
-  public interface IEnumState<T> : IReadonlyStateMachine<T> where T : Enum { }
+  public interface IEnumState<T> : IReadOnlyStateMachine<T> where T : Enum { }
   public interface IListState<T> : IReadOnlyList<T>, IWatchable, IWatchable<ReadOnlyCollection<T>>, IGetValue<ReadOnlyCollection<T>> {
     bool Contains(T item);
     int IndexOf(T item);
