@@ -3,6 +3,7 @@
 ## v12.0.0
 
 - **_Breaking Change_**: remove `TransformExtension.SetRotationX/Y/Z/W` and `SetLocalRotationX/Y/Z/W`.
+- Note: add tests. #18
 
 ## v11.3.0
 
