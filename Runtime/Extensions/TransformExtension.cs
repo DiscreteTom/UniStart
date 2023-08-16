@@ -39,38 +39,6 @@ namespace DT.UniStart {
       t.localScale = t.localScale.WithZ(value);
       return t;
     }
-    public static Transform SetRotationX(this Transform t, float value) {
-      t.rotation = t.rotation.WithX(value);
-      return t;
-    }
-    public static Transform SetRotationY(this Transform t, float value) {
-      t.rotation = t.rotation.WithY(value);
-      return t;
-    }
-    public static Transform SetRotationZ(this Transform t, float value) {
-      t.rotation = t.rotation.WithZ(value);
-      return t;
-    }
-    public static Transform SetRotationW(this Transform t, float value) {
-      t.rotation = t.rotation.WithW(value);
-      return t;
-    }
-    public static Transform SetLocalRotationX(this Transform t, float value) {
-      t.localRotation = t.localRotation.WithX(value);
-      return t;
-    }
-    public static Transform SetLocalRotationY(this Transform t, float value) {
-      t.localRotation = t.localRotation.WithY(value);
-      return t;
-    }
-    public static Transform SetLocalRotationZ(this Transform t, float value) {
-      t.localRotation = t.localRotation.WithZ(value);
-      return t;
-    }
-    public static Transform SetLocalRotationW(this Transform t, float value) {
-      t.localRotation = t.localRotation.WithW(value);
-      return t;
-    }
 
     public static Transform ForEachChild(this Transform t, Action<Transform, int> action) {
       for (var i = 0; i < t.childCount; i++) {
