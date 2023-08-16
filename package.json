@@ -20,5 +20,8 @@
       "description": "A sample snake game.",
       "path": "Samples~/UniSnake"
     }
+  ],
+  "testables": [
+    "com.discretetom.unistart"
   ]
 }
