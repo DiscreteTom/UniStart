@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 
 namespace DT.UniStart {
   public static class ArrayExtension {
-    #region Array Static Methods
+    #region Array Static Methods as Extension Methods
 #nullable enable
     public static ReadOnlyCollection<T> AsReadOnly<T>(this T[] array) => Array.AsReadOnly(array);
     public static int BinarySearch(this Array array, object? value, IComparer? comparer) => Array.BinarySearch(array, value, comparer);
@@ -17,7 +17,6 @@ namespace DT.UniStart {
     public static int BinarySearch(this Array array, object? value) => Array.BinarySearch(array, value);
     public static int BinarySearch(this Array array, int index, int length, object? value) => Array.BinarySearch(array, index, length, value);
     public static void Clear(this Array array, int index, int length) => Array.Clear(array, index, length);
-    public static void Clear(this Array array) => Array.Clear(array, 0, array.Length);
     public static void ConstrainedCopy(this Array sourceArray, int sourceIndex, Array destinationArray, int destinationIndex, int length) => Array.ConstrainedCopy(sourceArray, sourceIndex, destinationArray, destinationIndex, length);
     public static TOutput[] ConvertAll<TInput, TOutput>(this TInput[] array, Converter<TInput, TOutput> converter) => Array.ConvertAll(array, converter);
     public static void Copy(this Array sourceArray, Array destinationArray, long length) => Array.Copy(sourceArray, destinationArray, length);
@@ -26,17 +25,7 @@ namespace DT.UniStart {
     public static void Copy(this Array sourceArray, Array destinationArray, int length) => Array.Copy(sourceArray, destinationArray, length);
     public static bool Exists<T>(this T[] array, Predicate<T> match) => Array.Exists(array, match);
     public static void Fill<T>(this T[] array, T value) => Array.Fill(array, value);
-    public static void Fill<T>(this T[] array, Func<T> factory) {
-      for (var i = 0; i < array.Length; i++) {
-        array[i] = factory.Invoke();
-      }
-    }
     public static void Fill<T>(this T[] array, T value, int startIndex, int count) => Array.Fill(array, value, startIndex, count);
-    public static void Fill<T>(this T[] array, Func<T> factory, int startIndex, int count) {
-      for (var i = startIndex; i < startIndex + count; i++) {
-        array[i] = factory.Invoke();
-      }
-    }
     public static T? Find<T>(this T[] array, Predicate<T> match) => Array.Find(array, match);
     public static T[] FindAll<T>(this T[] array, Predicate<T> match) => Array.FindAll(array, match);
     public static int FindIndex<T>(this T[] array, int startIndex, int count, Predicate<T> match) => Array.FindIndex(array, startIndex, count, match);
@@ -84,6 +73,19 @@ namespace DT.UniStart {
 #nullable disable
     #endregion
 
+    #region UniStart Extension Methods
     public static bool Contains<T>(this T[] array, T value) => array.Exists(x => x.Equals(value));
+    public static void Clear(this Array array) => Array.Clear(array, 0, array.Length);
+    public static void Fill<T>(this T[] array, Func<T> factory) {
+      for (var i = 0; i < array.Length; i++) {
+        array[i] = factory.Invoke();
+      }
+    }
+    public static void Fill<T>(this T[] array, Func<T> factory, int startIndex, int count) {
+      for (var i = startIndex; i < startIndex + count; i++) {
+        array[i] = factory.Invoke();
+      }
+    }
+    #endregion
   }
 }

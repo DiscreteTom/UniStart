@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using UnityEngine;
 
 namespace DT.UniStart {
@@ -10,8 +8,7 @@ namespace DT.UniStart {
     /// </summary>
     public static T GetOrAddComponent<T>(this GameObject obj) where T : Component {
       // IMPORTANT: don't use `??` to check for null, because Unity overrides the == operator
-      var res = obj.GetComponent<T>();
-      if (res != null) return res;
+      if (obj.TryGetComponent<T>(out var res)) return res;
       return obj.AddComponent<T>();
     }
   }

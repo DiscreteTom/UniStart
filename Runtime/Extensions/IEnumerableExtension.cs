@@ -4,8 +4,8 @@ using System.Collections.Generic;
 namespace DT.UniStart {
   public static class IEnumerableExtension {
     public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T, int> action) {
-      int i = 0;
-      foreach (T item in enumerable) {
+      var i = 0;
+      foreach (var item in enumerable) {
         action(item, i);
         i++;
       }
@@ -16,9 +16,9 @@ namespace DT.UniStart {
     }
 
     public static R[] Map<T, R>(this IEnumerable<T> enumerable, Func<T, int, R> action) {
-      List<R> list = new List<R>();
-      int i = 0;
-      foreach (T item in enumerable) {
+      var list = new List<R>();
+      var i = 0;
+      foreach (var item in enumerable) {
         list.Add(action(item, i));
         i++;
       }
@@ -30,12 +30,10 @@ namespace DT.UniStart {
     }
 
     public static T[] Shuffle<T>(this IEnumerable<T> enumerable) {
-      List<T> list = new List<T>(enumerable);
-      for (int i = 0; i < list.Count; i++) {
-        int j = UnityEngine.Random.Range(i, list.Count);
-        T temp = list[i];
-        list[i] = list[j];
-        list[j] = temp;
+      var list = new List<T>(enumerable);
+      for (var i = 0; i < list.Count; i++) {
+        var j = UnityEngine.Random.Range(i, list.Count);
+        (list[j], list[i]) = (list[i], list[j]);
       }
       return list.ToArray();
     }

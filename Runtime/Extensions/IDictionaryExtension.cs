@@ -36,7 +36,7 @@ namespace DT.UniStart {
     /// </summary>
     public static V GetOrDefault<K, V>(this IDictionary<K, V> dict, K key) {
       if (dict.TryGetValue(key, out var value)) return value;
-      return default(V);
+      return default;
     }
   }
 }

@@ -73,7 +73,7 @@ namespace DT.UniStart {
     }
 
     public static Transform ForEachChild(this Transform t, Action<Transform, int> action) {
-      for (int i = 0; i < t.childCount; i++) {
+      for (var i = 0; i < t.childCount; i++) {
         action(t.GetChild(i), i);
       }
       return t;
@@ -82,8 +82,8 @@ namespace DT.UniStart {
       return t.ForEachChild((t, i) => action(t));
     }
     public static T[] MapChildren<T>(this Transform t, Func<Transform, int, T> action) {
-      T[] result = new T[t.childCount];
-      for (int i = 0; i < t.childCount; i++) {
+      var result = new T[t.childCount];
+      for (var i = 0; i < t.childCount; i++) {
         result[i] = action(t.GetChild(i), i);
       }
       return result;
