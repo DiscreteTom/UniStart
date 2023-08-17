@@ -188,6 +188,17 @@ public class Test2 : ComposableBehaviour {
 }
 ```
 
+What's more, to use this with other frameworks, you can also use `ComposableBehaviour` as a component, and add it to any `GameObject` you want. For example, if you are using Mirror for networking, you can inherit from `NetworkBehaviour` and use `ComposableBehaviour` as a component.
+
+```cs
+public class ComposableComponentApp : NetworkBehaviour {
+  void Start() {
+    var cb = this.GetOrAddComponent<ComposableBehaviour>();
+    cb.onUpdate.AddListener(() => print("Test.onUpdate"));
+  }
+}
+```
+
 ### Global Context Management
 
 When developing a game, you may need to store some global context, like the player's data, the game's settings, etc. You may use singletons to store these data, but sometimes it's not a good idea.
@@ -240,6 +251,18 @@ public class WithContext : CBC {
 You can replace all your `MonoBehaviour` with `CBC` to use the context injection, except the `Entry` class since the `Entry` class is responsible for initializing the context.
 
 With this design, you will have an explicit place to initialize your context, instead of using singletons or other static variables.
+
+Just like the `ComposableBehaviour`, you can also use `CBC` as a component, and add it to any `GameObject` you want.
+
+```cs
+public class CBCComponentApp : MonoBehaviour {
+  void Start() {
+    var cbc = this.GetOrAddComponent<CBC>();
+    var model = cbc.Get<Model>();
+    cbc.onUpdate.AddListener(() => print("Test.onUpdate"));
+  }
+}
+```
 
 > This is inspired by [QFramework](https://github.com/liangxiegame/QFramework)'s IoC container, and [jackutea](https://github.com/jackutea)'s deterministic lifecycle management.
 
