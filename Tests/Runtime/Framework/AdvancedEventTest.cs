@@ -344,4 +344,59 @@ public class AdvancedEventTest {
     e4.Invoke(8, 9, 10, 11);
     Assert.AreEqual(n, 0);
   }
+
+  [Test]
+  public void InvokeTest() {
+    var e0 = new AdvancedEvent();
+    var e1 = new AdvancedEvent<int>();
+    var e2 = new AdvancedEvent<int, int>();
+    var e3 = new AdvancedEvent<int, int, int>();
+    var e4 = new AdvancedEvent<int, int, int, int>();
+    var n = 0;
+
+    n = 0;
+    e0.AddListener(() => n++);
+    e0.Invoke();
+    Assert.AreEqual(n, 1);
+    e0.Invoke();
+    Assert.AreEqual(n, 2);
+
+    n = 0;
+    e1.AddListener(() => n++);
+    e1.AddListener((int a) => n += a);
+    e1.Invoke(1);
+    Assert.AreEqual(n, 2);
+    e1.Invoke(1);
+    Assert.AreEqual(n, 4);
+
+    n = 0;
+    e2.AddListener(() => n++);
+    e2.AddListener((int a) => n += a);
+    e2.AddListener((int a, int b) => n += a + b);
+    e2.Invoke(2, 3);
+    Assert.AreEqual(n, 8);
+    e2.Invoke(2, 3);
+    Assert.AreEqual(n, 16);
+
+    n = 0;
+    e3.AddListener(() => n++);
+    e3.AddListener((int a) => n += a);
+    e3.AddListener((int a, int b) => n += a + b);
+    e3.AddListener((int a, int b, int c) => n += a + b + c);
+    e3.Invoke(4, 5, 6);
+    Assert.AreEqual(n, 29);
+    e3.Invoke(4, 5, 6);
+    Assert.AreEqual(n, 58);
+
+    n = 0;
+    e4.AddListener(() => n++);
+    e4.AddListener((int a) => n += a);
+    e4.AddListener((int a, int b) => n += a + b);
+    e4.AddListener((int a, int b, int c) => n += a + b + c);
+    e4.AddListener((int a, int b, int c, int d) => n += a + b + c + d);
+    e4.Invoke(7, 8, 9, 10);
+    Assert.AreEqual(n, 81);
+    e4.Invoke(7, 8, 9, 10);
+    Assert.AreEqual(n, 162);
+  }
 }
