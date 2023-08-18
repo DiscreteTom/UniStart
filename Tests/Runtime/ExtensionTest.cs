@@ -7,6 +7,8 @@ using System.Collections.Generic;
 public class ExtensionTest {
   [Test]
   public void ArrayExtensionTest() {
+    // TODO: test static methods?
+
     // contains
     Assert.IsTrue(new int[3] { 1, 2, 3 }.Contains(3));
 
@@ -82,13 +84,18 @@ public class ExtensionTest {
 
   [Test]
   public void IEnumerableExtensionTest() {
-    var list = new List<int> { 1, 2, 3 };
     // for each
+    // list has a ForEach method, but stack does not
+    var stack = new Stack<int>();
+    stack.Push(1);
+    stack.Push(2);
+    stack.Push(3);
     var sum = 0;
-    list.ForEach((i) => sum += i);
+    stack.ForEach((i) => sum += i);
     Assert.AreEqual(sum, 6);
 
     // for each with index
+    var list = new List<int> { 1, 2, 3 };
     var sumWithIndex = 0;
     list.ForEach((i, index) => sumWithIndex += i * index);
     Assert.AreEqual(sumWithIndex, 8);
