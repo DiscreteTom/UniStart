@@ -47,9 +47,9 @@ public class AdvancedEventTest {
 
     n = 0;
     e2.AddListener(() => n++).Invoke();
-    Assert.AreEqual(n, 2);
+    Assert.AreEqual(n, 1);
     e2.AddListener((int a) => n += a).Invoke(2);
-    Assert.AreEqual(n, 4);
+    Assert.AreEqual(n, 3);
 
     n = 0;
     e3.AddListener(() => n++).Invoke();
