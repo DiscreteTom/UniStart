@@ -10,24 +10,55 @@ namespace DT.UniStart.AdvancedEventBase {
     _4,
   }
 
-  public class ActionItem {
-    public AdvancedEventParamCount paramCount;
-    public UnityAction action0;
+  public interface IActionItem {
+    public AdvancedEventParamCount paramCount { get; set; }
+    public UnityAction action0 { get; set; }
   }
-  public class ActionItem<T0> : ActionItem {
-    public UnityAction<T0> action1;
+  public interface IActionItem<T0> : IActionItem {
+    public UnityAction<T0> action1 { get; set; }
   }
-  public class ActionItem<T0, T1> : ActionItem<T0> {
-    public UnityAction<T0, T1> action2;
+  public interface IActionItem<T0, T1> : IActionItem<T0> {
+    public UnityAction<T0, T1> action2 { get; set; }
   }
-  public class ActionItem<T0, T1, T2> : ActionItem<T0, T1> {
-    public UnityAction<T0, T1, T2> action3;
+  public interface IActionItem<T0, T1, T2> : IActionItem<T0, T1> {
+    public UnityAction<T0, T1, T2> action3 { get; set; }
   }
-  public class ActionItem<T0, T1, T2, T3> : ActionItem<T0, T1, T2> {
-    public UnityAction<T0, T1, T2, T3> action4;
+  public interface IActionItem<T0, T1, T2, T3> : IActionItem<T0, T1, T2> {
+    public UnityAction<T0, T1, T2, T3> action4 { get; set; }
   }
 
-  public class BaseAdvancedEvent<A> : IWatchable where A : ActionItem, new() {
+  public struct ActionItem : IActionItem {
+    public AdvancedEventParamCount paramCount { get; set; }
+    public UnityAction action0 { get; set; }
+  }
+  public struct ActionItem<T0> : IActionItem<T0> {
+    public AdvancedEventParamCount paramCount { get; set; }
+    public UnityAction action0 { get; set; }
+    public UnityAction<T0> action1 { get; set; }
+  }
+  public struct ActionItem<T0, T1> : IActionItem<T0, T1> {
+    public AdvancedEventParamCount paramCount { get; set; }
+    public UnityAction action0 { get; set; }
+    public UnityAction<T0> action1 { get; set; }
+    public UnityAction<T0, T1> action2 { get; set; }
+  }
+  public struct ActionItem<T0, T1, T2> : IActionItem<T0, T1, T2> {
+    public AdvancedEventParamCount paramCount { get; set; }
+    public UnityAction action0 { get; set; }
+    public UnityAction<T0> action1 { get; set; }
+    public UnityAction<T0, T1> action2 { get; set; }
+    public UnityAction<T0, T1, T2> action3 { get; set; }
+  }
+  public struct ActionItem<T0, T1, T2, T3> : IActionItem<T0, T1, T2, T3> {
+    public AdvancedEventParamCount paramCount { get; set; }
+    public UnityAction action0 { get; set; }
+    public UnityAction<T0> action1 { get; set; }
+    public UnityAction<T0, T1> action2 { get; set; }
+    public UnityAction<T0, T1, T2> action3 { get; set; }
+    public UnityAction<T0, T1, T2, T3> action4 { get; set; }
+  }
+
+  public class BaseAdvancedEvent<A> : IWatchable where A : IActionItem, new() {
     protected readonly List<A> e = new();
     protected readonly List<A> once = new();
 
@@ -60,7 +91,7 @@ namespace DT.UniStart.AdvancedEventBase {
     }
   }
 
-  public class BaseAdvancedEvent<T0, A> : BaseAdvancedEvent<A>, IWatchable, IWatchable<T0> where A : ActionItem<T0>, new() {
+  public class BaseAdvancedEvent<T0, A> : BaseAdvancedEvent<A>, IWatchable, IWatchable<T0> where A : IActionItem<T0>, new() {
     public UnityAction<T0> AddListener(UnityAction<T0> action) {
       this.e.Add(new A {
         paramCount = AdvancedEventParamCount._1,
@@ -85,7 +116,7 @@ namespace DT.UniStart.AdvancedEventBase {
     }
   }
 
-  public class BaseAdvancedEvent<T0, T1, A> : BaseAdvancedEvent<T0, A>, IWatchable, IWatchable<T0>, IWatchable<T0, T1> where A : ActionItem<T0, T1>, new() {
+  public class BaseAdvancedEvent<T0, T1, A> : BaseAdvancedEvent<T0, A>, IWatchable, IWatchable<T0>, IWatchable<T0, T1> where A : IActionItem<T0, T1>, new() {
     public UnityAction<T0, T1> AddListener(UnityAction<T0, T1> action) {
       this.e.Add(new A {
         paramCount = AdvancedEventParamCount._2,
@@ -110,7 +141,7 @@ namespace DT.UniStart.AdvancedEventBase {
     }
   }
 
-  public class BaseAdvancedEvent<T0, T1, T2, A> : BaseAdvancedEvent<T0, T1, A>, IWatchable, IWatchable<T0>, IWatchable<T0, T1>, IWatchable<T0, T1, T2> where A : ActionItem<T0, T1, T2>, new() {
+  public class BaseAdvancedEvent<T0, T1, T2, A> : BaseAdvancedEvent<T0, T1, A>, IWatchable, IWatchable<T0>, IWatchable<T0, T1>, IWatchable<T0, T1, T2> where A : IActionItem<T0, T1, T2>, new() {
     public UnityAction<T0, T1, T2> AddListener(UnityAction<T0, T1, T2> action) {
       this.e.Add(new A {
         paramCount = AdvancedEventParamCount._3,
@@ -135,7 +166,7 @@ namespace DT.UniStart.AdvancedEventBase {
     }
   }
 
-  public class BaseAdvancedEvent<T0, T1, T2, T3, A> : BaseAdvancedEvent<T0, T1, T2, A>, IWatchable, IWatchable<T0>, IWatchable<T0, T1>, IWatchable<T0, T1, T2>, IWatchable<T0, T1, T2, T3> where A : ActionItem<T0, T1, T2, T3>, new() {
+  public class BaseAdvancedEvent<T0, T1, T2, T3, A> : BaseAdvancedEvent<T0, T1, T2, A>, IWatchable, IWatchable<T0>, IWatchable<T0, T1>, IWatchable<T0, T1, T2>, IWatchable<T0, T1, T2, T3> where A : IActionItem<T0, T1, T2, T3>, new() {
     public UnityAction<T0, T1, T2, T3> AddListener(UnityAction<T0, T1, T2, T3> action) {
       this.e.Add(new A {
         paramCount = AdvancedEventParamCount._4,
