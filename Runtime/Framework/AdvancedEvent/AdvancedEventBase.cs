@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine.Events;
 
 namespace DT.UniStart.AdvancedEventBase {
+  // TODO: will `AdvancedEventParamCount : byte` be better?
   public enum AdvancedEventParamCount {
     _0,
     _1,
@@ -10,6 +11,8 @@ namespace DT.UniStart.AdvancedEventBase {
     _4,
   }
 
+  // TODO: is there some way to use union type for ActionItem? then we could store only one action instead of 4.
+  // currently we store 4 actions to avoid the cost of casting to the correct action type
   public interface IActionItem {
     public AdvancedEventParamCount paramCount { get; set; }
     public UnityAction action0 { get; set; }
