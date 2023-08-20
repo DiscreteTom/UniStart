@@ -2,8 +2,16 @@ using System.Collections.Generic;
 using UnityEngine.Events;
 
 namespace DT.UniStart.AdvancedEventBase {
+  public enum AdvancedEventParamCount {
+    _0,
+    _1,
+    _2,
+    _3,
+    _4,
+  }
+
   public class ActionItem {
-    public int paramCount;
+    public AdvancedEventParamCount paramCount;
     public UnityAction action0;
   }
   public class ActionItem<T0> : ActionItem {
@@ -25,7 +33,7 @@ namespace DT.UniStart.AdvancedEventBase {
 
     public UnityAction AddListener(UnityAction action) {
       this.e.Add(new A {
-        paramCount = 0,
+        paramCount = AdvancedEventParamCount._0,
         action0 = action
       });
       return action;
@@ -36,7 +44,7 @@ namespace DT.UniStart.AdvancedEventBase {
     }
     public UnityAction AddOnceListener(UnityAction action) {
       this.once.Add(new A {
-        paramCount = 0,
+        paramCount = AdvancedEventParamCount._0,
         action0 = action
       });
       return action;
@@ -55,7 +63,7 @@ namespace DT.UniStart.AdvancedEventBase {
   public class BaseAdvancedEvent<T0, A> : BaseAdvancedEvent<A>, IWatchable, IWatchable<T0> where A : ActionItem<T0>, new() {
     public UnityAction<T0> AddListener(UnityAction<T0> action) {
       this.e.Add(new A {
-        paramCount = 1,
+        paramCount = AdvancedEventParamCount._1,
         action1 = action
       });
       return action;
@@ -66,7 +74,7 @@ namespace DT.UniStart.AdvancedEventBase {
     }
     public UnityAction<T0> AddOnceListener(UnityAction<T0> action) {
       this.once.Add(new A {
-        paramCount = 1,
+        paramCount = AdvancedEventParamCount._1,
         action1 = action
       });
       return action;
@@ -80,7 +88,7 @@ namespace DT.UniStart.AdvancedEventBase {
   public class BaseAdvancedEvent<T0, T1, A> : BaseAdvancedEvent<T0, A>, IWatchable, IWatchable<T0>, IWatchable<T0, T1> where A : ActionItem<T0, T1>, new() {
     public UnityAction<T0, T1> AddListener(UnityAction<T0, T1> action) {
       this.e.Add(new A {
-        paramCount = 2,
+        paramCount = AdvancedEventParamCount._2,
         action2 = action
       });
       return action;
@@ -91,7 +99,7 @@ namespace DT.UniStart.AdvancedEventBase {
     }
     public UnityAction<T0, T1> AddOnceListener(UnityAction<T0, T1> action) {
       this.once.Add(new A {
-        paramCount = 2,
+        paramCount = AdvancedEventParamCount._2,
         action2 = action
       });
       return action;
@@ -105,7 +113,7 @@ namespace DT.UniStart.AdvancedEventBase {
   public class BaseAdvancedEvent<T0, T1, T2, A> : BaseAdvancedEvent<T0, T1, A>, IWatchable, IWatchable<T0>, IWatchable<T0, T1>, IWatchable<T0, T1, T2> where A : ActionItem<T0, T1, T2>, new() {
     public UnityAction<T0, T1, T2> AddListener(UnityAction<T0, T1, T2> action) {
       this.e.Add(new A {
-        paramCount = 3,
+        paramCount = AdvancedEventParamCount._3,
         action3 = action
       });
       return action;
@@ -116,7 +124,7 @@ namespace DT.UniStart.AdvancedEventBase {
     }
     public UnityAction<T0, T1, T2> AddOnceListener(UnityAction<T0, T1, T2> action) {
       this.once.Add(new A {
-        paramCount = 3,
+        paramCount = AdvancedEventParamCount._3,
         action3 = action
       });
       return action;
@@ -130,7 +138,7 @@ namespace DT.UniStart.AdvancedEventBase {
   public class BaseAdvancedEvent<T0, T1, T2, T3, A> : BaseAdvancedEvent<T0, T1, T2, A>, IWatchable, IWatchable<T0>, IWatchable<T0, T1>, IWatchable<T0, T1, T2>, IWatchable<T0, T1, T2, T3> where A : ActionItem<T0, T1, T2, T3>, new() {
     public UnityAction<T0, T1, T2, T3> AddListener(UnityAction<T0, T1, T2, T3> action) {
       this.e.Add(new A {
-        paramCount = 4,
+        paramCount = AdvancedEventParamCount._4,
         action4 = action
       });
       return action;
@@ -141,7 +149,7 @@ namespace DT.UniStart.AdvancedEventBase {
     }
     public UnityAction<T0, T1, T2, T3> AddOnceListener(UnityAction<T0, T1, T2, T3> action) {
       this.once.Add(new A {
-        paramCount = 4,
+        paramCount = AdvancedEventParamCount._4,
         action4 = action
       });
       return action;
