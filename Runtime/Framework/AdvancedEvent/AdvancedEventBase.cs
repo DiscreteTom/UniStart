@@ -34,34 +34,20 @@ namespace DT.UniStart.AdvancedEventBase {
   // TODO: is there some way to use union type for ActionItem? then we could store only one action instead of at most 5.
   // currently we store at most 5 actions to avoid the cost of casting to the correct action type.
   // we are using space to save time for now, because for most cases user will use 0 to 2 parameters.
-  public struct ActionItem : IActionItem {
+  public class ActionItem : IActionItem {
     public AdvancedEventParamCount paramCount { get; set; }
     public UnityAction action0 { get; set; }
   }
-  public struct ActionItem<T0> : IActionItem<T0> {
-    public AdvancedEventParamCount paramCount { get; set; }
-    public UnityAction action0 { get; set; }
+  public class ActionItem<T0> : ActionItem, IActionItem<T0> {
     public UnityAction<T0> action1 { get; set; }
   }
-  public struct ActionItem<T0, T1> : IActionItem<T0, T1> {
-    public AdvancedEventParamCount paramCount { get; set; }
-    public UnityAction action0 { get; set; }
-    public UnityAction<T0> action1 { get; set; }
+  public class ActionItem<T0, T1> : ActionItem<T0>, IActionItem<T0, T1> {
     public UnityAction<T0, T1> action2 { get; set; }
   }
-  public struct ActionItem<T0, T1, T2> : IActionItem<T0, T1, T2> {
-    public AdvancedEventParamCount paramCount { get; set; }
-    public UnityAction action0 { get; set; }
-    public UnityAction<T0> action1 { get; set; }
-    public UnityAction<T0, T1> action2 { get; set; }
+  public class ActionItem<T0, T1, T2> : ActionItem<T0, T1>, IActionItem<T0, T1, T2> {
     public UnityAction<T0, T1, T2> action3 { get; set; }
   }
-  public struct ActionItem<T0, T1, T2, T3> : IActionItem<T0, T1, T2, T3> {
-    public AdvancedEventParamCount paramCount { get; set; }
-    public UnityAction action0 { get; set; }
-    public UnityAction<T0> action1 { get; set; }
-    public UnityAction<T0, T1> action2 { get; set; }
-    public UnityAction<T0, T1, T2> action3 { get; set; }
+  public class ActionItem<T0, T1, T2, T3> : ActionItem<T0, T1, T2>, IActionItem<T0, T1, T2, T3> {
     public UnityAction<T0, T1, T2, T3> action4 { get; set; }
   }
 
