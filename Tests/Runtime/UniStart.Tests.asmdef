@@ -9,7 +9,6 @@
     "includePlatforms": [],
     "excludePlatforms": [
         "Android",
-        "Bratwurst",
         "EmbeddedLinux",
         "GameCoreScarlett",
         "GameCoreXboxOne",
