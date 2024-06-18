@@ -15,40 +15,65 @@ namespace DT.UniStart.AdvancedEventBase {
   }
 
   public interface IActionItem {
-    public AdvancedEventParamCount paramCount { get; set; }
-    public UnityAction action0 { get; set; }
+    public AdvancedEventParamCount paramCount { get; }
+    public UnityAction action0 { get; }
+    public void _0(UnityAction a); // TODO: move this to another interface?
   }
   public interface IActionItem<T0> : IActionItem {
-    public UnityAction<T0> action1 { get; set; }
+    public UnityAction<T0> action1 { get; }
+    public void _1(UnityAction<T0> a);
   }
   public interface IActionItem<T0, T1> : IActionItem<T0> {
-    public UnityAction<T0, T1> action2 { get; set; }
+    public UnityAction<T0, T1> action2 { get; }
+    public void _2(UnityAction<T0, T1> a);
   }
   public interface IActionItem<T0, T1, T2> : IActionItem<T0, T1> {
-    public UnityAction<T0, T1, T2> action3 { get; set; }
+    public UnityAction<T0, T1, T2> action3 { get; }
+    public void _3(UnityAction<T0, T1, T2> a);
   }
   public interface IActionItem<T0, T1, T2, T3> : IActionItem<T0, T1, T2> {
-    public UnityAction<T0, T1, T2, T3> action4 { get; set; }
+    public UnityAction<T0, T1, T2, T3> action4 { get; }
+    public void _4(UnityAction<T0, T1, T2, T3> a);
   }
 
   // TODO: is there some way to use union type for ActionItem? then we could store only one action instead of at most 5.
   // currently we store at most 5 actions to avoid the cost of casting to the correct action type.
   // we are using space to save time for now, because for most cases user will use 0 to 2 parameters.
   public class ActionItem : IActionItem {
-    public AdvancedEventParamCount paramCount { get; set; }
-    public UnityAction action0 { get; set; }
+    public AdvancedEventParamCount paramCount { get; protected set; }
+    public UnityAction action0 { get; private set; }
+    public void _0(UnityAction a) {
+      this.paramCount = AdvancedEventParamCount._0;
+      this.action0 = a;
+    }
   }
   public class ActionItem<T0> : ActionItem, IActionItem<T0> {
-    public UnityAction<T0> action1 { get; set; }
+    public UnityAction<T0> action1 { get; private set; }
+    public void _1(UnityAction<T0> a) {
+      this.paramCount = AdvancedEventParamCount._1;
+      this.action1 = a;
+    }
   }
   public class ActionItem<T0, T1> : ActionItem<T0>, IActionItem<T0, T1> {
-    public UnityAction<T0, T1> action2 { get; set; }
+    public UnityAction<T0, T1> action2 { get; private set; }
+    public void _2(UnityAction<T0, T1> a) {
+      this.paramCount = AdvancedEventParamCount._2;
+      this.action2 = a;
+    }
   }
   public class ActionItem<T0, T1, T2> : ActionItem<T0, T1>, IActionItem<T0, T1, T2> {
-    public UnityAction<T0, T1, T2> action3 { get; set; }
+    public UnityAction<T0, T1, T2> action3 { get; private set; }
+    public void _3(UnityAction<T0, T1, T2> a) {
+      this.paramCount = AdvancedEventParamCount._3;
+      this.action3 = a;
+    }
   }
   public class ActionItem<T0, T1, T2, T3> : ActionItem<T0, T1, T2>, IActionItem<T0, T1, T2, T3> {
-    public UnityAction<T0, T1, T2, T3> action4 { get; set; }
+    public UnityAction<T0, T1, T2, T3> action4 { get; private set; }
+    public void _4(UnityAction<T0, T1, T2, T3> a) {
+      this.paramCount = AdvancedEventParamCount._4;
+      this.action4 = a;
+    }
   }
 
   public class BaseAdvancedEvent<A> : IWatchable where A : IActionItem, new() {
@@ -64,10 +89,9 @@ namespace DT.UniStart.AdvancedEventBase {
     protected readonly List<A> once = new();
 
     public UnityAction AddListener(UnityAction action) {
-      this.e.Add(new A {
-        paramCount = AdvancedEventParamCount._0,
-        action0 = action
-      });
+      var a = new A();
+      a._0(action);
+      this.e.Add(a);
       return action;
     }
     public UnityAction RemoveListener(UnityAction action) {
@@ -75,10 +99,8 @@ namespace DT.UniStart.AdvancedEventBase {
       return action;
     }
     public UnityAction AddOnceListener(UnityAction action) {
-      var a = new A {
-        paramCount = AdvancedEventParamCount._0,
-        action0 = action
-      };
+      var a = new A();
+      a._0(action);
       this.e.Add(a);
       this.once.Add(a);
       return action;
@@ -92,10 +114,9 @@ namespace DT.UniStart.AdvancedEventBase {
 
   public class BaseAdvancedEvent<T0, A> : BaseAdvancedEvent<A>, IWatchable, IWatchable<T0> where A : IActionItem<T0>, new() {
     public UnityAction<T0> AddListener(UnityAction<T0> action) {
-      this.e.Add(new A {
-        paramCount = AdvancedEventParamCount._1,
-        action1 = action
-      });
+      var a = new A();
+      a._1(action);
+      this.e.Add(a);
       return action;
     }
     public UnityAction<T0> RemoveListener(UnityAction<T0> action) {
@@ -103,10 +124,8 @@ namespace DT.UniStart.AdvancedEventBase {
       return action;
     }
     public UnityAction<T0> AddOnceListener(UnityAction<T0> action) {
-      var a = new A {
-        paramCount = AdvancedEventParamCount._1,
-        action1 = action
-      };
+      var a = new A();
+      a._1(action);
       this.e.Add(a);
       this.once.Add(a);
       return action;
@@ -115,10 +134,9 @@ namespace DT.UniStart.AdvancedEventBase {
 
   public class BaseAdvancedEvent<T0, T1, A> : BaseAdvancedEvent<T0, A>, IWatchable, IWatchable<T0>, IWatchable<T0, T1> where A : IActionItem<T0, T1>, new() {
     public UnityAction<T0, T1> AddListener(UnityAction<T0, T1> action) {
-      this.e.Add(new A {
-        paramCount = AdvancedEventParamCount._2,
-        action2 = action
-      });
+      var a = new A();
+      a._2(action);
+      this.e.Add(a);
       return action;
     }
     public UnityAction<T0, T1> RemoveListener(UnityAction<T0, T1> action) {
@@ -126,10 +144,8 @@ namespace DT.UniStart.AdvancedEventBase {
       return action;
     }
     public UnityAction<T0, T1> AddOnceListener(UnityAction<T0, T1> action) {
-      var a = new A {
-        paramCount = AdvancedEventParamCount._2,
-        action2 = action
-      };
+      var a = new A();
+      a._2(action);
       this.e.Add(a);
       this.once.Add(a);
       return action;
@@ -138,10 +154,9 @@ namespace DT.UniStart.AdvancedEventBase {
 
   public class BaseAdvancedEvent<T0, T1, T2, A> : BaseAdvancedEvent<T0, T1, A>, IWatchable, IWatchable<T0>, IWatchable<T0, T1>, IWatchable<T0, T1, T2> where A : IActionItem<T0, T1, T2>, new() {
     public UnityAction<T0, T1, T2> AddListener(UnityAction<T0, T1, T2> action) {
-      this.e.Add(new A {
-        paramCount = AdvancedEventParamCount._3,
-        action3 = action
-      });
+      var a = new A();
+      a._3(action);
+      this.e.Add(a);
       return action;
     }
     public UnityAction<T0, T1, T2> RemoveListener(UnityAction<T0, T1, T2> action) {
@@ -149,10 +164,8 @@ namespace DT.UniStart.AdvancedEventBase {
       return action;
     }
     public UnityAction<T0, T1, T2> AddOnceListener(UnityAction<T0, T1, T2> action) {
-      var a = new A {
-        paramCount = AdvancedEventParamCount._3,
-        action3 = action
-      };
+      var a = new A();
+      a._3(action);
       this.e.Add(a);
       this.once.Add(a);
       return action;
@@ -161,10 +174,9 @@ namespace DT.UniStart.AdvancedEventBase {
 
   public class BaseAdvancedEvent<T0, T1, T2, T3, A> : BaseAdvancedEvent<T0, T1, T2, A>, IWatchable, IWatchable<T0>, IWatchable<T0, T1>, IWatchable<T0, T1, T2>, IWatchable<T0, T1, T2, T3> where A : IActionItem<T0, T1, T2, T3>, new() {
     public UnityAction<T0, T1, T2, T3> AddListener(UnityAction<T0, T1, T2, T3> action) {
-      this.e.Add(new A {
-        paramCount = AdvancedEventParamCount._4,
-        action4 = action
-      });
+      var a = new A();
+      a._4(action);
+      this.e.Add(a);
       return action;
     }
     public UnityAction<T0, T1, T2, T3> RemoveListener(UnityAction<T0, T1, T2, T3> action) {
@@ -172,10 +184,8 @@ namespace DT.UniStart.AdvancedEventBase {
       return action;
     }
     public UnityAction<T0, T1, T2, T3> AddOnceListener(UnityAction<T0, T1, T2, T3> action) {
-      var a = new A {
-        paramCount = AdvancedEventParamCount._4,
-        action4 = action
-      };
+      var a = new A();
+      a._4(action);
       this.e.Add(a);
       this.once.Add(a);
       return action;
