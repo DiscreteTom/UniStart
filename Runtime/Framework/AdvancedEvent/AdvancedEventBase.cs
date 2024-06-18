@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine.Events;
 
+// users won't use this namespace directly, so we can use a more specific namespace name.
+// in this namespace we will define the base classes for AdvancedEvent.
+
 namespace DT.UniStart.AdvancedEventBase {
   // TODO: will `AdvancedEventParamCount : byte` be better?
   public enum AdvancedEventParamCount {
@@ -11,8 +14,6 @@ namespace DT.UniStart.AdvancedEventBase {
     _4,
   }
 
-  // TODO: is there some way to use union type for ActionItem? then we could store only one action instead of 4.
-  // currently we store 4 actions to avoid the cost of casting to the correct action type
   public interface IActionItem {
     public AdvancedEventParamCount paramCount { get; set; }
     public UnityAction action0 { get; set; }
@@ -30,6 +31,9 @@ namespace DT.UniStart.AdvancedEventBase {
     public UnityAction<T0, T1, T2, T3> action4 { get; set; }
   }
 
+  // TODO: is there some way to use union type for ActionItem? then we could store only one action instead of at most 5.
+  // currently we store at most 5 actions to avoid the cost of casting to the correct action type.
+  // we are using space to save time for now, because for most cases user will use 0 to 2 parameters.
   public struct ActionItem : IActionItem {
     public AdvancedEventParamCount paramCount { get; set; }
     public UnityAction action0 { get; set; }
