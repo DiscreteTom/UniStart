@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine.Events;
 
@@ -88,10 +89,18 @@ namespace DT.UniStart.AdvancedEventBase {
     /// </summary>
     protected readonly List<A> once = new();
 
-    public UnityAction AddListener(UnityAction action) {
+    protected A BaseAddListener(Action<A> decorator) {
       var a = new A();
-      a._0(action);
+      decorator(a);
       this.e.Add(a);
+      return a;
+    }
+    protected void BaseAddOnceListener(Action<A> decorator) {
+      this.once.Add(this.BaseAddListener(decorator));
+    }
+
+    public UnityAction AddListener(UnityAction action) {
+      this.BaseAddListener(a => a._0(action));
       return action;
     }
     public UnityAction RemoveListener(UnityAction action) {
@@ -99,10 +108,7 @@ namespace DT.UniStart.AdvancedEventBase {
       return action;
     }
     public UnityAction AddOnceListener(UnityAction action) {
-      var a = new A();
-      a._0(action);
-      this.e.Add(a);
-      this.once.Add(a);
+      this.BaseAddOnceListener(a => a._0(action));
       return action;
     }
 
@@ -114,9 +120,7 @@ namespace DT.UniStart.AdvancedEventBase {
 
   public class BaseAdvancedEvent<T0, A> : BaseAdvancedEvent<A>, IWatchable, IWatchable<T0> where A : IActionItem<T0>, new() {
     public UnityAction<T0> AddListener(UnityAction<T0> action) {
-      var a = new A();
-      a._1(action);
-      this.e.Add(a);
+      this.BaseAddListener(a => a._1(action));
       return action;
     }
     public UnityAction<T0> RemoveListener(UnityAction<T0> action) {
@@ -124,19 +128,14 @@ namespace DT.UniStart.AdvancedEventBase {
       return action;
     }
     public UnityAction<T0> AddOnceListener(UnityAction<T0> action) {
-      var a = new A();
-      a._1(action);
-      this.e.Add(a);
-      this.once.Add(a);
+      this.BaseAddOnceListener(a => a._1(action));
       return action;
     }
   }
 
   public class BaseAdvancedEvent<T0, T1, A> : BaseAdvancedEvent<T0, A>, IWatchable, IWatchable<T0>, IWatchable<T0, T1> where A : IActionItem<T0, T1>, new() {
     public UnityAction<T0, T1> AddListener(UnityAction<T0, T1> action) {
-      var a = new A();
-      a._2(action);
-      this.e.Add(a);
+      this.BaseAddListener(a => a._2(action));
       return action;
     }
     public UnityAction<T0, T1> RemoveListener(UnityAction<T0, T1> action) {
@@ -144,19 +143,14 @@ namespace DT.UniStart.AdvancedEventBase {
       return action;
     }
     public UnityAction<T0, T1> AddOnceListener(UnityAction<T0, T1> action) {
-      var a = new A();
-      a._2(action);
-      this.e.Add(a);
-      this.once.Add(a);
+      this.BaseAddOnceListener(a => a._2(action));
       return action;
     }
   }
 
   public class BaseAdvancedEvent<T0, T1, T2, A> : BaseAdvancedEvent<T0, T1, A>, IWatchable, IWatchable<T0>, IWatchable<T0, T1>, IWatchable<T0, T1, T2> where A : IActionItem<T0, T1, T2>, new() {
     public UnityAction<T0, T1, T2> AddListener(UnityAction<T0, T1, T2> action) {
-      var a = new A();
-      a._3(action);
-      this.e.Add(a);
+      this.BaseAddListener(a => a._3(action));
       return action;
     }
     public UnityAction<T0, T1, T2> RemoveListener(UnityAction<T0, T1, T2> action) {
@@ -164,19 +158,14 @@ namespace DT.UniStart.AdvancedEventBase {
       return action;
     }
     public UnityAction<T0, T1, T2> AddOnceListener(UnityAction<T0, T1, T2> action) {
-      var a = new A();
-      a._3(action);
-      this.e.Add(a);
-      this.once.Add(a);
+      this.BaseAddOnceListener(a => a._3(action));
       return action;
     }
   }
 
   public class BaseAdvancedEvent<T0, T1, T2, T3, A> : BaseAdvancedEvent<T0, T1, T2, A>, IWatchable, IWatchable<T0>, IWatchable<T0, T1>, IWatchable<T0, T1, T2>, IWatchable<T0, T1, T2, T3> where A : IActionItem<T0, T1, T2, T3>, new() {
     public UnityAction<T0, T1, T2, T3> AddListener(UnityAction<T0, T1, T2, T3> action) {
-      var a = new A();
-      a._4(action);
-      this.e.Add(a);
+      this.BaseAddListener(a => a._4(action));
       return action;
     }
     public UnityAction<T0, T1, T2, T3> RemoveListener(UnityAction<T0, T1, T2, T3> action) {
@@ -184,10 +173,7 @@ namespace DT.UniStart.AdvancedEventBase {
       return action;
     }
     public UnityAction<T0, T1, T2, T3> AddOnceListener(UnityAction<T0, T1, T2, T3> action) {
-      var a = new A();
-      a._4(action);
-      this.e.Add(a);
-      this.once.Add(a);
+      this.BaseAddOnceListener(a => a._4(action));
       return action;
     }
   }
