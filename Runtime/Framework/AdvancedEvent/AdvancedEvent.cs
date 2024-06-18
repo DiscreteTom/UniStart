@@ -13,7 +13,7 @@ namespace DT.UniStart {
       foreach (var item in this.once) {
         switch (item.paramCount) {
           default:
-            item.action0.Invoke();
+            this.RemoveListener(item.action0);
             break;
         }
       }
@@ -36,10 +36,10 @@ namespace DT.UniStart {
       foreach (var item in this.once) {
         switch (item.paramCount) {
           case AdvancedEventParamCount._1:
-            item.action1.Invoke(arg0);
+            this.RemoveListener(item.action1);
             break;
           default:
-            item.action0.Invoke();
+            this.RemoveListener(item.action0);
             break;
         }
       }
@@ -65,13 +65,13 @@ namespace DT.UniStart {
       foreach (var item in this.once) {
         switch (item.paramCount) {
           case AdvancedEventParamCount._2:
-            item.action2.Invoke(arg0, arg1);
+            this.RemoveListener(item.action2);
             break;
           case AdvancedEventParamCount._1:
-            item.action1.Invoke(arg0);
+            this.RemoveListener(item.action1);
             break;
           default:
-            item.action0.Invoke();
+            this.RemoveListener(item.action0);
             break;
         }
       }
@@ -100,16 +100,16 @@ namespace DT.UniStart {
       foreach (var item in this.once) {
         switch (item.paramCount) {
           case AdvancedEventParamCount._3:
-            item.action3.Invoke(arg0, arg1, arg2);
+            this.RemoveListener(item.action3);
             break;
           case AdvancedEventParamCount._2:
-            item.action2.Invoke(arg0, arg1);
+            this.RemoveListener(item.action2);
             break;
           case AdvancedEventParamCount._1:
-            item.action1.Invoke(arg0);
+            this.RemoveListener(item.action1);
             break;
           default:
-            item.action0.Invoke();
+            this.RemoveListener(item.action0);
             break;
         }
       }
@@ -141,19 +141,19 @@ namespace DT.UniStart {
       foreach (var item in this.once) {
         switch (item.paramCount) {
           case AdvancedEventParamCount._4:
-            item.action4.Invoke(arg0, arg1, arg2, arg3);
+            this.RemoveListener(item.action4);
             break;
           case AdvancedEventParamCount._3:
-            item.action3.Invoke(arg0, arg1, arg2);
+            this.RemoveListener(item.action3);
             break;
           case AdvancedEventParamCount._2:
-            item.action2.Invoke(arg0, arg1);
+            this.RemoveListener(item.action2);
             break;
           case AdvancedEventParamCount._1:
-            item.action1.Invoke(arg0);
+            this.RemoveListener(item.action1);
             break;
           default:
-            item.action0.Invoke();
+            this.RemoveListener(item.action0);
             break;
         }
       }

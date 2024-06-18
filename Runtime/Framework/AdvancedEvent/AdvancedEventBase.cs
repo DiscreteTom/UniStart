@@ -52,7 +52,15 @@ namespace DT.UniStart.AdvancedEventBase {
   }
 
   public class BaseAdvancedEvent<A> : IWatchable where A : IActionItem, new() {
+    /// <summary>
+    /// List of listeners that will be invoked every time the event is triggered.
+    /// Including listeners that are added by `AddListener` and `AddOnceListener`.
+    /// </summary>
     protected readonly List<A> e = new();
+    /// <summary>
+    /// List of listeners that will be invoked only once when the event is triggered.
+    /// Subclasses should based on this to remove listeners from `e` after invoking.
+    /// </summary>
     protected readonly List<A> once = new();
 
     public UnityAction AddListener(UnityAction action) {
@@ -67,14 +75,12 @@ namespace DT.UniStart.AdvancedEventBase {
       return action;
     }
     public UnityAction AddOnceListener(UnityAction action) {
-      this.once.Add(new A {
+      var a = new A {
         paramCount = AdvancedEventParamCount._0,
         action0 = action
-      });
-      return action;
-    }
-    public UnityAction RemoveOnceListener(UnityAction action) {
-      this.once.RemoveAll((x) => x.action0 == action);
+      };
+      this.e.Add(a);
+      this.once.Add(a);
       return action;
     }
 
@@ -97,14 +103,12 @@ namespace DT.UniStart.AdvancedEventBase {
       return action;
     }
     public UnityAction<T0> AddOnceListener(UnityAction<T0> action) {
-      this.once.Add(new A {
+      var a = new A {
         paramCount = AdvancedEventParamCount._1,
         action1 = action
-      });
-      return action;
-    }
-    public UnityAction<T0> RemoveOnceListener(UnityAction<T0> action) {
-      this.once.RemoveAll((x) => x.action1 == action);
+      };
+      this.e.Add(a);
+      this.once.Add(a);
       return action;
     }
   }
@@ -122,14 +126,12 @@ namespace DT.UniStart.AdvancedEventBase {
       return action;
     }
     public UnityAction<T0, T1> AddOnceListener(UnityAction<T0, T1> action) {
-      this.once.Add(new A {
+      var a = new A {
         paramCount = AdvancedEventParamCount._2,
         action2 = action
-      });
-      return action;
-    }
-    public UnityAction<T0, T1> RemoveOnceListener(UnityAction<T0, T1> action) {
-      this.once.RemoveAll((x) => x.action2 == action);
+      };
+      this.e.Add(a);
+      this.once.Add(a);
       return action;
     }
   }
@@ -147,14 +149,12 @@ namespace DT.UniStart.AdvancedEventBase {
       return action;
     }
     public UnityAction<T0, T1, T2> AddOnceListener(UnityAction<T0, T1, T2> action) {
-      this.once.Add(new A {
+      var a = new A {
         paramCount = AdvancedEventParamCount._3,
         action3 = action
-      });
-      return action;
-    }
-    public UnityAction<T0, T1, T2> RemoveOnceListener(UnityAction<T0, T1, T2> action) {
-      this.once.RemoveAll((x) => x.action3 == action);
+      };
+      this.e.Add(a);
+      this.once.Add(a);
       return action;
     }
   }
@@ -172,14 +172,12 @@ namespace DT.UniStart.AdvancedEventBase {
       return action;
     }
     public UnityAction<T0, T1, T2, T3> AddOnceListener(UnityAction<T0, T1, T2, T3> action) {
-      this.once.Add(new A {
+      var a = new A {
         paramCount = AdvancedEventParamCount._4,
         action4 = action
-      });
-      return action;
-    }
-    public UnityAction<T0, T1, T2, T3> RemoveOnceListener(UnityAction<T0, T1, T2, T3> action) {
-      this.once.RemoveAll((x) => x.action4 == action);
+      };
+      this.e.Add(a);
+      this.once.Add(a);
       return action;
     }
   }

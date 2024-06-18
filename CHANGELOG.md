@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v13.0.0
+
+- **_Breaking Change_**: use `AdvancedEvent.RemoveListener` instead of `RemoveOnceListener` to remove once listeners.
+- Fix: `AdvancedEvent` will call actions and once actions by the order they are added.
+  - Previously all once actions will be called after repeated actions.
+
 ## v12.0.1
 
 - Perf: optimize the performance of `AdvancedEvent`.
