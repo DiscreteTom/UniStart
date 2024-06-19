@@ -225,57 +225,57 @@ public class AdvancedEventTest {
     var n = 0;
 
     n = 0;
-    e0.RemoveOnceListener(e0.AddOnceListener(() => n++));
+    e0.RemoveListener(e0.AddOnceListener(() => n++));
     e0.Invoke();
     Assert.AreEqual(n, 0);
 
     n = 0;
-    e1.RemoveOnceListener(e1.AddOnceListener(() => n++));
+    e1.RemoveListener(e1.AddOnceListener(() => n++));
     e1.Invoke(1);
     Assert.AreEqual(n, 0);
-    e1.RemoveOnceListener(e1.AddOnceListener((int a) => n += a));
+    e1.RemoveListener(e1.AddOnceListener((int a) => n += a));
     e1.Invoke(1);
     Assert.AreEqual(n, 0);
 
     n = 0;
-    e2.RemoveOnceListener(e2.AddOnceListener(() => n++));
+    e2.RemoveListener(e2.AddOnceListener(() => n++));
     e2.Invoke(2, 3);
     Assert.AreEqual(n, 0);
-    e2.RemoveOnceListener(e2.AddOnceListener((int a) => n += a));
+    e2.RemoveListener(e2.AddOnceListener((int a) => n += a));
     e2.Invoke(2, 3);
     Assert.AreEqual(n, 0);
-    e2.RemoveOnceListener(e2.AddOnceListener((int a, int b) => n += a + b));
+    e2.RemoveListener(e2.AddOnceListener((int a, int b) => n += a + b));
     e2.Invoke(2, 3);
     Assert.AreEqual(n, 0);
 
     n = 0;
-    e3.RemoveOnceListener(e3.AddOnceListener(() => n++));
+    e3.RemoveListener(e3.AddOnceListener(() => n++));
     e3.Invoke(4, 5, 6);
     Assert.AreEqual(n, 0);
-    e3.RemoveOnceListener(e3.AddOnceListener((int a) => n += a));
+    e3.RemoveListener(e3.AddOnceListener((int a) => n += a));
     e3.Invoke(4, 5, 6);
     Assert.AreEqual(n, 0);
-    e3.RemoveOnceListener(e3.AddOnceListener((int a, int b) => n += a + b));
+    e3.RemoveListener(e3.AddOnceListener((int a, int b) => n += a + b));
     e3.Invoke(4, 5, 6);
     Assert.AreEqual(n, 0);
-    e3.RemoveOnceListener(e3.AddOnceListener((int a, int b, int c) => n += a + b + c));
+    e3.RemoveListener(e3.AddOnceListener((int a, int b, int c) => n += a + b + c));
     e3.Invoke(4, 5, 6);
     Assert.AreEqual(n, 0);
 
     n = 0;
-    e4.RemoveOnceListener(e4.AddOnceListener(() => n++));
+    e4.RemoveListener(e4.AddOnceListener(() => n++));
     e4.Invoke(7, 8, 9, 10);
     Assert.AreEqual(n, 0);
-    e4.RemoveOnceListener(e4.AddOnceListener((int a) => n += a));
+    e4.RemoveListener(e4.AddOnceListener((int a) => n += a));
     e4.Invoke(7, 8, 9, 10);
     Assert.AreEqual(n, 0);
-    e4.RemoveOnceListener(e4.AddOnceListener((int a, int b) => n += a + b));
+    e4.RemoveListener(e4.AddOnceListener((int a, int b) => n += a + b));
     e4.Invoke(7, 8, 9, 10);
     Assert.AreEqual(n, 0);
-    e4.RemoveOnceListener(e4.AddOnceListener((int a, int b, int c) => n += a + b + c));
+    e4.RemoveListener(e4.AddOnceListener((int a, int b, int c) => n += a + b + c));
     e4.Invoke(7, 8, 9, 10);
     Assert.AreEqual(n, 0);
-    e4.RemoveOnceListener(e4.AddOnceListener((int a, int b, int c, int d) => n += a + b + c + d));
+    e4.RemoveListener(e4.AddOnceListener((int a, int b, int c, int d) => n += a + b + c + d));
     e4.Invoke(7, 8, 9, 10);
     Assert.AreEqual(n, 0);
   }
