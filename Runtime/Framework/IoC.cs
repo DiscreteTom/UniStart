@@ -3,14 +3,9 @@ using System.Collections.Generic;
 
 namespace DT.UniStart {
   /// <summary>
-  /// IoC Container Interface.
+  /// Readonly IoC Container Interface.
   /// </summary>
-  public interface IIoCC {
-    /// <summary>
-    /// Register a type with an existing instance.
-    /// </summary>
-    T Add<T>(T instance);
-
+  public interface IReadonlyIoC {
     /// <summary>
     /// Get the instance of a type.
     /// </summary>
@@ -19,12 +14,7 @@ namespace DT.UniStart {
     bool TryGet<T>(out T instance);
   }
 
-  public static class IIoCCExtension {
-    /// <summary>
-    /// Register a type and auto create an instance.
-    /// </summary>
-    public static T Add<T>(this IIoCC ioc) where T : new() => ioc.Add(new T());
-
+  public static class IReadonlyIoCExtension {
     public static bool Contains<T>(this IIoCC ioc) => ioc.TryGet<T>(out var _);
 
     /// <summary>
@@ -32,6 +22,23 @@ namespace DT.UniStart {
     /// If the type is not registered, return `default(T)` which is usually `null`.
     /// </summary>
     public static T GetOrDefault<T>(this IIoCC ioc) => ioc.TryGet<T>(out var instance) ? instance : default;
+  }
+
+  /// <summary>
+  /// IoC Container Interface.
+  /// </summary>
+  public interface IIoCC : IReadonlyIoC {
+    /// <summary>
+    /// Register a type with an existing instance.
+    /// </summary>
+    T Add<T>(T instance);
+  }
+
+  public static class IIoCCExtension {
+    /// <summary>
+    /// Register a type and auto create an instance.
+    /// </summary>
+    public static T Add<T>(this IIoCC ioc) where T : new() => ioc.Add(new T());
   }
 
 
