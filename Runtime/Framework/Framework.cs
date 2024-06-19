@@ -8,6 +8,8 @@ namespace DT.UniStart {
   /// </summary>
   public abstract class UniStartBehaviour<Ctx> : ComposableBehaviour, IIoCC where Ctx : IIoCC {
     #region Re-expose Fn methods
+    // see https://github.com/DiscreteTom/UniStart/issues/5
+    // use these for auto type inference
     public static UnityAction Fn(UnityAction action) => action;
     public static UnityAction<T0> Fn<T0>(UnityAction<T0> action) => action;
     public static UnityAction<T0, T1> Fn<T0, T1>(UnityAction<T0, T1> action) => action;
