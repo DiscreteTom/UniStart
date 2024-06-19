@@ -47,25 +47,12 @@ namespace DT.UniStart.AdvancedEventBase {
       this.paramCount = AdvancedEventParamCount._0;
       this.action0 = a;
     }
-    public void RemoveSelfFrom(IWatchable watchable) {
-      watchable.RemoveListener(this.action0);
-    }
   }
   public class ActionItem<T0> : ActionItem, IActionItem<T0> {
     public UnityAction<T0> action1 { get; private set; }
     public void _1(UnityAction<T0> a) {
       this.paramCount = AdvancedEventParamCount._1;
       this.action1 = a;
-    }
-    public void RemoveSelfFrom(IWatchable<T0> watchable) {
-      switch (this.paramCount) {
-        case AdvancedEventParamCount._1:
-          watchable.RemoveListener(this.action1);
-          break;
-        default:
-          base.RemoveSelfFrom(watchable);
-          break;
-      }
     }
   }
   public class ActionItem<T0, T1> : ActionItem<T0>, IActionItem<T0, T1> {
@@ -74,16 +61,6 @@ namespace DT.UniStart.AdvancedEventBase {
       this.paramCount = AdvancedEventParamCount._2;
       this.action2 = a;
     }
-    public void RemoveSelfFrom(IWatchable<T0, T1> watchable) {
-      switch (this.paramCount) {
-        case AdvancedEventParamCount._2:
-          watchable.RemoveListener(this.action2);
-          break;
-        default:
-          base.RemoveSelfFrom(watchable);
-          break;
-      }
-    }
   }
   public class ActionItem<T0, T1, T2> : ActionItem<T0, T1>, IActionItem<T0, T1, T2> {
     public UnityAction<T0, T1, T2> action3 { get; private set; }
@@ -91,32 +68,12 @@ namespace DT.UniStart.AdvancedEventBase {
       this.paramCount = AdvancedEventParamCount._3;
       this.action3 = a;
     }
-    public void RemoveSelfFrom(IWatchable<T0, T1, T2> watchable) {
-      switch (this.paramCount) {
-        case AdvancedEventParamCount._3:
-          watchable.RemoveListener(this.action3);
-          break;
-        default:
-          base.RemoveSelfFrom(watchable);
-          break;
-      }
-    }
   }
   public class ActionItem<T0, T1, T2, T3> : ActionItem<T0, T1, T2>, IActionItem<T0, T1, T2, T3> {
     public UnityAction<T0, T1, T2, T3> action4 { get; private set; }
     public void _4(UnityAction<T0, T1, T2, T3> a) {
       this.paramCount = AdvancedEventParamCount._4;
       this.action4 = a;
-    }
-    public void RemoveSelfFrom(IWatchable<T0, T1, T2, T3> watchable) {
-      switch (this.paramCount) {
-        case AdvancedEventParamCount._4:
-          watchable.RemoveListener(this.action4);
-          break;
-        default:
-          base.RemoveSelfFrom(watchable);
-          break;
-      }
     }
   }
 

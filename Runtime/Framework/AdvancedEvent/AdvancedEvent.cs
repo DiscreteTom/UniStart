@@ -10,7 +10,7 @@ namespace DT.UniStart {
             break;
         }
       }
-      this.once.ForEach(item => item.RemoveSelfFrom(this));
+      this.once.ForEach(item => this.e.Remove(item));
       this.once.Clear();
     }
   }
@@ -27,7 +27,7 @@ namespace DT.UniStart {
             break;
         }
       }
-      this.once.ForEach(item => item.RemoveSelfFrom(this));
+      this.once.ForEach(item => this.e.Remove(item));
       this.once.Clear();
     }
   }
@@ -47,7 +47,7 @@ namespace DT.UniStart {
             break;
         }
       }
-      this.once.ForEach(item => item.RemoveSelfFrom(this));
+      this.once.ForEach(item => this.e.Remove(item));
       this.once.Clear();
     }
   }
@@ -70,7 +70,7 @@ namespace DT.UniStart {
             break;
         }
       }
-      this.once.ForEach(item => item.RemoveSelfFrom(this));
+      this.once.ForEach(item => this.e.Remove(item));
       this.once.Clear();
     }
   }
@@ -96,7 +96,7 @@ namespace DT.UniStart {
             break;
         }
       }
-      this.once.ForEach(item => item.RemoveSelfFrom(this));
+      this.once.ForEach(item => this.e.Remove(item));
       this.once.Clear();
     }
   }
