@@ -122,7 +122,8 @@ namespace DT.UniStart {
     public AdvancedEvent onDestroy => this._onDestroy.Value;
     public AdvancedEvent onDisable => this._onDisable.Value;
     /// <summary>
-    /// When being used in `Start`, you might want to invoke this immediately after adding a listener: `onEnable(...).Invoke()`.
+    /// When being used in `Start`, you might want to invoke this immediately after adding a listener: `onEnable(...).Invoke()`
+    /// because `OnEnable` is called before `Start`.
     /// </summary>
     public AdvancedEvent onEnable => this._onEnable.Value;
     // make these protected to show a warning if the user want's to override them
