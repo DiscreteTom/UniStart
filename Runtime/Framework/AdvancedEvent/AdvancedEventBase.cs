@@ -98,6 +98,20 @@ namespace DT.UniStart.AdvancedEventBase {
     protected void BaseAddOnceListener(Action<A> decorator) {
       this.once.Add(this.BaseAddListener(decorator));
     }
+    protected void BaseInvoke(Action<A> cb) {
+      // make shallow copies to avoid modification during the invocation
+      var e = new List<A>(this.e);
+      var once = new List<A>(this.once);
+
+      // clear once listeners now, so that user can add once listener during the invocation
+      this.once.Clear();
+
+      // traverse the shallow copy instead of the original list
+      e.ForEach(item => cb(item));
+
+      // remove once listeners from the original list
+      once.ForEach(item => this.e.Remove(item));
+    }
 
     public UnityAction AddListener(UnityAction action) {
       this.BaseAddListener(a => a._0(action));

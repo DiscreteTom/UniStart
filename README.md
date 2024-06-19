@@ -59,6 +59,7 @@ public class AdvancedEventApp : MonoBehaviour {
 
     // listeners that will only be invoked once
     var once = e.AddOnceListener(() => print(1));
+    // still use RemoveListener to remove it
     e.RemoveListener(once);
   }
 }
@@ -67,6 +68,43 @@ public class AdvancedEventApp : MonoBehaviour {
 As you can see, the `AdvancedEvent` encourages you to use closures instead of methods, and it's more flexible than `UnityEvent`.
 
 Almost all events in UniStart will use `AdvancedEvent` instead of `UnityEvent`.
+
+<details>
+<summary>Stability</summary>
+
+Listeners are ensured to be called in the order they are added (no matter it is a normal listener or once listener or listeners with less parameters).
+
+```cs
+var e = new AdvancedEvent<int>();
+e.AddListener(() => print(1));
+e.AddOnceListener(() => print(2));
+e.AddListener((a) => print(a));
+e.Invoke(3); // guaranteed to print 1, 2, 3
+```
+
+You can add/remove listeners during the invocation, but they will only take effect after the current invocation.
+
+Here are examples to demonstrate this:
+
+```cs
+// add listeners during invocation
+var e = new AdvancedEvent();
+e.AddOnceListener(() => e.AddOnceListener(() => print(1)));
+e.Invoke(); // this will add the second once listener, but won't invoke it
+e.Invoke(); // this will print 1
+```
+
+```cs
+// remove listeners during invocation
+UnityAction a = () => print(1);
+var e = new AdvancedEvent();
+e.AddListener(() => e.RemoveListener(a));
+e.AddListener(a);
+e.Invoke(); // this will remove listener 'a' but still will print 1
+e.Invoke(); // this will not print 1
+```
+
+</details>
 
 ### Composables and Closures
 

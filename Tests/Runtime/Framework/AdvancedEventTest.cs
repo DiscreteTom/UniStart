@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using DT.UniStart;
+using UnityEngine.Events;
 
 public class AdvancedEventTest {
   [Test]
@@ -398,5 +399,39 @@ public class AdvancedEventTest {
     Assert.AreEqual(n, 81);
     e4.Invoke(7, 8, 9, 10);
     Assert.AreEqual(n, 162);
+  }
+
+  [Test]
+  public void StableInvokeTest() {
+    var e = new AdvancedEvent();
+    var n = 0;
+    UnityAction a = () => n++;
+
+
+    e.AddListener(() => e.RemoveListener(a)); // this will be invoked first
+    e.AddListener(a); // a should still be called
+    e.Invoke();
+    Assert.AreEqual(n, 1);
+    // now a should be removed
+    e.Invoke();
+    Assert.AreEqual(n, 1);
+
+    e.RemoveAllListeners();
+    n = 0;
+    e.AddListener(() => e.AddListener(a));
+    e.Invoke(); // a will be added but not called
+    Assert.AreEqual(n, 0);
+    e.Invoke(); // a should be called
+    Assert.AreEqual(n, 1);
+
+    e.RemoveAllListeners();
+    n = 0;
+    e.AddOnceListener(() => e.AddOnceListener(a));
+    e.Invoke(); // a will be added but not called
+    Assert.AreEqual(n, 0);
+    e.Invoke(); // a should be called then removed
+    Assert.AreEqual(n, 1);
+    e.Invoke();
+    Assert.AreEqual(n, 1);
   }
 }

@@ -6,6 +6,8 @@
   - Use `RemoveListener` instead of `RemoveOnceListener` to remove once listeners.
 - Fix: `AdvancedEvent` will call actions and once actions by the order they are added.
   - Previously all once actions will be called after repeated actions.
+- Fix: `AdvancedEvent` allow adding listeners or remove listeners during the invocation.
+  - `this.onNextUpdate(() => this.onNextUpdate(() => print(1)));` will work properly.
 
 ## v12.0.1
 
