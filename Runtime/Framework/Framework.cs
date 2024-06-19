@@ -45,13 +45,13 @@ namespace DT.UniStart {
     static Ctx GetContextOrNull(Entry<Ctx> entry) => entry == null ? null : entry.context;
 
     public static Ctx GetContext(GameObject obj) {
-      // TODO: change the order
-      // first, try to find the context in the root object
-      var context = GetContextOrNull(obj.transform.root.GetComponent<Entry<Ctx>>());
+      // first, try to find the context in the parent object
+      // so that we can have different contexts for different parts of the scene
+      var context = GetContextOrNull(obj.GetComponentInParent<Entry<Ctx>>());
       if (context != null) return context;
 
-      // second, try to find the context in the parent object
-      context = GetContextOrNull(obj.GetComponentInParent<Entry<Ctx>>());
+      // second, try to find the context in the root object
+      context = GetContextOrNull(obj.transform.root.GetComponent<Entry<Ctx>>());
       if (context != null) return context;
 
       // finally, try to find the context in the whole scene
