@@ -6,7 +6,7 @@ namespace DT.UniStart {
   /// <summary>
   /// The base class for Entry and CBC.
   /// </summary>
-  public abstract class UniStartBehaviour<Ctx> : ComposableBehaviour, IIoCC where Ctx : IIoCC {
+  public abstract class UniStartBehaviour<Ctx> : ComposableBehaviour, IReadonlyIoC where Ctx : IIoCC {
     #region Re-expose Fn methods
     // see https://github.com/DiscreteTom/UniStart/issues/5
     // use these for auto type inference
@@ -23,11 +23,7 @@ namespace DT.UniStart {
     #endregion
 
     #region Context Management
-    protected abstract Ctx context { get; set; }
-    /// <summary>
-    /// Register a type with an existing instance.
-    /// </summary>
-    public T Add<T>(T instance) => this.context.Add<T>(instance);
+    protected abstract Ctx context { get; }
     /// <summary>
     /// Get the instance of a type.
     /// </summary>
@@ -36,12 +32,13 @@ namespace DT.UniStart {
     #endregion
   }
 
-  public class Entry<Ctx> : UniStartBehaviour<Ctx> where Ctx : class, IIoCC, new() {
-    Ctx _context = new();
-    protected override Ctx context {
-      get => _context;
-      set { _context = value; }
-    }
+  public class Entry<Ctx> : UniStartBehaviour<Ctx>, IIoCC where Ctx : class, IIoCC, new() {
+    protected override Ctx context { get; } = new();
+
+    /// <summary>
+    /// Register a type with an existing instance.
+    /// </summary>
+    public T Add<T>(T instance) => this.context.Add(instance);
 
     // helper method to get the context from an entry
     // this is because unity object should not be used with `?.`.
@@ -84,7 +81,6 @@ namespace DT.UniStart {
         this._context ??= Entry<Ctx>.GetContext(this.gameObject);
         return this._context;
       }
-      set => this._context = value;
     }
   }
 
