@@ -4,6 +4,7 @@
 
 - **_Breaking Change_**: remove all `RemoveOnceListener` methods.
   - Use `RemoveListener` instead of `RemoveOnceListener` to remove once listeners.
+- **_Breaking Change_**: remove `CBC.Add` and `UniStartBehaviour.Add`.
 - Feat: add interface `IReadonlyIoC`.
 - Fix: `AdvancedEvent` will call actions and once actions by the order they are added.
   - Previously all once actions will be called after repeated actions.
