@@ -59,7 +59,7 @@ public class AdvancedEventApp : MonoBehaviour {
 
     // listeners that will only be invoked once
     var once = e.AddOnceListener(() => print(1));
-    e.RemoveOnceListener(once);
+    e.RemoveListener(once);
   }
 }
 ```
@@ -291,7 +291,7 @@ public class EventBusApp : Entry {
     eb.AddListener<EventWithParams>(() => print(1));
     // once listener
     var once = eb.AddOnceListener<EventWithParams>((e) => print(e.b));
-    eb.RemoveOnceListener(once); // remove once listener
+    eb.RemoveListener(once); // remove once listener
 
     // trigger events
     eb.Invoke<EventWithoutParams>();
