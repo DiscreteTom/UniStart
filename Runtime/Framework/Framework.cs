@@ -40,23 +40,26 @@ namespace DT.UniStart {
     /// </summary>
     public T Add<T>(T instance) => this.context.Add(instance);
 
-    // helper method to get the context from an entry
-    // we can't use `entry?.context` here because `UnityEngine.Object.operator ==` is overloaded for `null`
-    static Ctx GetContextOrNull(Entry<Ctx> entry) => entry == null ? null : entry.context;
-
+    /// <summary>
+    /// Get the global context in the scene.
+    /// Throw an error if the context is not found.
+    /// </summary>
     public static Ctx GetContext(GameObject obj) {
       // first, try to find the context in the parent object
       // so that we can have different contexts for different parts of the scene
-      var context = GetContextOrNull(obj.GetComponentInParent<Entry<Ctx>>());
-      if (context != null) return context;
+      var entry = obj.GetComponentInParent<Entry<Ctx>>();
+      if (entry != null) return entry.context;
 
       // second, try to find the context in the root object
-      context = GetContextOrNull(obj.transform.root.GetComponent<Entry<Ctx>>());
-      if (context != null) return context;
+      if (obj.transform.root.TryGetComponent(out entry)) {
+        return entry.context;
+      }
+
+      Debug.LogWarning("Can't find context in the parent or root object!");
 
       // finally, try to find the context in the whole scene
-      context = GetContextOrNull(FindObjectOfType<Entry<Ctx>>());
-      if (context != null) return context;
+      entry = FindObjectOfType<Entry<Ctx>>();
+      if (entry != null) return entry.context;
 
       // if we can't find the context, throw an error
       throw new Exception("Can't find context in the scene!");
