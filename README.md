@@ -207,7 +207,7 @@ Another thing to mention is that, during your development with this `ComposableB
 
 ```cs
 public class Logics {
-  public static void ApplyLogic(ComposableBehaviour cb) {
+  public static void ApplyLogic(IComposable cb) {
     var sr = cb.GetComponent<SpriteRenderer>();
     cb.onUpdate.AddListener(() => sr.color = Color.red);
     cb.onDestroy.AddListener(() => Destroy(sr));
