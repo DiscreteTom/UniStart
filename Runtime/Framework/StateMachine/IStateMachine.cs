@@ -12,15 +12,12 @@ namespace DT.UniStart {
     UnityAction AddListener(T value, StateMachineEventType eventType, UnityAction action);
     UnityAction RemoveListener(T value, StateMachineEventType eventType, UnityAction action);
     UnityAction AddOnceListener(T value, StateMachineEventType eventType, UnityAction action);
-    UnityAction RemoveOnceListener(T value, StateMachineEventType eventType, UnityAction action);
     UnityAction<T> AddListener(T value, StateMachineEventType eventType, UnityAction<T> action);
     UnityAction<T> RemoveListener(T value, StateMachineEventType eventType, UnityAction<T> action);
     UnityAction<T> AddOnceListener(T value, StateMachineEventType eventType, UnityAction<T> action);
-    UnityAction<T> RemoveOnceListener(T value, StateMachineEventType eventType, UnityAction<T> action);
     UnityAction<T, T> AddListener(T value, StateMachineEventType eventType, UnityAction<T, T> action);
     UnityAction<T, T> RemoveListener(T value, StateMachineEventType eventType, UnityAction<T, T> action);
     UnityAction<T, T> AddOnceListener(T value, StateMachineEventType eventType, UnityAction<T, T> action);
-    UnityAction<T, T> RemoveOnceListener(T value, StateMachineEventType eventType, UnityAction<T, T> action);
   }
 
   public static class IReadOnlyStateMachineExtension {

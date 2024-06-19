@@ -51,18 +51,6 @@ namespace DT.UniStart {
         _ => throw new NotImplementedException($"StateMachine.AddListener for eventType: {eventType} not implemented!"),
       };
     }
-    public UnityAction RemoveOnceListener(T value, StateMachineEventType eventType, UnityAction action) {
-      switch (eventType) {
-        case StateMachineEventType.OnEnter:
-          this.onEnterEvents.GetOrDefault(value)?.RemoveOnceListener(action);
-          return action;
-        case StateMachineEventType.OnExit:
-          this.onExitEvents.GetOrDefault(value)?.RemoveOnceListener(action);
-          return action;
-        default:
-          throw new NotImplementedException($"StateMachine.RemoveListener for eventType: {eventType} not implemented!");
-      }
-    }
 
     public UnityAction<T> AddListener(T value, StateMachineEventType eventType, UnityAction<T> action) {
       return eventType switch {
@@ -90,18 +78,6 @@ namespace DT.UniStart {
         _ => throw new NotImplementedException($"StateMachine.AddListener for eventType: {eventType} not implemented!"),
       };
     }
-    public UnityAction<T> RemoveOnceListener(T value, StateMachineEventType eventType, UnityAction<T> action) {
-      switch (eventType) {
-        case StateMachineEventType.OnEnter:
-          this.onEnterEvents.GetOrDefault(value)?.RemoveOnceListener(action);
-          return action;
-        case StateMachineEventType.OnExit:
-          this.onExitEvents.GetOrDefault(value)?.RemoveOnceListener(action);
-          return action;
-        default:
-          throw new NotImplementedException($"StateMachine.RemoveListener for eventType: {eventType} not implemented!");
-      }
-    }
 
     public UnityAction<T, T> AddListener(T value, StateMachineEventType eventType, UnityAction<T, T> action) {
       return eventType switch {
@@ -128,18 +104,6 @@ namespace DT.UniStart {
         StateMachineEventType.OnExit => this.onExitEvents.GetOrAddNew(value).AddOnceListener(action),
         _ => throw new NotImplementedException($"StateMachine.AddListener for eventType: {eventType} not implemented!"),
       };
-    }
-    public UnityAction<T, T> RemoveOnceListener(T value, StateMachineEventType eventType, UnityAction<T, T> action) {
-      switch (eventType) {
-        case StateMachineEventType.OnEnter:
-          this.onEnterEvents.GetOrDefault(value)?.RemoveOnceListener(action);
-          return action;
-        case StateMachineEventType.OnExit:
-          this.onExitEvents.GetOrDefault(value)?.RemoveOnceListener(action);
-          return action;
-        default:
-          throw new NotImplementedException($"StateMachine.RemoveListener for eventType: {eventType} not implemented!");
-      }
     }
   }
 }

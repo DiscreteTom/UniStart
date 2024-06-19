@@ -69,12 +69,6 @@ namespace DT.UniStart {
       return action;
     }
 
-    public UnityAction RemoveOnceListener<T>(UnityAction action) where T : IEvent {
-      if (this.isRemoveListenerModeEnabled) this.onRemoveListener.Invoke(typeof(T), () => this.bus.RemoveOnceListener<T>(action));
-      else this.bus.RemoveOnceListener<T>(action);
-      return action;
-    }
-
     public UnityAction<T> AddListener<T>(UnityAction<T> action) where T : IEvent {
       if (this.isAddListenerModeEnabled) this.onAddListener.Invoke(typeof(T), () => this.bus.AddListener(action));
       else this.bus.AddListener(action);
@@ -90,12 +84,6 @@ namespace DT.UniStart {
     public UnityAction<T> AddOnceListener<T>(UnityAction<T> action) where T : IEvent {
       if (this.isAddListenerModeEnabled) this.onAddListener.Invoke(typeof(T), () => this.bus.AddOnceListener(action));
       else this.bus.AddOnceListener(action);
-      return action;
-    }
-
-    public UnityAction<T> RemoveOnceListener<T>(UnityAction<T> action) where T : IEvent {
-      if (this.isRemoveListenerModeEnabled) this.onRemoveListener.Invoke(typeof(T), () => this.bus.RemoveOnceListener(action));
-      else this.bus.RemoveOnceListener(action);
       return action;
     }
 

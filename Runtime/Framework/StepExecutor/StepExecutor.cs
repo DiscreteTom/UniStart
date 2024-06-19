@@ -21,10 +21,6 @@ namespace DT.UniStart {
     public UnityAction AddOnceListener<T>(IConvertible step, UnityAction action) {
       return (this.actions.GetOrAddNew(typeof(T)).GetOrAdd((int)step, () => new AdvancedEvent<T>()) as AdvancedEvent<T>).AddOnceListener(action);
     }
-    public UnityAction RemoveOnceListener<T>(IConvertible step, UnityAction action) {
-      (this.actions.GetOrAddNew(typeof(T)).GetOrDefault((int)step) as AdvancedEvent<T>)?.RemoveOnceListener(action);
-      return action;
-    }
     public UnityAction<T> AddListener<T>(IConvertible step, UnityAction<T> action) {
       return (this.actions.GetOrAddNew(typeof(T)).GetOrAdd((int)step, () => new AdvancedEvent<T>()) as AdvancedEvent<T>).AddListener(action);
     }
@@ -34,10 +30,6 @@ namespace DT.UniStart {
     }
     public UnityAction<T> AddOnceListener<T>(IConvertible step, UnityAction<T> action) {
       return (this.actions.GetOrAddNew(typeof(T)).GetOrAdd((int)step, () => new AdvancedEvent<T>()) as AdvancedEvent<T>).AddOnceListener(action);
-    }
-    public UnityAction<T> RemoveOnceListener<T>(IConvertible step, UnityAction<T> action) {
-      (this.actions.GetOrAddNew(typeof(T)).GetOrDefault((int)step) as AdvancedEvent<T>)?.RemoveOnceListener(action);
-      return action;
     }
 
     public void Invoke<T>(T value) {

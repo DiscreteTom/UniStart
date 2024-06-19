@@ -170,27 +170,27 @@ namespace DT.UniStart {
     // OnceWatch with remover
     public static UnityAction OnceWatch(this ComposableBehaviour self, IWatchable watchable, IWatchable remover, UnityAction action) {
       watchable.AddOnceListener(action);
-      remover.AddOnceListener(() => watchable.RemoveOnceListener(action));
+      remover.AddOnceListener(() => watchable.RemoveListener(action));
       return action;
     }
     public static UnityAction<T0> OnceWatch<T0>(this ComposableBehaviour self, IWatchable<T0> watchable, IWatchable remover, UnityAction<T0> action) {
       watchable.AddOnceListener(action);
-      remover.AddOnceListener(() => watchable.RemoveOnceListener(action));
+      remover.AddOnceListener(() => watchable.RemoveListener(action));
       return action;
     }
     public static UnityAction<T0, T1> OnceWatch<T0, T1>(this ComposableBehaviour self, IWatchable<T0, T1> watchable, IWatchable remover, UnityAction<T0, T1> action) {
       watchable.AddOnceListener(action);
-      remover.AddOnceListener(() => watchable.RemoveOnceListener(action));
+      remover.AddOnceListener(() => watchable.RemoveListener(action));
       return action;
     }
     public static UnityAction<T0, T1, T2> OnceWatch<T0, T1, T2>(this ComposableBehaviour self, IWatchable<T0, T1, T2> watchable, IWatchable remover, UnityAction<T0, T1, T2> action) {
       watchable.AddOnceListener(action);
-      remover.AddOnceListener(() => watchable.RemoveOnceListener(action));
+      remover.AddOnceListener(() => watchable.RemoveListener(action));
       return action;
     }
     public static UnityAction<T0, T1, T2, T3> OnceWatch<T0, T1, T2, T3>(this ComposableBehaviour self, IWatchable<T0, T1, T2, T3> watchable, IWatchable remover, UnityAction<T0, T1, T2, T3> action) {
       watchable.AddOnceListener(action);
-      remover.AddOnceListener(() => watchable.RemoveOnceListener(action));
+      remover.AddOnceListener(() => watchable.RemoveListener(action));
       return action;
     }
     // remove listener on destroy
@@ -222,12 +222,12 @@ namespace DT.UniStart {
     // watch once with remover
     public static UnityAction OnceWatch<T>(this ComposableBehaviour self, IEventListener eventBus, IWatchable remover, UnityAction action) where T : IEvent {
       eventBus.AddOnceListener<T>(action);
-      remover.AddOnceListener(() => eventBus.RemoveOnceListener<T>(action));
+      remover.AddOnceListener(() => eventBus.RemoveListener<T>(action));
       return action;
     }
     public static UnityAction<T> OnceWatch<T>(this ComposableBehaviour self, IEventListener eventBus, IWatchable remover, UnityAction<T> action) where T : IEvent {
       eventBus.AddOnceListener(action);
-      remover.AddOnceListener(() => eventBus.RemoveOnceListener(action));
+      remover.AddOnceListener(() => eventBus.RemoveListener(action));
       return action;
     }
     // remove listener on destroy
@@ -328,17 +328,17 @@ namespace DT.UniStart {
     // watch once with remover
     public static UnityAction OnceWatch<T>(this ComposableBehaviour self, IReadOnlyStateMachine<T> machine, T value, StateMachineEventType type, IWatchable remover, UnityAction action) where T : Enum {
       machine.AddOnceListener(value, type, action);
-      remover.AddOnceListener(() => machine.RemoveOnceListener(value, type, action));
+      remover.AddOnceListener(() => machine.RemoveListener(value, type, action));
       return action;
     }
     public static UnityAction<T> OnceWatch<T>(this ComposableBehaviour self, IReadOnlyStateMachine<T> machine, T value, StateMachineEventType type, IWatchable remover, UnityAction<T> action) where T : Enum {
       machine.AddOnceListener(value, type, action);
-      remover.AddOnceListener(() => machine.RemoveOnceListener(value, type, action));
+      remover.AddOnceListener(() => machine.RemoveListener(value, type, action));
       return action;
     }
     public static UnityAction<T, T> OnceWatch<T>(this ComposableBehaviour self, IReadOnlyStateMachine<T> machine, T value, StateMachineEventType type, IWatchable remover, UnityAction<T, T> action) where T : Enum {
       machine.AddOnceListener(value, type, action);
-      remover.AddOnceListener(() => machine.RemoveOnceListener(value, type, action));
+      remover.AddOnceListener(() => machine.RemoveListener(value, type, action));
       return action;
     }
     // remove listener on destroy
@@ -365,12 +365,12 @@ namespace DT.UniStart {
     // watch once with remover
     public static UnityAction OnceWatch<T>(this ComposableBehaviour self, IStepListener listener, IConvertible step, IWatchable remover, UnityAction action) where T : IEvent {
       listener.AddOnceListener<T>(step, action);
-      remover.AddOnceListener(() => listener.RemoveOnceListener<T>(step, action));
+      remover.AddOnceListener(() => listener.RemoveListener<T>(step, action));
       return action;
     }
     public static UnityAction<T> OnceWatch<T>(this ComposableBehaviour self, IStepListener listener, IConvertible step, IWatchable remover, UnityAction<T> action) where T : IEvent {
       listener.AddOnceListener(step, action);
-      remover.AddOnceListener(() => listener.RemoveOnceListener(step, action));
+      remover.AddOnceListener(() => listener.RemoveListener(step, action));
       return action;
     }
     // remove listener on destroy

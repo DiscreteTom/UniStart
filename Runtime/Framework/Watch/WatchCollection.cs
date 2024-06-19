@@ -27,11 +27,9 @@ namespace DT.UniStart {
     public UnityAction AddListener(UnityAction f) => this.onChange.AddListener(f);
     public UnityAction RemoveListener(UnityAction f) => this.onChange.RemoveListener(f);
     public UnityAction AddOnceListener(UnityAction f) => this.onChange.AddOnceListener(f);
-    public UnityAction RemoveOnceListener(UnityAction f) => this.onChange.RemoveOnceListener(f);
     public UnityAction<ReadOnlyCollection<T>> AddListener(UnityAction<ReadOnlyCollection<T>> f) => this.onChange.AddListener(f);
     public UnityAction<ReadOnlyCollection<T>> RemoveListener(UnityAction<ReadOnlyCollection<T>> f) => this.onChange.RemoveListener(f);
     public UnityAction<ReadOnlyCollection<T>> AddOnceListener(UnityAction<ReadOnlyCollection<T>> f) => this.onChange.AddOnceListener(f);
-    public UnityAction<ReadOnlyCollection<T>> RemoveOnceListener(UnityAction<ReadOnlyCollection<T>> f) => this.onChange.RemoveOnceListener(f);
 
     public void InvokeEvent() => this.onChange.Invoke(this.Value);
 
@@ -125,11 +123,9 @@ namespace DT.UniStart {
     public UnityAction AddListener(UnityAction f) => this.onChange.AddListener(f);
     public UnityAction RemoveListener(UnityAction f) => this.onChange.RemoveListener(f);
     public UnityAction AddOnceListener(UnityAction f) => this.onChange.AddOnceListener(f);
-    public UnityAction RemoveOnceListener(UnityAction f) => this.onChange.RemoveOnceListener(f);
     public UnityAction<ReadOnlyDictionary<K, V>> AddListener(UnityAction<ReadOnlyDictionary<K, V>> f) => this.onChange.AddListener(f);
     public UnityAction<ReadOnlyDictionary<K, V>> RemoveListener(UnityAction<ReadOnlyDictionary<K, V>> f) => this.onChange.RemoveListener(f);
     public UnityAction<ReadOnlyDictionary<K, V>> AddOnceListener(UnityAction<ReadOnlyDictionary<K, V>> f) => this.onChange.AddOnceListener(f);
-    public UnityAction<ReadOnlyDictionary<K, V>> RemoveOnceListener(UnityAction<ReadOnlyDictionary<K, V>> f) => this.onChange.RemoveOnceListener(f);
 
     public void InvokeEvent() => this.onChange.Invoke(this.Value);
 

@@ -68,12 +68,6 @@ namespace DT.UniStart {
       return action;
     }
 
-    public UnityAction RemoveOnceListener<T>(IConvertible step, UnityAction action) {
-      if (this.isRemoveListenerModeEnabled) this.onRemoveListener.Invoke(typeof(T), step, () => this.exe.RemoveOnceListener<T>(step, action));
-      else this.exe.RemoveOnceListener<T>(step, action);
-      return action;
-    }
-
     public UnityAction<T> AddListener<T>(IConvertible step, UnityAction<T> action) {
       if (this.isAddListenerModeEnabled) this.onAddListener.Invoke(typeof(T), step, () => this.exe.AddListener(step, action));
       else this.exe.AddListener(step, action);
@@ -89,12 +83,6 @@ namespace DT.UniStart {
     public UnityAction<T> AddOnceListener<T>(IConvertible step, UnityAction<T> action) {
       if (this.isAddListenerModeEnabled) this.onAddListener.Invoke(typeof(T), step, () => this.exe.AddOnceListener(step, action));
       else this.exe.AddOnceListener(step, action);
-      return action;
-    }
-
-    public UnityAction<T> RemoveOnceListener<T>(IConvertible step, UnityAction<T> action) {
-      if (this.isRemoveListenerModeEnabled) this.onRemoveListener.Invoke(typeof(T), step, () => this.exe.RemoveOnceListener(step, action));
-      else this.exe.RemoveOnceListener(step, action);
       return action;
     }
 

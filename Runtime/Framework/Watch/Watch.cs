@@ -29,15 +29,12 @@ namespace DT.UniStart {
     public UnityAction AddListener(UnityAction f) => this.onChange.AddListener(f);
     public UnityAction RemoveListener(UnityAction f) => this.onChange.RemoveListener(f);
     public UnityAction AddOnceListener(UnityAction f) => this.onChange.AddOnceListener(f);
-    public UnityAction RemoveOnceListener(UnityAction f) => this.onChange.RemoveOnceListener(f);
     public UnityAction<T> AddListener(UnityAction<T> f) => this.onChange.AddListener(f);
     public UnityAction<T> RemoveListener(UnityAction<T> f) => this.onChange.RemoveListener(f);
     public UnityAction<T> AddOnceListener(UnityAction<T> f) => this.onChange.AddOnceListener(f);
-    public UnityAction<T> RemoveOnceListener(UnityAction<T> f) => this.onChange.RemoveOnceListener(f);
     public UnityAction<T, T> AddListener(UnityAction<T, T> f) => this.onChange.AddListener(f);
     public UnityAction<T, T> RemoveListener(UnityAction<T, T> f) => this.onChange.RemoveListener(f);
     public UnityAction<T, T> AddOnceListener(UnityAction<T, T> f) => this.onChange.AddOnceListener(f);
-    public UnityAction<T, T> RemoveOnceListener(UnityAction<T, T> f) => this.onChange.RemoveOnceListener(f);
   }
 
   /// <summary>
@@ -90,11 +87,9 @@ namespace DT.UniStart {
     public UnityAction AddListener(UnityAction f) => this.onChange.AddListener(f);
     public UnityAction RemoveListener(UnityAction f) => this.onChange.RemoveListener(f);
     public UnityAction AddOnceListener(UnityAction f) => this.onChange.AddOnceListener(f);
-    public UnityAction RemoveOnceListener(UnityAction f) => this.onChange.RemoveOnceListener(f);
     public UnityAction<WatchRef<T>> AddListener(UnityAction<WatchRef<T>> f) => this.onChange.AddListener(f);
     public UnityAction<WatchRef<T>> RemoveListener(UnityAction<WatchRef<T>> f) => this.onChange.RemoveListener(f);
     public UnityAction<WatchRef<T>> AddOnceListener(UnityAction<WatchRef<T>> f) => this.onChange.AddOnceListener(f);
-    public UnityAction<WatchRef<T>> RemoveOnceListener(UnityAction<WatchRef<T>> f) => this.onChange.RemoveOnceListener(f);
 
     /// <summary>
     /// Invoke all events.
@@ -136,15 +131,12 @@ namespace DT.UniStart {
     public UnityAction AddListener(UnityAction f) => this.value.AddListener(f);
     public UnityAction RemoveListener(UnityAction f) => this.value.RemoveListener(f);
     public UnityAction AddOnceListener(UnityAction f) => this.value.AddOnceListener(f);
-    public UnityAction RemoveOnceListener(UnityAction f) => this.value.RemoveOnceListener(f);
     public UnityAction<T> AddListener(UnityAction<T> f) => this.value.AddListener(f);
     public UnityAction<T> RemoveListener(UnityAction<T> f) => this.value.RemoveListener(f);
     public UnityAction<T> AddOnceListener(UnityAction<T> f) => this.value.AddOnceListener(f);
-    public UnityAction<T> RemoveOnceListener(UnityAction<T> f) => this.value.RemoveOnceListener(f);
     public UnityAction<T, T> AddListener(UnityAction<T, T> f) => this.value.AddListener(f);
     public UnityAction<T, T> RemoveListener(UnityAction<T, T> f) => this.value.RemoveListener(f);
     public UnityAction<T, T> AddOnceListener(UnityAction<T, T> f) => this.value.AddOnceListener(f);
-    public UnityAction<T, T> RemoveOnceListener(UnityAction<T, T> f) => this.value.RemoveOnceListener(f);
   }
 
   /// <summary>
