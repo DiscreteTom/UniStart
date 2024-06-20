@@ -27,6 +27,7 @@ namespace DT.UniStart {
     readonly bool isInvokeModeEnabled;
 
     public DebugEventBus(IEventBus bus = null, DebugEventBusMode mode = DebugEventBusMode.Invoke) {
+      this.bus = bus ?? new EventBus();
       this.mode = mode;
       this.isAddListenerModeEnabled = (this.mode & DebugEventBusMode.AddListener) == DebugEventBusMode.AddListener;
       this.isRemoveListenerModeEnabled = (this.mode & DebugEventBusMode.RemoveListener) == DebugEventBusMode.RemoveListener;
