@@ -388,31 +388,30 @@ public record ComplexCommand(int a, int b) : ICommand;
 
 public class CommandBusEntry : Entry {
   void Awake() {
-    // register commands' listeners centrally
-    var cb = new CommandBus();
-    cb.Add<SimpleCommand>(() => print(1));
-    cb.Add<ComplexCommand>((e) => print(e.a));
     // register command bus into app as readonly ICommandBus
-    this.Add<ICommandBus>(cb);
-
-    // there is an IEventBus in the CommandBus
-    // so you can use custom event bus
-    new CommandBus(new DebugEventBus(name: "DebugCommandBus"));
-    // we also have helper command bus
-    new DebugCommandBus(); // equals to new CommandBus(new DebugEventBus(name: "DebugCommandBus"))
-    new DelayedCommandBus(); // equals to new CommandBus(new DelayedEventBus())
+    var cb = this.Add<ICommandBus>(
+      // register commands centrally
+      new CommandCenter()
+        .With<SimpleCommand>(() => print(1))
+        .With<ComplexCommand>((e) => print(e.a))
+    );
+    // or use the helper method just like `AddEventBus`
+    this.AddCommandBus(cb, debug: true);
   }
 }
 
 public class CommandBusApp : CBC {
   void Start() {
     var cb = this.Get<ICommandBus>();
+    // or use the helper method
+    cb = this.GetCommandBus();
 
     // execute commands
     cb.Push<SimpleCommand>();
     cb.Push(new ComplexCommand(1, 2));
   }
 }
+
 ```
 
 Thus, you can separate your game logics in the `CommandBus` from the views in `CBC`. If you modify your view in `CBC` you can still reuse your logics in `CommandBus`.
