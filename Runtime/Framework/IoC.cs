@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace DT.UniStart {
   /// <summary>
@@ -43,8 +44,8 @@ namespace DT.UniStart {
     /// </summary>
     public static T Add<T>(this IIoCC ioc) where T : new() => ioc.Add(new T());
 
-    public static IEventBus AddEventBus(this IIoCC ioc, IEventBus eb = null) => ioc.Add(eb ?? new EventBus());
-    public static ICommandBus AddCommandBus(this IIoCC ioc, ICommandBus cb) => ioc.Add(cb);
+    public static IEventBus AddEventBus(this IIoCC ioc, IEventBus eb = null, bool debug = false) => ioc.Add((debug && Application.isEditor) ? new DebugEventBus(eb ?? new EventBus()) : (eb ?? new EventBus()));
+    public static ICommandBus AddCommandBus(this IIoCC ioc, ICommandBus cb, bool debug = false) => ioc.Add((debug && Application.isEditor) ? new DebugCommandBus(cb) : cb);
   }
 
 
