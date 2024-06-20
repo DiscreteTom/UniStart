@@ -3,30 +3,26 @@ using System.Collections.Generic;
 using UnityEngine.Events;
 
 namespace DT.UniStart {
-  public class CommandBus : ICommandBus {
-    readonly IEventBus bus;
-    readonly HashSet<Type> commands = new();
-
-    public CommandBus(IEventBus bus = null) {
-      this.bus = bus ?? new EventBus();
-    }
+  public class CommandCenter : ICommandCenter {
+    readonly Dictionary<Type, object> dict = new();
 
     public virtual UnityAction Add<T>(UnityAction command) where T : ICommand {
-      this.CheckCommand<T>();
-      this.bus.AddListener<T>(command);
+      this.AddCommon<T>(e => e.AddListener(command));
       return command;
     }
     public virtual UnityAction<T> Add<T>(UnityAction<T> command) where T : ICommand {
-      this.CheckCommand<T>();
-      this.bus.AddListener(command);
+      this.AddCommon<T>(e => e.AddListener(command));
       return command;
     }
 
-    public virtual void Push<T>(T arg) where T : ICommand => this.bus.Invoke(arg);
+    public virtual void Push<T>(T arg) where T : ICommand => (this.dict.GetOrDefault(typeof(T)) as AdvancedEvent<T>)?.Invoke(arg);
 
-    void CheckCommand<T>() {
-      if (!this.commands.Add(typeof(T)))
+    void AddCommon<T>(Action<AdvancedEvent<T>> decorator) {
+      var e = new AdvancedEvent<T>();
+      decorator(e);
+      if (!this.dict.TryAdd(typeof(T), e)) {
         throw new InvalidOperationException($"Command of type {typeof(T)} already exists!");
+      }
     }
   }
 }

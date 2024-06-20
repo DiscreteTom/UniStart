@@ -8,13 +8,13 @@ namespace DT.UniStart {
     UnityAction<T> Add<T>(UnityAction<T> command) where T : ICommand;
   }
 
-  public interface ICommandExecutor {
+  public interface ICommandBus {
     void Push<T>(T arg) where T : ICommand;
   }
 
-  public static class ICommandExecutorExtension {
-    public static void Push<T>(this ICommandExecutor self) where T : ICommand, new() => self.Push(new T());
+  public static class ICommandBusExtension {
+    public static void Push<T>(this ICommandBus self) where T : ICommand, new() => self.Push(new T());
   }
 
-  public interface ICommandBus : ICommandRepo, ICommandExecutor { }
+  public interface ICommandCenter : ICommandRepo, ICommandBus { }
 }
