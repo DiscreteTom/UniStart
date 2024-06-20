@@ -314,10 +314,18 @@ public record EventWithoutParams : IEvent;
 public record EventWithParams(int a, int b) : IEvent;
 
 public class EventBusApp : Entry {
-  // Use Awake instead of Start to initialize your app.
+  // use Awake instead of Start to initialize your app
   void Awake() {
-    // Register the EventBus as IEventBus.
+    // register the EventBus as IEventBus.
     var eb = this.Add<IEventBus>(new EventBus());
+    // or with a helper method
+    eb = this.AddEventBus();
+    // or use your own event bus
+    eb = this.AddEventBus(new MyEventBus());
+    // get the event bus
+    eb = this.Get<IEventBus>();
+    // or use the helper method
+    eb = this.GetEventBus();
 
     // add/remove listener
     var listener = eb.AddListener<EventWithoutParams>(() => print(1));
@@ -338,13 +346,13 @@ public class EventBusApp : Entry {
 
     // we have a predefined IEventBus wrapper DebugEventBus to print the event name and parameters.
     // this is useful for debugging, and easy to switch between EventBus and DebugEventBus.
-    this.Add<IEventBus>(Application.isEditor ? new DebugEventBus() : new EventBus());
+    this.AddEventBus(Application.isEditor ? new DebugEventBus() : new EventBus());
     // you can also use your own event bus
-    this.Add<IEventBus>(new DebugEventBus(new MyEventBus()));
+    this.AddEventBus(new DebugEventBus(new MyEventBus()));
     // or change the mode use keyword args
-    this.Add<IEventBus>(new DebugEventBus(mode: DebugEventBusMode.AddListener));
+    this.AddEventBus(new DebugEventBus(mode: DebugEventBusMode.AddListener));
     // or both
-    this.Add<IEventBus>(new DebugEventBus(new MyEventBus(), DebugEventBusMode.Invoke));
+    this.AddEventBus(new DebugEventBus(new MyEventBus(), DebugEventBusMode.Invoke));
   }
 }
 
