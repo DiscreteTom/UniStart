@@ -13,6 +13,7 @@
 - **_Breaking Change_**: rewrite `DebugCommandCenter`, use composition instead of inheritance just like `DebugEventBus`.
 - Feat: add interface `IReadonlyIoC`.
 - Feat: add `ComponentExtension.GetOrAddComponent`.
+- Feat: add `IReadonlyIoC.GetEventBus`, `IReadonlyIoC.GetCommandBus`, `IIoCC.AddEventBus` and `IIoCC.AddCommandBus`.
 - Fix: `AdvancedEvent` will call actions and once actions by the order they are added.
   - Previously all once actions will be called after repeated actions.
 - Fix: `AdvancedEvent` allow adding listeners or remove listeners during the invocation.

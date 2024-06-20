@@ -22,6 +22,9 @@ namespace DT.UniStart {
     /// If the type is not registered, return `default(T)` which is usually `null`.
     /// </summary>
     public static T GetOrDefault<T>(this IIoCC ioc) => ioc.TryGet<T>(out var instance) ? instance : default;
+
+    public static IEventBus GetEventBus(this IIoCC ioc) => ioc.Get<IEventBus>();
+    public static ICommandBus GetCommandBus(this IIoCC ioc) => ioc.Get<ICommandBus>();
   }
 
   /// <summary>
@@ -39,6 +42,9 @@ namespace DT.UniStart {
     /// Register a type and auto create an instance.
     /// </summary>
     public static T Add<T>(this IIoCC ioc) where T : new() => ioc.Add(new T());
+
+    public static IEventBus AddEventBus(this IIoCC ioc, IEventBus eb = null) => ioc.Add(eb ?? new EventBus());
+    public static ICommandBus AddCommandBus(this IIoCC ioc, ICommandBus cb) => ioc.Add(cb);
   }
 
 
