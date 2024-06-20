@@ -338,27 +338,14 @@ public class EventBusApp : Entry {
 
     // you can define wrappers to proxy events with other functionality,
     // we have predefined DebugEventBus to print the event name and parameters.
-    this.Add<IEventBus>(new DebugEventBus(new EventBus(), InterceptEventBusMode.Invoke));
+    this.Add<IEventBus>(new DebugEventBus(new EventBus(), DebugEventBusMode.Invoke));
     // the default inner bus is EventBus, and the default mode is Invoke,
     // so you can omit them.
     this.Add<IEventBus>(new DebugEventBus());
     // you can also use your own event bus
     this.Add<IEventBus>(new DebugEventBus(new MyEventBus()));
     // or change the mode use keyword args
-    this.Add<IEventBus>(new DebugEventBus(mode: InterceptEventBusMode.AddListener));
-
-    // we also have predefined DelayedEventBus to delay the event invocation
-    this.Add<IEventBus>(new DelayedEventBus(new EventBus()));
-    // the default inner bus is EventBus, so you can omit it.
-    this.Add<IEventBus>(new DelayedEventBus());
-    // invoke the delayed actions
-    var deb = new DelayedEventBus();
-    deb.Invoke(new EventWithParams(1, 2)); // won't invoke
-    this.onLateUpdate.AddListener(deb.InvokeDelayed); // invoke all delayed actions
-    this.onNextUpdate(deb.InvokeDelayed); // you can also use onNextUpdate
-
-    // use multi-wrappers
-    this.Add<IEventBus>(new DebugEventBus(new DelayedEventBus(new MyEventBus())));
+    this.Add<IEventBus>(new DebugEventBus(mode: DebugEventBusMode.AddListener));
   }
 }
 ```
