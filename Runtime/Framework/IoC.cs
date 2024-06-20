@@ -16,22 +16,22 @@ namespace DT.UniStart {
   }
 
   public static class IReadonlyIoCExtension {
-    public static bool Contains<T>(this IIoCC ioc) => ioc.TryGet<T>(out var _);
+    public static bool Contains<T>(this IReadonlyIoC ioc) => ioc.TryGet<T>(out var _);
 
     /// <summary>
     /// Try to get the instance of a type.
     /// If the type is not registered, return `default(T)` which is usually `null`.
     /// </summary>
-    public static T GetOrDefault<T>(this IIoCC ioc) => ioc.TryGet<T>(out var instance) ? instance : default;
+    public static T GetOrDefault<T>(this IReadonlyIoC ioc) => ioc.TryGet<T>(out var instance) ? instance : default;
 
     /// <summary>
     /// Get the `IEventBus`.
     /// </summary>
-    public static IEventBus GetEventBus(this IIoCC ioc) => ioc.Get<IEventBus>();
+    public static IEventBus GetEventBus(this IReadonlyIoC ioc) => ioc.Get<IEventBus>();
     /// <summary>
     /// Get the `ICommandBus`.
     /// </summary>
-    public static ICommandBus GetCommandBus(this IIoCC ioc) => ioc.Get<ICommandBus>();
+    public static ICommandBus GetCommandBus(this IReadonlyIoC ioc) => ioc.Get<ICommandBus>();
   }
 
   /// <summary>
