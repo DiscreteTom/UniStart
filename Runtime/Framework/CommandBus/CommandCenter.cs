@@ -15,6 +15,21 @@ namespace DT.UniStart {
       return command;
     }
 
+    /// <summary>
+    /// Add a command to the CommandCenter and return the CommandCenter for chaining.
+    /// </summary>
+    public virtual CommandCenter With<T>(UnityAction command) where T : ICommand {
+      this.Add<T>(command);
+      return this;
+    }
+    /// <summary>
+    /// Add a command to the CommandCenter and return the CommandCenter for chaining.
+    /// </summary>
+    public virtual CommandCenter With<T>(UnityAction<T> command) where T : ICommand {
+      this.Add(command);
+      return this;
+    }
+
     public virtual void Push<T>(T arg) where T : ICommand => (this.dict.GetOrDefault(typeof(T)) as AdvancedEvent<T>)?.Invoke(arg);
 
     void AddCommon<T>(Action<AdvancedEvent<T>> decorator) {
