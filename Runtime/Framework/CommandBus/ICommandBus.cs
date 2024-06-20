@@ -6,16 +6,15 @@ namespace DT.UniStart {
   public interface ICommandRepo {
     UnityAction Add<T>(UnityAction command) where T : ICommand;
     UnityAction<T> Add<T>(UnityAction<T> command) where T : ICommand;
-    UnityAction<T> Get<T>() where T : ICommand;
   }
 
-  public interface ICommandBus {
+  public interface ICommandExecutor {
     void Push<T>(T arg) where T : ICommand;
   }
 
-  public static class ICommandBusExtension {
-    public static void Push<T>(this ICommandBus self) where T : ICommand, new() => self.Push(new T());
+  public static class ICommandExecutorExtension {
+    public static void Push<T>(this ICommandExecutor self) where T : ICommand, new() => self.Push(new T());
   }
 
-  public interface IWritableCommandBus : ICommandRepo, ICommandBus { }
+  public interface ICommandBus : ICommandRepo, ICommandExecutor { }
 }

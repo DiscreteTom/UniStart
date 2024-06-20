@@ -8,6 +8,8 @@
 - **_Breaking Change_**: `Entry.GetContext` will search parent first instead of the root object.
 - **_Breaking Change_**: remove `InterceptEventBus` and `DelayedEventBus`.
   - Make `EventBus` methods virtual. You can override them to realize the same effect.
+- **_Breaking Change_**: remove `DelayedCommandBus`. Rename `ICommandBus` to `ICommandExecutor`, `IWritableCommandBus` to `ICommandBus`. Remove `ICommandRepo.Get`.
+- **_Breaking Change_**: adding the same type to `CommandBus` multi times will throw exception.
 - Feat: add interface `IReadonlyIoC`.
 - Feat: add `ComponentExtension.GetOrAddComponent`.
 - Fix: `AdvancedEvent` will call actions and once actions by the order they are added.
