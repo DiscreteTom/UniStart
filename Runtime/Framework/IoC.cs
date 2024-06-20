@@ -24,7 +24,13 @@ namespace DT.UniStart {
     /// </summary>
     public static T GetOrDefault<T>(this IIoCC ioc) => ioc.TryGet<T>(out var instance) ? instance : default;
 
+    /// <summary>
+    /// Get the `IEventBus`.
+    /// </summary>
     public static IEventBus GetEventBus(this IIoCC ioc) => ioc.Get<IEventBus>();
+    /// <summary>
+    /// Get the `ICommandBus`.
+    /// </summary>
     public static ICommandBus GetCommandBus(this IIoCC ioc) => ioc.Get<ICommandBus>();
   }
 
@@ -44,7 +50,15 @@ namespace DT.UniStart {
     /// </summary>
     public static T Add<T>(this IIoCC ioc) where T : new() => ioc.Add(new T());
 
+    /// <summary>
+    /// Register an `IEventBus`. If the `IEventBus` is not provided, a new instance of `EventBus` will be created.
+    /// If `debug` is `true`, the provided `IEventBus` will be wrapped with `DebugEventBus` in editor mode.
+    /// </summary>
     public static IEventBus AddEventBus(this IIoCC ioc, IEventBus eb = null, bool debug = false) => ioc.Add((debug && Application.isEditor) ? new DebugEventBus(eb ?? new EventBus()) : (eb ?? new EventBus()));
+    /// <summary>
+    /// Register an `ICommandBus`.
+    /// If `debug` is `true`, the provided `ICommandBus` will be wrapped with `DebugCommandBus` in editor mode.
+    /// </summary>
     public static ICommandBus AddCommandBus(this IIoCC ioc, ICommandBus cb, bool debug = false) => ioc.Add((debug && Application.isEditor) ? new DebugCommandBus(cb) : cb);
   }
 
