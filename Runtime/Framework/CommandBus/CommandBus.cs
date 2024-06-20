@@ -29,9 +29,4 @@ namespace DT.UniStart {
         throw new InvalidOperationException($"Command of type {typeof(T)} already exists!");
     }
   }
-
-  // TODO: move to a single file
-  public class DebugCommandBus : CommandBus {
-    public DebugCommandBus(DebugEventBusMode mode = DebugEventBusMode.Invoke) : base(new DebugEventBus(mode: mode).WithName("DebugCommandBus")) { }
-  }
 }
