@@ -6,6 +6,7 @@
   - Use `RemoveListener` instead of `RemoveOnceListener` to remove once listeners.
 - **_Breaking Change_**: remove `CBC.Add` and `UniStartBehaviour.Add`.
 - **_Breaking Change_**: `Entry.GetContext` will search parent first instead of the root object.
+- **_Breaking Change_**: remove `InterceptEventBus` and `DelayedEventBus`.
 - Feat: add interface `IReadonlyIoC`.
 - Feat: add `ComponentExtension.GetOrAddComponent`.
 - Fix: `AdvancedEvent` will call actions and once actions by the order they are added.
