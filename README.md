@@ -347,11 +347,13 @@ public class EventBusApp : Entry {
     // we have a predefined IEventBus wrapper DebugEventBus to print the event name and parameters.
     // this is useful for debugging, and easy to switch between EventBus and DebugEventBus.
     this.AddEventBus(Application.isEditor ? new DebugEventBus() : new EventBus());
+    // for short, set `debug` to `true` to wrap the provided EventBus in DebugEventBus in editor mode.
+    this.AddEventBus(debug: true);
     // you can also use your own event bus
-    this.AddEventBus(new DebugEventBus(new MyEventBus()));
-    // or change the mode use keyword args
+    this.AddEventBus(new MyEventBus(), debug: true);
+    // change the log mode
     this.AddEventBus(new DebugEventBus(mode: DebugEventBusMode.AddListener));
-    // or both
+    // or both of mode and bus
     this.AddEventBus(new DebugEventBus(new MyEventBus(), DebugEventBusMode.Invoke));
   }
 }
