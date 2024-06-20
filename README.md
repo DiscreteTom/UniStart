@@ -336,16 +336,30 @@ public class EventBusApp : Entry {
     eb.Invoke(new EventWithoutParams());
     eb.Invoke(new EventWithParams(1, 2));
 
-    // you can define wrappers to proxy events with other functionality,
-    // we have predefined DebugEventBus to print the event name and parameters.
-    this.Add<IEventBus>(new DebugEventBus(new EventBus(), DebugEventBusMode.Invoke));
-    // the default inner bus is EventBus, and the default mode is Invoke,
-    // so you can omit them.
-    this.Add<IEventBus>(new DebugEventBus());
+    // we have a predefined IEventBus wrapper DebugEventBus to print the event name and parameters.
+    // this is useful for debugging, and easy to switch between EventBus and DebugEventBus.
+    this.Add<IEventBus>(Application.isEditor ? new DebugEventBus() : new EventBus());
     // you can also use your own event bus
     this.Add<IEventBus>(new DebugEventBus(new MyEventBus()));
     // or change the mode use keyword args
     this.Add<IEventBus>(new DebugEventBus(mode: DebugEventBusMode.AddListener));
+    // or both
+    this.Add<IEventBus>(new DebugEventBus(new MyEventBus(), DebugEventBusMode.Invoke));
+  }
+}
+
+// methods in EventBus is virtual so you can override them.
+// here is an example to delay all the events.
+public class MyEventBus : EventBus {
+  readonly UnityEvent delayed = new();
+
+  public override void Invoke<T>(T e) {
+    this.delayed.AddListener(() => base.Invoke(e));
+  }
+
+  public void InvokeDelayed() {
+    this.delayed.Invoke();
+    this.delayed.RemoveAllListeners();
   }
 }
 ```
