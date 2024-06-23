@@ -13,6 +13,7 @@
 - **_Breaking Change_**: rewrite `DebugCommandBus` to only log `Push` events.
 - **_Breaking Change_**: rename `WatchRef/WatchIList/WatchIDictionary.ReadOnlyCommit` to `MutedCommit`.
 - **_Breaking Change_**: rename `IState` to `IValueState`.
+- **_Breaking Change_**: rewrite `IStateMachine` and `StateMachine`, remove `DebugStateMachine`.
 - Feat: add interface `IReadonlyIoC`.
 - Feat: add `ComponentExtension.GetOrAddComponent`.
 - Feat: add `IReadonlyIoC.GetEventBus`, `IReadonlyIoC.GetCommandBus`, `IIoCC.AddEventBus` and `IIoCC.AddCommandBus`.

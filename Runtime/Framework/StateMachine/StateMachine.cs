@@ -1,109 +1,25 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine.Events;
 
 namespace DT.UniStart {
-  public class StateMachine<T> : IStateMachine<T>, IEnumState<T> where T : Enum {
-    public T Value {
-      get => this.value;
-      set {
-        if (this.value.Equals(value)) return;
-        var prev = this.value;
-        this.onExitEvents.GetOrDefault(prev)?.Invoke(value, prev);
-        this.onEnterEvents.GetOrDefault(value)?.Invoke(value, prev);
-        this.value = value;
-      }
-    }
+  public class StateMachine<T> : Watch<T>, IStateMachine<T>, IEnumState<T> where T : Enum {
+    static readonly T[] values = Enum.GetValues(typeof(T)) as T[];
+    readonly Dictionary<T, AdvancedEvent<T, T>> onEnter = new();
+    readonly Dictionary<T, AdvancedEvent<T, T>> onExit = new();
 
-    T value;
-    readonly Dictionary<T, AdvancedEvent<T, T>> onEnterEvents;
-    readonly Dictionary<T, AdvancedEvent<T, T>> onExitEvents;
+    public StateMachine(T initialState) : base(initialState) { }
 
-    public StateMachine(T initialState) {
-      this.value = initialState;
-      this.onEnterEvents = new();
-      this.onExitEvents = new();
-    }
+    public AdvancedEvent<T, T> OnEnter(T value) => this.onEnter.GetOrAdd(value, () => new());
+    public AdvancedEvent<T, T> OnExit(T value) => this.onExit.GetOrAdd(value, () => new());
 
-    public UnityAction AddListener(T value, StateMachineEventType eventType, UnityAction action) {
-      return eventType switch {
-        StateMachineEventType.OnEnter => this.onEnterEvents.GetOrAddNew(value).AddListener(action),
-        StateMachineEventType.OnExit => this.onExitEvents.GetOrAddNew(value).AddListener(action),
-        _ => throw new NotImplementedException($"StateMachine.AddListener for eventType: {eventType} not implemented!"),
-      };
-    }
-    public UnityAction RemoveListener(T value, StateMachineEventType eventType, UnityAction action) {
-      switch (eventType) {
-        case StateMachineEventType.OnEnter:
-          this.onEnterEvents.GetOrDefault(value)?.RemoveListener(action);
-          return action;
-        case StateMachineEventType.OnExit:
-          this.onExitEvents.GetOrDefault(value)?.RemoveListener(action);
-          return action;
-        default:
-          throw new NotImplementedException($"StateMachine.RemoveListener for eventType: {eventType} not implemented!");
-      }
-    }
-    public UnityAction AddOnceListener(T value, StateMachineEventType eventType, UnityAction action) {
-      return eventType switch {
-        StateMachineEventType.OnEnter => this.onEnterEvents.GetOrAddNew(value).AddOnceListener(action),
-        StateMachineEventType.OnExit => this.onExitEvents.GetOrAddNew(value).AddOnceListener(action),
-        _ => throw new NotImplementedException($"StateMachine.AddListener for eventType: {eventType} not implemented!"),
-      };
-    }
+    public T GetNextState() => values[(values.IndexOf(this.value) + 1) % values.Length];
 
-    public UnityAction<T> AddListener(T value, StateMachineEventType eventType, UnityAction<T> action) {
-      return eventType switch {
-        StateMachineEventType.OnEnter => this.onEnterEvents.GetOrAddNew(value).AddListener(action),
-        StateMachineEventType.OnExit => this.onExitEvents.GetOrAddNew(value).AddListener(action),
-        _ => throw new NotImplementedException($"StateMachine.AddListener for eventType: {eventType} not implemented!"),
-      };
-    }
-    public UnityAction<T> RemoveListener(T value, StateMachineEventType eventType, UnityAction<T> action) {
-      switch (eventType) {
-        case StateMachineEventType.OnEnter:
-          this.onEnterEvents.GetOrDefault(value)?.RemoveListener(action);
-          return action;
-        case StateMachineEventType.OnExit:
-          this.onExitEvents.GetOrDefault(value)?.RemoveListener(action);
-          return action;
-        default:
-          throw new NotImplementedException($"StateMachine.RemoveListener for eventType: {eventType} not implemented!");
-      }
-    }
-    public UnityAction<T> AddOnceListener(T value, StateMachineEventType eventType, UnityAction<T> action) {
-      return eventType switch {
-        StateMachineEventType.OnEnter => this.onEnterEvents.GetOrAddNew(value).AddOnceListener(action),
-        StateMachineEventType.OnExit => this.onExitEvents.GetOrAddNew(value).AddOnceListener(action),
-        _ => throw new NotImplementedException($"StateMachine.AddListener for eventType: {eventType} not implemented!"),
-      };
-    }
+    protected override void InvokeEvent(T prev) {
+      base.InvokeEvent(prev);
 
-    public UnityAction<T, T> AddListener(T value, StateMachineEventType eventType, UnityAction<T, T> action) {
-      return eventType switch {
-        StateMachineEventType.OnEnter => this.onEnterEvents.GetOrAddNew(value).AddListener(action),
-        StateMachineEventType.OnExit => this.onExitEvents.GetOrAddNew(value).AddListener(action),
-        _ => throw new NotImplementedException($"StateMachine.AddListener for eventType: {eventType} not implemented!"),
-      };
-    }
-    public UnityAction<T, T> RemoveListener(T value, StateMachineEventType eventType, UnityAction<T, T> action) {
-      switch (eventType) {
-        case StateMachineEventType.OnEnter:
-          this.onEnterEvents.GetOrDefault(value)?.RemoveListener(action);
-          return action;
-        case StateMachineEventType.OnExit:
-          this.onExitEvents.GetOrDefault(value)?.RemoveListener(action);
-          return action;
-        default:
-          throw new NotImplementedException($"StateMachine.RemoveListener for eventType: {eventType} not implemented!");
-      }
-    }
-    public UnityAction<T, T> AddOnceListener(T value, StateMachineEventType eventType, UnityAction<T, T> action) {
-      return eventType switch {
-        StateMachineEventType.OnEnter => this.onEnterEvents.GetOrAddNew(value).AddOnceListener(action),
-        StateMachineEventType.OnExit => this.onExitEvents.GetOrAddNew(value).AddOnceListener(action),
-        _ => throw new NotImplementedException($"StateMachine.AddListener for eventType: {eventType} not implemented!"),
-      };
+      if (this.value.Equals(prev)) return;
+      this.onExit.GetOrDefault(prev)?.Invoke(value, prev);
+      this.onEnter.GetOrDefault(value)?.Invoke(value, prev);
     }
   }
 }
