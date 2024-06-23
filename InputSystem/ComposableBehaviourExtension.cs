@@ -28,15 +28,8 @@ namespace DT.UniStart {
       }
       return action;
     }
-    // echoed watch with remover
-    public static Action<InputAction.CallbackContext> Watch(this ComposableBehaviour self, out Action<InputAction.CallbackContext> named, InputAction input, InputActionEventType type, IWatchable remover, Action<InputAction.CallbackContext> action) {
-      named = action;
-      return self.Watch(input, type, remover, action);
-    }
     // remove listener on destroy
     public static Action<InputAction.CallbackContext> Watch(this ComposableBehaviour self, InputAction input, InputActionEventType type, Action<InputAction.CallbackContext> action) => self.Watch(input, type, self.onDestroy, action);
-    // echoed Watch
-    public static Action<InputAction.CallbackContext> Watch(this ComposableBehaviour self, out Action<InputAction.CallbackContext> named, InputAction input, InputActionEventType type, Action<InputAction.CallbackContext> action) => self.Watch(out named, input, type, self.onDestroy, action);
     #endregion
   }
 }
