@@ -55,35 +55,17 @@ namespace DT.UniStart {
     public R MutedCommit<R>(Func<L, R> f) => f.Invoke(this.value);
 
     #region re-expose methods from the list interface
-    public void Add(T item) {
-      this.value.Add(item);
-      this.InvokeEvent();
-    }
-    public void Clear() {
-      this.value.Clear();
-      this.InvokeEvent();
-    }
-    public bool Remove(T item) {
-      var result = this.value.Remove(item);
-      this.InvokeEvent();
-      return result;
-    }
+    // indexers
     public T this[int index] {
       get => this.value[index];
-      set {
-        this.value[index] = value;
-        this.InvokeEvent();
-      }
+      set => this.Commit(l => l[index] = value);
     }
-    public void Insert(int index, T item) {
-      this.value.Insert(index, item);
-      this.InvokeEvent();
-    }
-    public void RemoveAt(int index) {
-      this.value.RemoveAt(index);
-      this.InvokeEvent();
-    }
-
+    // mutable methods
+    public void Add(T item) => this.Commit(l => l.Add(item));
+    public void Clear() => this.Commit(l => l.Clear());
+    public bool Remove(T item) => this.Commit(l => l.Remove(item));
+    public void Insert(int index, T item) => this.Commit(l => l.Insert(index, item));
+    public void RemoveAt(int index) => this.Commit(l => l.RemoveAt(index));
     // readonly properties & methods
     public bool Contains(T item) => this.value.Contains(item);
     public int IndexOf(T item) => this.value.IndexOf(item);
@@ -145,36 +127,17 @@ namespace DT.UniStart {
     public R MutedCommit<R>(Func<D, R> f) => f.Invoke(this.value);
 
     #region re-expose methods from the dictionary interface
-    public void Add(K key, V value) {
-      this.value.Add(key, value);
-      this.InvokeEvent();
-    }
-    public void Add(KeyValuePair<K, V> item) {
-      this.value.Add(item);
-      this.InvokeEvent();
-    }
-    public void Clear() {
-      this.value.Clear();
-      this.InvokeEvent();
-    }
-    public bool Remove(KeyValuePair<K, V> item) {
-      var result = this.value.Remove(item);
-      this.InvokeEvent();
-      return result;
-    }
-    public bool Remove(K key) {
-      var result = this.value.Remove(key);
-      this.InvokeEvent();
-      return result;
-    }
+    // indexers
     public V this[K key] {
       get => this.value[key];
-      set {
-        this.value[key] = value;
-        this.InvokeEvent();
-      }
+      set => this.Commit(d => d[key] = value);
     }
-
+    // mutable methods
+    public void Add(K key, V value) => this.Commit(d => d.Add(key, value));
+    public void Add(KeyValuePair<K, V> item) => this.Commit(d => d.Add(item));
+    public void Clear() => this.Commit(d => d.Clear());
+    public bool Remove(KeyValuePair<K, V> item) => this.Commit(d => d.Remove(item));
+    public bool Remove(K key) => this.Commit(d => d.Remove(key));
     // readonly properties & methods
     public int Count => this.value.Count;
     public bool TryGetValue(K key, out V value) => this.value.TryGetValue(key, out value);
@@ -196,7 +159,7 @@ namespace DT.UniStart {
   /// </summary>
   [Serializable]
   public class WatchList<T> : WatchIList<List<T>, T>, IWatchable, IWatchable<ReadOnlyCollection<T>>, IListState<T> {
-    public WatchList() : base(new List<T>()) { }
+    public WatchList() : base(new()) { }
     public WatchList(List<T> value) : base(value) { }
 
     // re-expose methods from the list
@@ -223,7 +186,7 @@ namespace DT.UniStart {
   /// Watch a dictionary for changes.
   /// </summary>
   public class WatchDictionary<K, V> : WatchIDictionary<Dictionary<K, V>, K, V>, IWatchable, IWatchable<ReadOnlyDictionary<K, V>> {
-    public WatchDictionary() : base(new Dictionary<K, V>()) { }
+    public WatchDictionary() : base(new()) { }
     public WatchDictionary(Dictionary<K, V> value) : base(value) { }
   }
 }
