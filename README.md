@@ -384,19 +384,22 @@ Besides, there are 2 base interface of `IEventBus`: `IEventListener` and `IEvent
 `EventBus` lets you add listeners anywhere, but you may have some pre-defined `Commands` which should be listened centrally. `CommandBus` is designed for this.
 
 ```cs
+// define commands
 public record SimpleCommand : ICommand;
 public record ComplexCommand(int a, int b) : ICommand;
 
 public class CommandBusEntry : Entry {
   void Awake() {
-    // register command bus into app as readonly ICommandBus
+    // register command bus into app as the readonly ICommandBus
     var cb = this.Add<ICommandBus>(
-      // register commands centrally
+      // CommandCenter is writable,
+      // so we register all commands here centrally
       new CommandCenter()
         .With<SimpleCommand>(() => print(1))
         .With<ComplexCommand>((e) => print(e.a))
     );
-    // or use the helper method just like `AddEventBus`
+    // or use the helper method `AddCommandBus` to register `ICommandBus`
+    // just like `AddEventBus`
     this.AddCommandBus(cb, debug: true);
   }
 }
@@ -407,15 +410,48 @@ public class CommandBusApp : CBC {
     // or use the helper method
     cb = this.GetCommandBus();
 
-    // execute commands
+    // push commands to bus
     cb.Push<SimpleCommand>();
     cb.Push(new ComplexCommand(1, 2));
   }
 }
-
 ```
 
 Thus, you can separate your game logics in the `CommandBus` from the views in `CBC`. If you modify your view in `CBC` you can still reuse your logics in `CommandBus`.
+
+Commands are often used in state management with CQRS pattern. We will introduce how to manage state with UniStart later.
+
+The default `CommandCenter` will execute commands immediately, but you can also use `DelayedCommandCenter` to delay the execution. This is useful to prevent side-effect in a responsive system.
+
+```cs
+public class RecursiveCommandBusApp : Entry {
+  void Awake() {
+    // the default command center will execute the command immediately
+    var cc = new CommandCenter();
+
+    // when this command is executed, it will recursively execute itself!
+    cc.Add<SimpleCommand>(() => cc.Push<SimpleCommand>());
+
+    // start the recursion
+    cc.Push<SimpleCommand>();
+  }
+}
+
+public class DelayedCommandBusApp : Entry {
+  void Awake() {
+    // the delayed command center will execute all buffered commands when `Execute` is called
+    var cc = new DelayedCommandCenter();
+
+    // execute all commands from the last frame
+    this.onUpdate.AddListener(() => cc.Execute());
+
+    // this is safe because the command will be executed in the next frame
+    cc.Add<SimpleCommand>(() => cc.Push<SimpleCommand>());
+
+    cc.Push<SimpleCommand>();
+  }
+}
+```
 
 > This is inspired by [QFramework](https://github.com/liangxiegame/QFramework)'s command system.
 
