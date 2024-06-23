@@ -515,7 +515,7 @@ Besides, we also provide `WatchRef`, `WatchIList` and `WatchIDictionary` for you
 
 ### State Machine
 
-For responsive enum values, it is recommended to use `StateMachine`:
+For responsive enum values, besides `Watch`, you can also use `StateMachine`:
 
 ```cs
 public enum GameState {
@@ -530,17 +530,14 @@ public class StateMachineApp : CBC {
     var sm = new StateMachine<GameState>(GameState.Start);
 
     // listen for state changes
-    sm.AddListener(GameState.Playing, StateMachineEventType.OnEnter, (current, prev) => print(1));
-    sm.AddListener(GameState.Playing, StateMachineEventType.OnExit, (current, prev) => print(1));
-
-    // helper methods
-    sm.OnceEnter(GameState.Playing, (current, prev) => print(1));
-    sm.OnceExit(GameState.Playing, (current, prev) => print(1));
+    sm.AddListener(() => print(1));
+    sm.OnEnter(GameState.Playing).AddListener(() => print(1));
+    sm.OnExit(GameState.Playing).AddListener(() => print(1));
 
     // read value
     this.onUpdate.AddListener(() => print(sm.Value));
 
-    // change state, trigger state changes
+    // change state, trigger events
     sm.Value = GameState.Playing;
   }
 }
