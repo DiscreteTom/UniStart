@@ -17,6 +17,12 @@ namespace DT.UniStart {
       this.value = value;
       this.Value = new ReadOnlyCollection<T>(this.value);
     }
+    public WatchIList(L value, T fill) : this(value) {
+      this.value.Fill(fill);
+    }
+    public WatchIList(L value, Func<T> factory) : this(value) {
+      this.value.Fill(factory);
+    }
 
     public UnityAction AddListener(UnityAction f) => this.onChange.AddListener(f);
     public UnityAction RemoveListener(UnityAction f) => this.onChange.RemoveListener(f);
@@ -160,7 +166,10 @@ namespace DT.UniStart {
   [Serializable]
   public class WatchList<T> : WatchIList<List<T>, T>, IWatchable, IWatchable<ReadOnlyCollection<T>>, IListState<T> {
     public WatchList() : base(new()) { }
+    public WatchList(int n) : base(new(n)) { }
     public WatchList(List<T> value) : base(value) { }
+    public WatchList(int n, T fill) : base(new(n), fill) { }
+    public WatchList(int n, Func<T> factory) : base(new(n), factory) { }
 
     // re-expose methods from the list
     public int BinarySearch(T item) => this.value.BinarySearch(item);
@@ -175,6 +184,8 @@ namespace DT.UniStart {
   public class WatchArray<T> : WatchIList<T[], T>, IWatchable, IWatchable<ReadOnlyCollection<T>>, IListState<T> {
     public WatchArray(int n) : base(new T[n]) { }
     public WatchArray(T[] value) : base(value) { }
+    public WatchArray(int n, T fill) : base(new T[n], fill) { }
+    public WatchArray(int n, Func<T> factory) : base(new T[n], factory) { }
 
     // re-expose methods from the array
     public int BinarySearch(T item) => Array.BinarySearch(this.value, item);

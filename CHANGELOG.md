@@ -24,6 +24,7 @@
 - Feat: make `Watch.AddListener/RemoveListener/AddOnceListener` virtual.
 - Feat: add protected virtual `Watch.InvokeEvent`.
 - Feat: make `Computed` implement `IValueState`.
+- Feat: add more constructors for `WatchIList/WatchList/WatchArray`.
 - Feat: add `IGetValue.GetValue`.
 - Fix: `AdvancedEvent` will call actions and once actions by the order they are added.
   - Previously all once actions will be called after repeated actions.
