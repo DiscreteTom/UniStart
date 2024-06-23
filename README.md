@@ -603,103 +603,116 @@ public class StateMachineApp : CBC {
 
 ### Lifecycle - State Management
 
-Usually we need to manage the state (or `Model`) of the game, we also want to watch for changes of the state, and commit changes to the state.
+Usually we need to manage the state (or `Model`) of the game across components or game objects, we also want to watch for changes of the state, and commit changes to the state.
 
 Unlike those responsive containers, we don't want the state to be changed by other classes, only the state manager can commit changes to the state.
 
 ```cs
-public class Model {
+// define commands to update the model.
+// you can also make these commands local to the model class
+record MyCommand : ICommand;
+
+// inherit from StateManager to use helper methods
+public class Model : StateManager {
   // state is readonly and watchable
-  public IState<int> count { get; protected set; }
-  public IEnumState<GameState> gameState { get; protected set; }
-  public IListState<int> list { get; protected set; }
-  public IDictionaryState<string, int> dict { get; protected set; }
-  // there is no IArrayState, use IListState instead
-  public IListState<bool> array { get; protected set; }
+  public readonly IValueState<int> count;
+  public readonly IEnumState<GameState> gameState;
+  public readonly IListState<int> list;
+  public readonly IArrayState<bool> array;
+  public readonly IDictionaryState<string, int> dict;
 
   // you can also use System.Collections.Generic types.
   // use this if they are const values since they are not watchable
-  public IReadOnlyList<int> constArray { get; protected set; }
-  public IReadOnlyDictionary<string, int> constDict { get; protected set; }
+  public readonly IReadOnlyList<int> constArray;
+  public readonly IReadOnlyDictionary<string, int> constDict;
 
   // or, a list of state, which is also readonly and watchable
   // use this if the list's length is fixed
-  public IReadOnlyList<IState<int>> stateArray { get; protected set; }
-  public IReadOnlyList<IEnumState<GameState>> enumArray { get; protected set; }
+  public readonly IReadOnlyList<IValueState<int>> stateArray;
+  public readonly IReadOnlyList<IEnumState<GameState>> enumArray;
 
-  // computed values are also readonly and watchable
-  public Computed<int> computed { get; protected set; }
-  public LazyComputed<int> lazyComputed { get; protected set; }
+  // computed values are also readonly
+  public readonly Computed<int> computed;
+  public readonly LazyComputed<int> lazyComputed;
 
   // properties are readonly but not watchable.
   public int property => this.count.Value;
 
-  // prevent external instantiation
-  protected Model() { }
-}
+  ICommandBus cb;
 
-// make ModelManager inherit Model to init states,
-// also implement IStateManager to use extension methods
-public class ModelManager : Model, IStateManager {
-  public ModelManager(ICommandRepo cb, IEventInvoker eb) {
+  public Model(ICommandCenter cc, IEventInvoker eb) {
     // you can use responsive containers as the state,
     // you can also use your custom classes as long as the state interface is implemented
     this.count = new Watch<int>(0);
     this.list = new WatchList<int>();
 
-    // when you assign values to states, they are readonly,
+    // when you assign values to states, they are readonly.
     // if you want to modify states in commands,
     // you need to use the responsive containers directly
-    var count = new Watch<int>(0); // this is writable
-    cb.Add<SimpleCommand>(() => {
+    var count = new Watch<int>(0); // this is mutable
+    cc.Add<SimpleCommand>(() => {
       // you can update state values in commands
       count.Value = 123;
     });
-    this.count = count; // make it readonly
+    this.count = count; // this.count is readonly
 
-    // we have helper methods for you,
-    // which can assign values for states,
-    // and echo the responsive containers using out parameters
-    this.count = this.Add(out count, 0);
-    this.gameState = this.AddEnum(out var gameState, GameState.Start);
-    this.list = this.AddList<int>(out var list);
-    this.array = this.AddArray<bool>(out var array, 1);
-    this.dict = this.AddDictionary<string, int>(out var dict);
-    this.constArray = this.AddConstArray<int>(out var constList, 10);
-    this.constDict = this.AddConstDictionary<string, int>(out var constDict);
-    this.stateArray = this.AddStateArray<int>(out var stateArray, 10);
-    this.enumArray = this.AddEnumArray<GameState>(out var enumArray, 10);
-    // non-echoed methods are also available
-    this.count = this.Add(0); // non-echoed
+    // the helper `StateManager.Init` will init the state
+    // and return the default mutable container.
+    count = this.Init(ref this.count, 0); // Watch<int>
+
+    // you only need to remember one method called `Init`
+    // to init all types of states with the default responsive container.
+    // all generic types are inferred!
+    var gameState = this.Init(ref this.gameState, GameState.Start); // StateMachine
+    var list = this.Init(ref this.list); // WatchList
+    var array = this.Init(ref this.array, 1); // WatchArray
+    var dict = this.Init(ref this.dict); // WatchDictionary
+    var constArray = this.Init(ref this.constArray, 10); // int[]
+    var constDict = this.Init(ref this.constDict); // Dictionary<string, int>
+    var stateArray = this.Init(ref this.stateArray, 10); // Watch<int>[]
+    var enumArray = this.Init(ref this.enumArray, 10); // StateMachine<GameState>[]
 
     // now you can update states in commands
-    cb.Add<SimpleCommand>(() => {
+    cc.Add<MyCommand>(() => {
       list.Add(1); // make changes
       eb.Invoke<EventWithoutParams>(); // publish events
-      cb.Get<SimpleCommand>().Invoke(new SimpleCommand()); // call other commands
     });
 
-    // computed values are already readonly and watchable,
+    // computed values are already readonly,
     // you can use them directly
     this.computed = new Computed<int>(() => this.count.Value * 2).Watch(this.count);
     this.lazyComputed = new LazyComputed<int>(() => this.count.Value * 2).Watch(this.count);
+
+    this.cb = cc;
+  }
+
+  // you can also add methods for better intellisense in IDE
+  public void MyCommand() {
+    // command can be inspect by DebugCommandBus
+    // so we will know what happened to the model.
+    // commands can also be delayed to prevent side effect
+    this.cb.Push<MyCommand>();
   }
 }
 
 public class ModelAppEntry : Entry {
   void Awake() {
-    var cb = new CommandBus();
-    var eb = new EventBus();
-    var model = new ModelManager(cb, eb); // writable model
+    // use DelayedCommandCenter to prevent side effect
+    // when updating the model
+    var cb = new DelayedCommandCenter();
+    // execute all commands in the next frame
+    this.onUpdate.AddListener(() => cb.Execute());
 
-    this.Add<ICommandBus>(cb);
-    this.Add<Model>(model); // register readonly model to app
+    // enable debug mode to see what happened to the model
+    this.AddCommandBus(cb, debug: true);
+    // register model to the app
+    this.Add(new Model(cb, new EventBus()));
   }
 }
 
 public class ModelApp : CBC {
   void Start() {
-    var cb = this.Get<ICommandBus>();
+    var cb = this.GetCommandBus();
     // get readonly model from app
     var model = this.Get<Model>();
 
@@ -709,9 +722,12 @@ public class ModelApp : CBC {
     // check model value
     this.onUpdate.AddListener(() => print(model.count.Value));
 
-    // you can't update model directly
-    // but you can use commands to update model
-    cb.Push<SimpleCommand>();
+    // use commands to update model
+    cb.Push<MyCommand>();
+
+    // or use methods to update model
+    // so that IDE can check if the command exists
+    model.MyCommand();
   }
 }
 ```
