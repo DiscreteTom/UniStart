@@ -15,6 +15,11 @@ namespace DT.UniStart {
       return this;
     }
 
+    public TimerManager Unmount(IComposable target) {
+      target.onUpdate.RemoveListener(this.UpdateWithDelta);
+      return this;
+    }
+
     public void UpdateWithDelta() {
       this.Update(Time.deltaTime);
     }
