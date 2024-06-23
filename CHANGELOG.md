@@ -18,6 +18,7 @@
 - Feat: add `IReadonlyIoC.GetEventBus`, `IReadonlyIoC.GetCommandBus`, `IIoCC.AddEventBus` and `IIoCC.AddCommandBus`.
 - Feat: make `DelayedEventBus.InvokeDelayed` virtual.
 - Feat: add `CommandCenter.With`.
+- Feat: make `Watch.AddListener/RemoveListener/AddOnceListener` virtual.
 - Feat: add protected virtual `Watch.InvokeEvent`.
 - Feat: make `Computed` implement `IValueState`.
 - Feat: add `IGetValue.GetValue`.

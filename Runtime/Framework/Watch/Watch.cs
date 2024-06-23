@@ -25,15 +25,15 @@ namespace DT.UniStart {
       }
     }
 
-    public UnityAction AddListener(UnityAction f) => this.onChange.AddListener(f);
-    public UnityAction RemoveListener(UnityAction f) => this.onChange.RemoveListener(f);
-    public UnityAction AddOnceListener(UnityAction f) => this.onChange.AddOnceListener(f);
-    public UnityAction<T> AddListener(UnityAction<T> f) => this.onChange.AddListener(f);
-    public UnityAction<T> RemoveListener(UnityAction<T> f) => this.onChange.RemoveListener(f);
-    public UnityAction<T> AddOnceListener(UnityAction<T> f) => this.onChange.AddOnceListener(f);
-    public UnityAction<T, T> AddListener(UnityAction<T, T> f) => this.onChange.AddListener(f);
-    public UnityAction<T, T> RemoveListener(UnityAction<T, T> f) => this.onChange.RemoveListener(f);
-    public UnityAction<T, T> AddOnceListener(UnityAction<T, T> f) => this.onChange.AddOnceListener(f);
+    public virtual UnityAction AddListener(UnityAction f) => this.onChange.AddListener(f);
+    public virtual UnityAction RemoveListener(UnityAction f) => this.onChange.RemoveListener(f);
+    public virtual UnityAction AddOnceListener(UnityAction f) => this.onChange.AddOnceListener(f);
+    public virtual UnityAction<T> AddListener(UnityAction<T> f) => this.onChange.AddListener(f);
+    public virtual UnityAction<T> RemoveListener(UnityAction<T> f) => this.onChange.RemoveListener(f);
+    public virtual UnityAction<T> AddOnceListener(UnityAction<T> f) => this.onChange.AddOnceListener(f);
+    public virtual UnityAction<T, T> AddListener(UnityAction<T, T> f) => this.onChange.AddListener(f);
+    public virtual UnityAction<T, T> RemoveListener(UnityAction<T, T> f) => this.onChange.RemoveListener(f);
+    public virtual UnityAction<T, T> AddOnceListener(UnityAction<T, T> f) => this.onChange.AddOnceListener(f);
 
     protected virtual void InvokeEvent(T previous) => this.onChange.Invoke(this.value, previous);
   }
