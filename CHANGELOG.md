@@ -18,6 +18,7 @@
 - Feat: add `IReadonlyIoC.GetEventBus`, `IReadonlyIoC.GetCommandBus`, `IIoCC.AddEventBus` and `IIoCC.AddCommandBus`.
 - Feat: make `DelayedEventBus.InvokeDelayed` virtual.
 - Feat: add `CommandCenter.With`.
+- Feat: add protected virtual `Watch.InvokeEvent`.
 - Feat: make `Computed` implement `IValueState`.
 - Feat: add `IGetValue.GetValue`.
 - Fix: `AdvancedEvent` will call actions and once actions by the order they are added.

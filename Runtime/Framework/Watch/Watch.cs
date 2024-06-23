@@ -21,7 +21,7 @@ namespace DT.UniStart {
       set {
         var previous = this.value;
         this.value = value;
-        this.onChange.Invoke(value, previous);
+        this.InvokeEvent(previous);
       }
     }
 
@@ -34,6 +34,8 @@ namespace DT.UniStart {
     public UnityAction<T, T> AddListener(UnityAction<T, T> f) => this.onChange.AddListener(f);
     public UnityAction<T, T> RemoveListener(UnityAction<T, T> f) => this.onChange.RemoveListener(f);
     public UnityAction<T, T> AddOnceListener(UnityAction<T, T> f) => this.onChange.AddOnceListener(f);
+
+    protected virtual void InvokeEvent(T previous) => this.onChange.Invoke(this.value, previous);
   }
 
   /// <summary>
