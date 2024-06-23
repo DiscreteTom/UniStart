@@ -28,7 +28,7 @@ using DT.UniStart;
 
 ## Get Started
 
-### AdvancedEvent
+### Basics - AdvancedEvent
 
 Before we start, let's take a look at the fundamental building block of UniStart: `AdvancedEvent`
 
@@ -106,7 +106,7 @@ e.Invoke(); // this will not print 1
 
 </details>
 
-### Composables and Closures
+### Basics - Composables and Closures
 
 In UniStart, basically the only method you need to write is the `Start`:
 
@@ -237,7 +237,7 @@ public class ComposableComponentApp : NetworkBehaviour {
 }
 ```
 
-### Global Context Management
+### Basics - Global Context Management
 
 When developing a game, you may need to store some global context, like the player's data, the game's settings, etc. You may use singletons to store these data, but sometimes it's not a good idea.
 
@@ -304,7 +304,7 @@ public class CBCComponentApp : MonoBehaviour {
 
 > This is inspired by [QFramework](https://github.com/liangxiegame/QFramework)'s IoC container, and [jackutea](https://github.com/jackutea)'s deterministic lifecycle management.
 
-### Event Bus
+### Orchestration - Event Bus
 
 You can register `EventBus` to app to realize cross-component communication. `EventBus` can intercept events and realize additional logics like logging, and you can also use it to decouple your components.
 
@@ -379,7 +379,7 @@ Besides, there are 2 base interface of `IEventBus`: `IEventListener` and `IEvent
 
 > This is inspired by [QFramework](https://github.com/liangxiegame/QFramework)'s event system.
 
-### Command Bus
+### Orchestration - Command Bus
 
 `EventBus` lets you add listeners anywhere, but you may have some pre-defined `Commands` which should be listened centrally. `CommandBus` is designed for this.
 
@@ -455,7 +455,7 @@ public class DelayedCommandBusApp : Entry {
 
 > This is inspired by [QFramework](https://github.com/liangxiegame/QFramework)'s command system.
 
-### Step Executor
+### Orchestration - Step Executor
 
 You can use `StepExecutor` to realize cross-component ordered event handling.
 
@@ -513,7 +513,7 @@ public class StepExecutorApp : Entry {
 }
 ```
 
-### Responsive Containers
+### Responsiveness - Responsive Containers
 
 In UniStart, we have many built-in responsive containers/collections to help you build responsive app:
 
@@ -571,7 +571,7 @@ Besides, we also provide `WatchRef`, `WatchIList` and `WatchIDictionary` for you
 
 > This is inspired by [QFramework](https://github.com/liangxiegame/QFramework)'s `BindableProperty`.
 
-### State Machine
+### Responsiveness - State Machine
 
 For responsive enum values, besides `Watch`, you can also use `StateMachine`:
 
@@ -601,7 +601,7 @@ public class StateMachineApp : CBC {
 }
 ```
 
-### State Management
+### Lifecycle - State Management
 
 Usually we need to manage the state (or `Model`) of the game, we also want to watch for changes of the state, and commit changes to the state.
 
@@ -716,7 +716,7 @@ public class ModelApp : CBC {
 }
 ```
 
-### RemoveListener on Destroy
+### Lifecycle - RemoveListener on Destroy
 
 ```cs
 // CBC: ComposableBehaviour with Context injected.
