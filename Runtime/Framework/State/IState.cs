@@ -24,7 +24,7 @@ namespace DT.UniStart {
   public interface IStateManager { }
 
   public static class IStateManagerExtension {
-    public static IValueState<T> Add<T>(this IStateManager manager, T value) => new Watch<T>(value);
+    public static IValueState<T> AddValue<T>(this IStateManager manager, T value) => new Watch<T>(value);
     public static IEnumState<T> AddEnum<T>(this IStateManager manager, T value) where T : Enum => new StateMachine<T>(value);
     public static IListState<T> AddArray<T>(this IStateManager manager, int count) => new WatchArray<T>(count);
     public static IListState<T> AddArray<T>(this IStateManager manager, int count, T fill) {
