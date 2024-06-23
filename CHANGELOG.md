@@ -14,6 +14,7 @@
 - **_Breaking Change_**: rename `WatchRef/WatchIList/WatchIDictionary.ReadOnlyCommit` to `MutedCommit`.
 - **_Breaking Change_**: rename `IState` to `IValueState`.
 - **_Breaking Change_**: rewrite `IStateMachine` and `StateMachine`, remove `DebugStateMachine`.
+- **_Breaking Change_**: rewrite `IStepExecutor`, `StepExecutor` and `DebugStepExecutor`, remove `InterceptStepExecutor`.
 - Feat: add interface `IReadonlyIoC`.
 - Feat: add `ComponentExtension.GetOrAddComponent`.
 - Feat: add `IReadonlyIoC.GetEventBus`, `IReadonlyIoC.GetCommandBus`, `IIoCC.AddEventBus` and `IIoCC.AddCommandBus`.
