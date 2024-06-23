@@ -787,7 +787,7 @@ public class RemoveListenerApp : CBC {
 }
 ```
 
-### Put Them Together
+### Put Them All Together
 
 Finally, keep the architecture diagram in mind, and put all the pieces together.
 
@@ -803,17 +803,13 @@ namespace Project {
   public record SomeCommand(int a, int b) : ICommand;
   public record SomeEvent(int a, int b) : IEvent;
 
-  public class Model {
+  public class Model : StateManager {
     // store states in readonly model
-    public IState<int> count { get; protected set; }
-    // prevent external instantiation
-    protected Model() { }
-  }
+    public readonly IState<int> count;
 
-  public class ModelManager : Model, IStateManager {
-    public ModelManager(ICommandRepo cb, IEventInvoker eb) {
+    public Model(ICommandRepo cb, IEventInvoker eb) {
       // init states, get writable responsive containers
-      this.count = this.Add(out var count, 0);
+      var count = this.Init(ref this.count, 0);
 
       // register model-related commands
       cb.Add<SomeCommand>((e) => {
@@ -821,8 +817,6 @@ namespace Project {
         count.Value = e.a + e.b;
         // publish event to controllers
         eb.Invoke(new SomeEvent(e.a, e.b));
-        // call other commands
-        cb.Get<SimpleCommand>().Invoke(new());
       });
     }
   }
@@ -836,8 +830,8 @@ namespace Project {
       var model = new ModelManager(cb, eb);
 
       // register context
-      this.Add<ICommandBus>(cb);
-      this.Add<IEventListener>(eb);
+      this.AddCommandBus(cb, debug: true);
+      this.AddEventBus(eb, debug: true);
       this.Add<Model>(model);
     }
   }
@@ -846,8 +840,8 @@ namespace Project {
   public class Controller : CBC {
     void Start() {
       // get context
-      var cb = this.Get<ICommandBus>();
-      var eb = this.Get<IEventListener>();
+      var cb = this.GetCommandBus();
+      var eb = this.GetEventBus();
       var model = this.Get<Model>();
 
       // update view when model changes
