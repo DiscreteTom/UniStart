@@ -4,10 +4,9 @@ using UnityEngine.Events;
 
 namespace DT.UniStart {
   public class TimerManager {
-    readonly HashSet<Timer> timers;
+    readonly HashSet<Timer> timers = new();
 
     public TimerManager(IComposable mountTarget = null) {
-      this.timers = new HashSet<Timer>();
       if (mountTarget != null) this.Mount(mountTarget);
     }
 
