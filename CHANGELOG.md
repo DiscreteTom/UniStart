@@ -17,6 +17,7 @@
 - **_Breaking Change_**: rewrite `IStepExecutor`, `StepExecutor` and `DebugStepExecutor`, remove `InterceptStepExecutor`.
 - **_Breaking Change_**: rewrite `StateManager`.
 - **_Breaking Change_**: remove echoed `Watch` for InputSystem events.
+- **_Breaking Change_**: use `List` to store timers in `TimerManager` to make sure callbacks are called in the order they are added.
 - Feat: add interface `IReadonlyIoC`.
 - Feat: add `ComponentExtension.GetOrAddComponent`.
 - Feat: add `IReadonlyIoC.GetEventBus`, `IReadonlyIoC.GetCommandBus`, `IReadonlyIoC.GetStepExecutor`, `IIoCC.AddEventBus`, `IIoCC.AddCommandBus` and `IIoCC.AddStepExecutor`.
