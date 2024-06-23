@@ -19,6 +19,7 @@
 - Feat: make `DelayedEventBus.InvokeDelayed` virtual.
 - Feat: add `CommandCenter.With`.
 - Feat: make `Computed` implement `IValueState`.
+- Feat: add `IGetValue.GetValue`.
 - Fix: `AdvancedEvent` will call actions and once actions by the order they are added.
   - Previously all once actions will be called after repeated actions.
 - Fix: `AdvancedEvent` allow adding listeners or remove listeners during the invocation.

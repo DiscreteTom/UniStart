@@ -3,6 +3,10 @@ namespace DT.UniStart {
     T Value { get; }
   }
 
+  public static class IGetValueExtension {
+    public static T GetValue<T>(this IGetValue<T> value) => value.Value;
+  }
+
   public interface ISetValue<T> {
     T Value { set; }
   }
