@@ -47,12 +47,12 @@ namespace DT.UniStart {
     /// <summary>
     /// Make changes without trigger the onChange event.
     /// </summary>
-    public void ReadOnlyCommit(UnityAction<L> f) => f.Invoke(this.value);
+    public void MutedCommit(UnityAction<L> f) => f.Invoke(this.value);
 
     /// <summary>
     /// Make changes without trigger the onChange event.
     /// </summary>
-    public R ReadOnlyCommit<R>(Func<L, R> f) => f.Invoke(this.value);
+    public R MutedCommit<R>(Func<L, R> f) => f.Invoke(this.value);
 
     #region re-expose methods from the list interface
     public void Add(T item) {
@@ -137,12 +137,12 @@ namespace DT.UniStart {
     /// <summary>
     /// Make changes without trigger the onChange event.
     /// </summary>
-    public void ReadOnlyCommit(UnityAction<D> f) => f.Invoke(this.value);
+    public void MutedCommit(UnityAction<D> f) => f.Invoke(this.value);
 
     /// <summary>
     /// Make changes without trigger the onChange event.
     /// </summary>
-    public R ReadOnlyCommit<R>(Func<D, R> f) => f.Invoke(this.value);
+    public R MutedCommit<R>(Func<D, R> f) => f.Invoke(this.value);
 
     #region re-expose methods from the dictionary interface
     public void Add(K key, V value) {
