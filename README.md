@@ -455,6 +455,64 @@ public class DelayedCommandBusApp : Entry {
 
 > This is inspired by [QFramework](https://github.com/liangxiegame/QFramework)'s command system.
 
+### Step Executor
+
+You can use `StepExecutor` to realize cross-component ordered event handling.
+
+```cs
+public enum SomeEventStep {
+  Step1,
+  Step2
+}
+
+public class StepExecutorEntry : Entry {
+  void Awake() {
+    // register the IStepExecutor
+    var se = this.Add<IStepExecutor<SomeEventStep>>(new StepExecutor<SomeEventStep>());
+    // helper method just like `AddEventBus`.
+    se = this.AddStepExecutor<SomeEventStep>(debug: true);
+    // invoke step listeners in order
+    this.onNextUpdate(() => se.Invoke());
+  }
+}
+
+public class StepApp1 : CBC {
+  void Start() {
+    // bind to step 1
+    // so this will be run first
+    this.GetStepExecutor<SomeEventStep>().On(SomeEventStep.Step1).AddListener(() => print(1));
+  }
+}
+
+public class StepApp2 : CBC {
+  void Start() {
+    // bind to step 2
+    // so this will be run second
+    this.GetStepExecutor<SomeEventStep>().On(SomeEventStep.Step2).AddListener(() => print(1));
+  }
+}
+```
+
+You can also pass context to the steps.
+
+```cs
+public class StepContext {
+  public int a;
+}
+
+public class StepExecutorApp : Entry {
+  void Awake() {
+    // add a context type to the step executor
+    var se = this.AddStepExecutor<SomeEventStep, StepContext>(debug: true);
+
+    se.On(SomeEventStep.Step1).AddListener((ctx) => ctx.a++);
+    se.On(SomeEventStep.Step2).AddListener((ctx) => print(ctx.a));
+
+    se.Invoke(new StepContext { a = 1 });
+  }
+}
+```
+
 ### Responsive Containers
 
 In UniStart, we have many built-in responsive containers/collections to help you build responsive app:
@@ -654,58 +712,6 @@ public class ModelApp : CBC {
     // you can't update model directly
     // but you can use commands to update model
     cb.Push<SimpleCommand>();
-  }
-}
-```
-
-### Step Executor
-
-You can use `StepExecutor` to realize cross-component ordered event handling.
-
-```cs
-public enum SomeEventStep {
-  Step1,
-  Step2
-}
-
-public class StepExecutorEntry : Entry {
-  void Awake() {
-    var se = this.Add<StepExecutor>();
-    this.onNextUpdate(() => se.Invoke<SomeEventStep>());
-  }
-}
-
-public class StepApp1 : CBC {
-  void Start() {
-    // this will be run first
-    this.Get<StepExecutor>().AddListener(SomeEventStep.Step1, () => print(1));
-  }
-}
-
-public class StepApp2 : CBC {
-  void Start() {
-    // this will be run second
-    this.Get<StepExecutor>().AddListener(SomeEventStep.Step2, () => print(1));
-  }
-}
-```
-
-You can also pass context in the event to the listeners.
-
-```cs
-public class StepExecutorApp : CBC {
-  void Start() {
-    var se = new StepExecutor();
-
-    // action will be invoked when EventWithParams is invoked
-    se.AddListener<EventWithParams>(SomeEventStep.Step1, (e) => print(e.a));
-    se.AddListener<EventWithParams>(SomeEventStep.Step2, (e) => print(e.b));
-
-    se.Invoke(new EventWithParams(1, 2));
-
-    // you can also use int as step
-    se.AddListener<EventWithParams>(0, () => print(1));
-    se.AddListener<EventWithParams>(1, () => print(1));
   }
 }
 ```
