@@ -123,7 +123,7 @@ namespace DT.UniStart {
       return this;
     }
 
-    // use parent class's value setter to trigger events
+    // trigger value's events
     void Update() => this.value.Value = this.compute();
 
     public UnityAction AddListener(UnityAction f) => this.value.AddListener(f);
@@ -144,14 +144,14 @@ namespace DT.UniStart {
   [Serializable]
   public class LazyComputed<T> : IGetValue<T> {
     [SerializeField] T value;
-    [SerializeField] bool needUpdate = true;
+    [SerializeField] bool dirty = true;
     Func<T> compute { get; set; }
 
     public T Value {
       get {
-        if (this.needUpdate) {
+        if (this.dirty) {
           this.value = this.compute.Invoke();
-          this.needUpdate = false;
+          this.dirty = false;
         }
         return this.value;
       }
@@ -159,7 +159,6 @@ namespace DT.UniStart {
 
     public LazyComputed(Func<T> compute) {
       this.compute = compute;
-      this.needUpdate = true;
     }
 
     /// <summary>
@@ -175,6 +174,6 @@ namespace DT.UniStart {
       return this;
     }
 
-    void Update() => this.needUpdate = true;
+    void Update() => this.dirty = true;
   }
 }
