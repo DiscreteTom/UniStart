@@ -24,11 +24,7 @@ namespace DT.UniStart {
       this.Update(Time.deltaTime);
     }
 
-    public void Update(float deltaTime) {
-      foreach (var t in this.timers) {
-        t.Update(deltaTime);
-      }
-    }
+    public virtual void Update(float deltaTime) => this.timers.ForEach(t => t.Update(deltaTime));
 
     T AddTimer<T>(T t, UnityAction cb, IComposable mountTarget) where T : Timer {
       if (cb != null) t.onFinished.AddListener(cb);
