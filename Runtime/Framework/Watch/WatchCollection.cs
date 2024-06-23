@@ -9,20 +9,14 @@ namespace DT.UniStart {
   /// Watch a list-like type for changes.
   /// </summary>
   public class WatchIList<L, T> : IList<T>, IReadOnlyList<T>, IGetValue<ReadOnlyCollection<T>>, IWatchable<ReadOnlyCollection<T>> where L : IList<T> {
-    readonly ReadOnlyCollection<T> readOnlyList;
-    readonly AdvancedEvent<ReadOnlyCollection<T>> onChange;
     protected readonly L value;
+    public ReadOnlyCollection<T> Value { get; private set; }
+    readonly AdvancedEvent<ReadOnlyCollection<T>> onChange = new();
 
     public WatchIList(L value) {
       this.value = value;
-      this.readOnlyList = new ReadOnlyCollection<T>(this.value);
-      this.onChange = new AdvancedEvent<ReadOnlyCollection<T>>();
+      this.Value = new ReadOnlyCollection<T>(this.value);
     }
-
-    /// <summary>
-    /// Get the list as a read-only list and cache it for future calls.
-    /// </summary>
-    public ReadOnlyCollection<T> Value => this.readOnlyList;
 
     public UnityAction AddListener(UnityAction f) => this.onChange.AddListener(f);
     public UnityAction RemoveListener(UnityAction f) => this.onChange.RemoveListener(f);
@@ -105,20 +99,14 @@ namespace DT.UniStart {
   /// Watch a dictionary-like type for changes.
   /// </summary>
   public class WatchIDictionary<D, K, V> : IDictionary<K, V>, IReadOnlyDictionary<K, V>, IGetValue<ReadOnlyDictionary<K, V>>, IWatchable<ReadOnlyDictionary<K, V>>, IDictionaryState<K, V> where D : IDictionary<K, V> {
-    readonly ReadOnlyDictionary<K, V> readOnlyDictionary;
-    readonly AdvancedEvent<ReadOnlyDictionary<K, V>> onChange;
     protected readonly D value;
+    public ReadOnlyDictionary<K, V> Value { get; private set; }
+    readonly AdvancedEvent<ReadOnlyDictionary<K, V>> onChange = new();
 
     public WatchIDictionary(D value) {
       this.value = value;
-      this.readOnlyDictionary = new ReadOnlyDictionary<K, V>(this.value);
-      this.onChange = new AdvancedEvent<ReadOnlyDictionary<K, V>>();
+      this.Value = new ReadOnlyDictionary<K, V>(this.value);
     }
-
-    /// <summary>
-    /// Get the dictionary as a read-only dictionary and cache it for future calls.
-    /// </summary>
-    public ReadOnlyDictionary<K, V> Value => this.readOnlyDictionary;
 
     public UnityAction AddListener(UnityAction f) => this.onChange.AddListener(f);
     public UnityAction RemoveListener(UnityAction f) => this.onChange.RemoveListener(f);
