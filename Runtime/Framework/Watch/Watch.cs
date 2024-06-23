@@ -8,7 +8,7 @@ namespace DT.UniStart {
   /// This class should be used for immutable types (int, float, bool, string, etc) only.
   /// </summary>
   [Serializable]
-  public class Watch<T> : IWatchable<T, T>, IGetSetValue<T>, IState<T> {
+  public class Watch<T> : IWatchable<T, T>, IGetSetValue<T>, IValueState<T> {
     [SerializeField] protected T value;
     readonly AdvancedEvent<T, T> onChange = new();
 

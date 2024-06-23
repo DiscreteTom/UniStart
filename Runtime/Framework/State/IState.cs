@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 namespace DT.UniStart {
   #region State
-  public interface IState<T> : IWatchable<T, T>, IGetValue<T> { }
+  public interface IValueState<T> : IWatchable<T, T>, IGetValue<T> { }
   public interface IEnumState<T> : IReadOnlyStateMachine<T> where T : Enum { }
   public interface IListState<T> : IReadOnlyList<T>, IWatchable, IWatchable<ReadOnlyCollection<T>>, IGetValue<ReadOnlyCollection<T>> {
     bool Contains(T item);
@@ -24,7 +24,7 @@ namespace DT.UniStart {
   public interface IStateManager { }
 
   public static class IStateManagerExtension {
-    public static IState<T> Add<T>(this IStateManager manager, T value) => new Watch<T>(value);
+    public static IValueState<T> Add<T>(this IStateManager manager, T value) => new Watch<T>(value);
     public static IEnumState<T> AddEnum<T>(this IStateManager manager, T value) where T : Enum => new StateMachine<T>(value);
     public static IListState<T> AddArray<T>(this IStateManager manager, int count) => new WatchArray<T>(count);
     public static IListState<T> AddArray<T>(this IStateManager manager, int count, T fill) {
@@ -54,7 +54,7 @@ namespace DT.UniStart {
     public static IDictionaryState<K, V> AddDictionary<K, V>(this IStateManager manager, Dictionary<K, V> value) => new WatchDictionary<K, V>(value);
 
     #region Echoed
-    public static IState<T> Add<T>(this IStateManager manager, out Watch<T> echoed, T value) {
+    public static IValueState<T> Add<T>(this IStateManager manager, out Watch<T> echoed, T value) {
       var state = new Watch<T>(value);
       echoed = state;
       return state;
@@ -155,12 +155,12 @@ namespace DT.UniStart {
       echoed = new();
       return echoed;
     }
-    public static IReadOnlyList<IState<T>> AddStateArray<T>(this IStateManager manager, int count, T fill = default) {
+    public static IReadOnlyList<IValueState<T>> AddStateArray<T>(this IStateManager manager, int count, T fill = default) {
       var res = new Watch<T>[count];
       res.Fill(() => new Watch<T>(fill));
       return res;
     }
-    public static IReadOnlyList<IState<T>> AddStateArray<T>(this IStateManager manager, out Watch<T>[] echoed, int count, T fill = default) {
+    public static IReadOnlyList<IValueState<T>> AddStateArray<T>(this IStateManager manager, out Watch<T>[] echoed, int count, T fill = default) {
       echoed = new Watch<T>[count];
       echoed.Fill(() => new Watch<T>(fill));
       return echoed;
