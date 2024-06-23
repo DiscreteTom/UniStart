@@ -15,7 +15,7 @@
 - **_Breaking Change_**: rename `IState` to `IValueState`.
 - **_Breaking Change_**: rewrite `IStateMachine` and `StateMachine`, remove `DebugStateMachine`.
 - **_Breaking Change_**: rewrite `IStepExecutor`, `StepExecutor` and `DebugStepExecutor`, remove `InterceptStepExecutor`.
-- **_Breaking Change_**: rename `IStateManager.Add` to `AddValue`.
+- **_Breaking Change_**: rewrite `StateManager`.
 - Feat: add interface `IReadonlyIoC`.
 - Feat: add `ComponentExtension.GetOrAddComponent`.
 - Feat: add `IReadonlyIoC.GetEventBus`, `IReadonlyIoC.GetCommandBus`, `IReadonlyIoC.GetStepExecutor`, `IIoCC.AddEventBus`, `IIoCC.AddCommandBus` and `IIoCC.AddStepExecutor`.
