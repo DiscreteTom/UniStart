@@ -499,8 +499,8 @@ public class ResponsiveApp : MonoBehaviour {
       l.Add(2);
     });
 
-    // use readonly commit and manually trigger events
-    list.ReadOnlyCommit((l) => {
+    // use muted commit and manually trigger events
+    list.MutedCommit((l) => {
       l.Add(3);
       l.Add(4);
     });
@@ -508,6 +508,8 @@ public class ResponsiveApp : MonoBehaviour {
   }
 }
 ```
+
+Besides, we also provide `WatchRef`, `WatchIList` and `WatchIDictionary` for you to build your own responsive containers.
 
 > This is inspired by [QFramework](https://github.com/liangxiegame/QFramework)'s `BindableProperty`.
 
