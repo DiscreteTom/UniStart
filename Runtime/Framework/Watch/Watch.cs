@@ -42,11 +42,10 @@ namespace DT.UniStart {
   [Serializable]
   public class WatchRef<T> : IWatchable<WatchRef<T>>, ISetValue<T> {
     [SerializeField] protected T value;
-    readonly AdvancedEvent<WatchRef<T>> onChange;
+    readonly AdvancedEvent<WatchRef<T>> onChange = new();
 
     public WatchRef(T value) {
       this.value = value;
-      this.onChange = new AdvancedEvent<WatchRef<T>>();
     }
 
     public T Value {
@@ -76,12 +75,12 @@ namespace DT.UniStart {
     /// <summary>
     /// Make changes without trigger the onChange event.
     /// </summary>
-    public void ReadOnlyCommit(UnityAction<T> f) => f.Invoke(this.value);
+    public void MutedCommit(UnityAction<T> f) => f.Invoke(this.value);
 
     /// <summary>
     /// Make changes without trigger the onChange event.
     /// </summary>
-    public R ReadOnlyCommit<R>(Func<T, R> f) => f.Invoke(this.value);
+    public R MutedCommit<R>(Func<T, R> f) => f.Invoke(this.value);
 
     public UnityAction AddListener(UnityAction f) => this.onChange.AddListener(f);
     public UnityAction RemoveListener(UnityAction f) => this.onChange.RemoveListener(f);

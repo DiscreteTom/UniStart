@@ -11,6 +11,7 @@
 - **_Breaking Change_**: rename `IWritableCommandBus` to `ICommandCenter`, remove `ICommandRepo.Get`, rename `CommandBus` to `CommandCenter`, `DelayedCommandBus` to `DelayedCommandCenter`.
 - **_Breaking Change_**: adding the same type to `CommandCenter` multi times will throw exception.
 - **_Breaking Change_**: rewrite `DebugCommandBus` to only log `Push` events.
+- **_Breaking Change_**: rename `WatchRef.ReadOnlyCommit` to `WatchRef.MutedCommit`.
 - **_Breaking Change_**: rename `IState` to `IValueState`.
 - Feat: add interface `IReadonlyIoC`.
 - Feat: add `ComponentExtension.GetOrAddComponent`.
