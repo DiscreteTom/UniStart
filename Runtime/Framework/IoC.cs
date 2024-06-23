@@ -32,6 +32,14 @@ namespace DT.UniStart {
     /// Get the `ICommandBus`.
     /// </summary>
     public static ICommandBus GetCommandBus(this IReadonlyIoC ioc) => ioc.Get<ICommandBus>();
+    /// <summary>
+    /// Get the `IStepExecutor` with no context.
+    /// </summary>
+    public static IStepExecutor<S> GetStepExecutor<S>(this IReadonlyIoC ioc) where S : IConvertible => ioc.Get<IStepExecutor<S>>();
+    /// <summary>
+    /// Get the `IStepExecutor` with context `T`.
+    /// </summary>
+    public static IStepExecutor<S, T> GetStepExecutor<S, T>(this IReadonlyIoC ioc) where S : IConvertible => ioc.Get<IStepExecutor<S, T>>();
   }
 
   /// <summary>
@@ -64,6 +72,24 @@ namespace DT.UniStart {
     /// If `debug` is `true`, the provided `ICommandBus` will be wrapped with `DebugCommandBus` in editor mode.
     /// </summary>
     public static ICommandBus AddCommandBus(this IIoCC ioc, ICommandBus cb, bool debug = false) => ioc.Add((debug && Application.isEditor) ? new DebugCommandBus(cb) : cb);
+
+    /// <summary>
+    /// Register an `IStepExecutor`. If the `IStepExecutor` is not provided, a new instance of `StepExecutor` will be created.
+    /// If `debug` is `true`, the provided `IStepExecutor` will be wrapped with `DebugStepExecutor` in editor mode.
+    /// </summary>
+    public static IStepExecutor<S> AddStepExecutor<S>(this IIoCC ioc, IStepExecutor<S> exe = null, bool debug = false) where S : IConvertible {
+      exe ??= new StepExecutor<S>();
+      return ioc.Add((debug && Application.isEditor) ? new DebugStepExecutor<S>(exe) : exe);
+    }
+
+    /// <summary>
+    /// Register an `IStepExecutor`. If the `IStepExecutor` is not provided, a new instance of `StepExecutor` will be created.
+    /// If `debug` is `true`, the provided `IStepExecutor` will be wrapped with `DebugStepExecutor` in editor mode.
+    /// </summary>
+    public static IStepExecutor<S, T> AddStepExecutor<S, T>(this IIoCC ioc, IStepExecutor<S, T> exe = null, bool debug = false) where S : IConvertible {
+      exe ??= new StepExecutor<S, T>();
+      return ioc.Add((debug && Application.isEditor) ? new DebugStepExecutor<S, T>(exe) : exe);
+    }
   }
 
 

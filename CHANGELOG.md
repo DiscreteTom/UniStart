@@ -17,7 +17,7 @@
 - **_Breaking Change_**: rewrite `IStepExecutor`, `StepExecutor` and `DebugStepExecutor`, remove `InterceptStepExecutor`.
 - Feat: add interface `IReadonlyIoC`.
 - Feat: add `ComponentExtension.GetOrAddComponent`.
-- Feat: add `IReadonlyIoC.GetEventBus`, `IReadonlyIoC.GetCommandBus`, `IIoCC.AddEventBus` and `IIoCC.AddCommandBus`.
+- Feat: add `IReadonlyIoC.GetEventBus`, `IReadonlyIoC.GetCommandBus`, `IReadonlyIoC.GetStepExecutor`, `IIoCC.AddEventBus`, `IIoCC.AddCommandBus` and `IIoCC.AddStepExecutor`.
 - Feat: make `DelayedEventBus.InvokeDelayed` virtual.
 - Feat: add `CommandCenter.With`.
 - Feat: make `Watch.AddListener/RemoveListener/AddOnceListener` virtual.
