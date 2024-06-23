@@ -20,6 +20,7 @@
   - Previously all once actions will be called after repeated actions.
 - Fix: `AdvancedEvent` allow adding listeners or remove listeners during the invocation.
   - `this.onNextUpdate(() => this.onNextUpdate(() => print(1)));` will work properly.
+- Fix: `DelayedEventBus` and `DelayedCommandCenter` behave correctly when being recursively invoked during the invocation.
 
 ## v12.0.1
 
