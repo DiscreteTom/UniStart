@@ -6,7 +6,7 @@
   - Use `RemoveListener` instead of `RemoveOnceListener` to remove once listeners.
 - **_Breaking Change_**: remove `CBC.Add` and `UniStartBehaviour.Add`.
 - **_Breaking Change_**: `Entry.GetContext` will search parent first instead of the root object.
-- **_Breaking Change_**: remove `InterceptEventBus` and `DelayedEventBus`.
+- **_Breaking Change_**: remove `InterceptEventBus`.
   - Make `EventBus` methods virtual. You can override them to realize the same effect.
 - **_Breaking Change_**: remove `DelayedCommandBus`, rename `IWritableCommandBus` to `ICommandCenter`, remove `ICommandRepo.Get`, rename `CommandBus` to `CommandCenter`.
 - **_Breaking Change_**: adding the same type to `CommandCenter` multi times will throw exception.
