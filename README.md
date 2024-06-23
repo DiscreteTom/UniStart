@@ -735,7 +735,6 @@ public class ModelApp : CBC {
 ### Lifecycle - RemoveListener on Destroy
 
 ```cs
-// CBC: ComposableBehaviour with Context injected.
 public class RemoveListenerApp : CBC {
   void Start() {
     var model = this.Get<Model>();
@@ -745,7 +744,7 @@ public class RemoveListenerApp : CBC {
     // This function will capture `this` in a closure,
     // we need to remove the listener when the script is destroyed.
     var cb = model.count.AddListener((count) => print(this));
-    this.onDestroy.AddListener(() => model.count.RemoveListener(cb));
+    this.onDestroy.AddOnceListener(() => model.count.RemoveListener(cb));
 
     // Helper function. Listener will be removed when the script is destroyed.
     this.Watch(model.count, (count) => print(this));
@@ -774,13 +773,14 @@ public class RemoveListenerApp : CBC {
 
     // StateMachine and StepExecutor
     var sm = new StateMachine<GameState>(GameState.Start);
-    var se = new StepExecutor();
-    this.Watch(sm, GameState.Playing, StateMachineEventType.OnEnter, () => print(1));
-    this.Watch<EventWithParams>(se, SomeEventStep.Step1, (e) => print(e));
+    this.Watch(sm.OnEnter(GameState.Start), () => print(1));
+    var se = new StepExecutor<SomeEventStep>();
+    this.Watch(se.On(SomeEventStep.Step1), () => print(1));
 
     // In addition, composable events are actually standalone components,
     // except onEnable/onDisable and onDestroy,
     // so if you plan to destroy the script before destroying the game object,
+    // and your onUpdate is referencing `this`,
     // maybe you also need to destroy the listener too.
     this.Watch(this.onUpdate, () => print(this));
   }
