@@ -8,7 +8,7 @@
 - **_Breaking Change_**: `Entry.GetContext` will search parent first instead of the root object.
 - **_Breaking Change_**: remove `InterceptEventBus`.
   - Make `EventBus` methods virtual. You can override them to realize the same effect.
-- **_Breaking Change_**: remove `DelayedCommandBus`, rename `IWritableCommandBus` to `ICommandCenter`, remove `ICommandRepo.Get`, rename `CommandBus` to `CommandCenter`.
+- **_Breaking Change_**: rename `IWritableCommandBus` to `ICommandCenter`, remove `ICommandRepo.Get`, rename `CommandBus` to `CommandCenter`, `DelayedCommandBus` to `DelayedCommandCenter`.
 - **_Breaking Change_**: adding the same type to `CommandCenter` multi times will throw exception.
 - **_Breaking Change_**: rewrite `DebugCommandBus` to only log `Push` events.
 - Feat: add interface `IReadonlyIoC`.
