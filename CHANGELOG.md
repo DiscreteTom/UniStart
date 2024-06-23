@@ -28,6 +28,7 @@
 - Feat: add more constructors for `WatchIList/WatchList/WatchArray`.
 - Feat: add `IGetValue.GetValue`.
 - Feat: add `IArrayState`, make `WatchArray` implement `IArrayState`.
+- Feat: add `TimerManager.UpdateWithDelta`.
 - Fix: `AdvancedEvent` will call actions and once actions by the order they are added.
   - Previously all once actions will be called after repeated actions.
 - Fix: `AdvancedEvent` allow adding listeners or remove listeners during the invocation.
