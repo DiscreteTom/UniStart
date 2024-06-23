@@ -54,7 +54,11 @@ namespace DT.UniStart {
     /// Register an `IEventBus`. If the `IEventBus` is not provided, a new instance of `EventBus` will be created.
     /// If `debug` is `true`, the provided `IEventBus` will be wrapped with `DebugEventBus` in editor mode.
     /// </summary>
-    public static IEventBus AddEventBus(this IIoCC ioc, IEventBus eb = null, bool debug = false) => ioc.Add((debug && Application.isEditor) ? new DebugEventBus(eb ?? new EventBus()) : (eb ?? new EventBus()));
+    public static IEventBus AddEventBus(this IIoCC ioc, IEventBus eb = null, bool debug = false) {
+      eb ??= new EventBus();
+      return ioc.Add((debug && Application.isEditor) ? new DebugEventBus(eb) : eb);
+    }
+
     /// <summary>
     /// Register an `ICommandBus`.
     /// If `debug` is `true`, the provided `ICommandBus` will be wrapped with `DebugCommandBus` in editor mode.
