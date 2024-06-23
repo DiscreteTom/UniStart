@@ -360,6 +360,7 @@ public class EventBusApp : Entry {
 
 // methods in EventBus is virtual so you can override them.
 // here is an example to delay all the events.
+// actually we have a DelayedEventBus to achieve the same effect.
 public class MyEventBus : EventBus {
   readonly UnityEvent delayed = new();
 
