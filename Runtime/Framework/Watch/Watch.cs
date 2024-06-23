@@ -100,7 +100,7 @@ namespace DT.UniStart {
   /// The result should be immutable.
   /// </summary>
   [Serializable]
-  public class Computed<T> : IWatchable<T, T>, IGetValue<T> {
+  public class Computed<T> : IWatchable<T, T>, IGetValue<T>, IValueState<T> {
     readonly Func<T> compute;
     readonly Watch<T> value;
 
