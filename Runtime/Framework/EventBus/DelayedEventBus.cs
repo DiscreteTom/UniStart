@@ -6,7 +6,7 @@ namespace DT.UniStart {
 
     public override void Invoke<T>(T e) => this.delayed.AddListener(() => base.Invoke(e));
 
-    public void InvokeDelayed() {
+    public virtual void InvokeDelayed() {
       this.delayed.Invoke();
       this.delayed.RemoveAllListeners();
     }
