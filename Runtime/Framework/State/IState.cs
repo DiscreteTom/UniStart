@@ -17,6 +17,7 @@ namespace DT.UniStart {
     int BinarySearch(T item, IComparer<T> comparer);
     int BinarySearch(int index, int count, T item, IComparer<T> comparer);
   }
+  public interface IArrayState<T> : IListState<T> { }
   public interface IDictionaryState<K, V> : IReadOnlyDictionary<K, V>, IWatchable, IWatchable<ReadOnlyDictionary<K, V>>, IGetValue<ReadOnlyDictionary<K, V>> { }
   #endregion
 

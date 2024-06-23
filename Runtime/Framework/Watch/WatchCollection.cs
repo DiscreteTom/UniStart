@@ -181,7 +181,7 @@ namespace DT.UniStart {
   /// Watch an array for changes.
   /// </summary>
   [Serializable]
-  public class WatchArray<T> : WatchIList<T[], T>, IWatchable, IWatchable<ReadOnlyCollection<T>>, IListState<T> {
+  public class WatchArray<T> : WatchIList<T[], T>, IWatchable, IWatchable<ReadOnlyCollection<T>>, IListState<T>, IArrayState<T> {
     public WatchArray(int n) : base(new T[n]) { }
     public WatchArray(T[] value) : base(value) { }
     public WatchArray(int n, T fill) : base(new T[n], fill) { }
