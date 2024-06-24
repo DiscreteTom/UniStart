@@ -443,7 +443,9 @@ public class DelayedCommandBusApp : Entry {
     var cc = new DelayedCommandCenter();
 
     // execute all commands from the last frame
-    this.onUpdate.AddListener(() => cc.Execute());
+    this.onUpdate.AddListener(cc.Execute);
+    // or use the helper method
+    cc.Mount(this.onUpdate);
 
     // this is safe because the command will be executed in the next frame
     cc.Add<SimpleCommand>(() => cc.Push<SimpleCommand>());
@@ -866,7 +868,7 @@ namespace Project {
 
 ## Other Utils
 
-### Timer Manager
+### Timers
 
 Though you can use `MonoBehaviour.Invoke/InvokeRepeating` to realize timers, it's not easy to manage them (e.g. you can't easily stop them or check the progress). `Timer` / `RepeatedTimer` is designed for this.
 
@@ -879,6 +881,8 @@ public class TimerApp : Entry {
     this.onUpdate.AddListener(() => timer.Update(Time.deltaTime));
     // or
     this.onUpdate.AddListener(timer.UpdateWithDelta);
+    // or
+    timer.Mount(this.onUpdate);
     // stop/start the timer
     // once stopped, the timer will not update
     timer.Stop();
