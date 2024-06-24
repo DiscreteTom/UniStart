@@ -24,6 +24,7 @@
 - Feat: add `ComponentExtension.GetOrAddComponent`.
 - Feat: add `IReadonlyIoC.GetEventBus`, `IReadonlyIoC.GetCommandBus`, `IReadonlyIoC.GetStepExecutor`, `IIoCC.AddEventBus`, `IIoCC.AddCommandBus` and `IIoCC.AddStepExecutor`.
 - Feat: make `DelayedEventBus.InvokeDelayed` virtual.
+- Feat: add `DelayedEventBus.Mount`.
 - Feat: add `CommandCenter.With`.
 - Feat: add `DelayedCommandCenter.Mount`.
 - Feat: make `Watch.AddListener/RemoveListener/AddOnceListener` virtual.
