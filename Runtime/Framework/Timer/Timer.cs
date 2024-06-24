@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace DT.UniStart {
   public class Timer {
@@ -10,8 +11,9 @@ namespace DT.UniStart {
     public float progress => Mathf.Clamp01(this.elapsed / this.duration);
     public bool finished => this.elapsed >= this.duration;
 
-    public Timer(float duration) {
+    public Timer(float duration, UnityAction cb = null) {
       this.duration = duration;
+      if (cb != null) this.onFinished.AddListener(cb);
     }
 
     public virtual void Update(float deltaTime) {
@@ -41,7 +43,7 @@ namespace DT.UniStart {
   }
 
   public class RepeatedTimer : Timer {
-    public RepeatedTimer(float duration) : base(duration) { }
+    public RepeatedTimer(float duration, UnityAction cb = null) : base(duration, cb) { }
 
     public override void Update(float deltaTime) {
       base.Update(deltaTime);
