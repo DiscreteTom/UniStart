@@ -868,18 +868,17 @@ namespace Project {
 
 ### Timer Manager
 
-Though you can use `MonoBehaviour.Invoke/InvokeRepeating` to realize timers, it's not easy to manage them (e.g. stop them or check the progress). `TimerManager` is designed for this.
+Though you can use `MonoBehaviour.Invoke/InvokeRepeating` to realize timers, it's not easy to manage them (e.g. you can't easily stop them or check the progress). `Timer` / `RepeatedTimer` is designed for this.
 
 ```cs
-using DT.UniStart;
-using UnityEngine;
-
 public class TimerApp : Entry {
   void Awake() {
     // create a timer with 10s duration
     var timer = new Timer(10);
     // update the timer every frame
     this.onUpdate.AddListener(() => timer.Update(Time.deltaTime));
+    // or
+    this.onUpdate.AddListener(timer.UpdateWithDelta);
     // stop/start the timer
     // once stopped, the timer will not update
     timer.Stop();
@@ -894,25 +893,15 @@ public class TimerApp : Entry {
     timer.Reset();
     // register a callback when the timer finishes
     timer.onFinished.AddListener(() => print("Timer finished!"));
+    // you can also register the callback when creating the timer
+    new Timer(10, () => print("Timer finished!"));
 
     // you can also create a repeated timer
     // which is a subclass of Timer.
     // when the repeated timer finishes, it will restart itself
-    var repeatedTimer = new RepeatedTimer(1);
-
-    // however, the easiest way to use timer is to use TimerManager
-    // which will update all timers automatically.
-    // you can mount the timer manager to the app entry to drive timers
-    new TimerManager().Mount(this);
-    // shorthand
-    var tm = new TimerManager(this);
-    // create timer
-    tm.Add(10);
-    tm.AddRepeated(10);
-    // with callback
-    tm.Add(10, () => print("Timer finished!"));
-    // remove timer when `this` is destroyed
-    tm.Add(this, 10, () => print("Timer finished!"));
+    // so the onFinished event will be called multiple times
+    new RepeatedTimer(1);
+    new RepeatedTimer(1, () => print("Repeated timer finished!"));
   }
 }
 ```
