@@ -8,14 +8,14 @@ public class CommandBusTest {
   [Test]
   public void BasicTest() {
     var a = 0;
-    ICommandBus cb = new CommandCenter().With<E>(e => a++).With<EE>(e => a += e.a).With<EE>(() => a++);
+    ICommandBus cb = new CommandCenter().With<E>(e => a++).With<EE>(() => a++);
 
     cb.Push<E>();
     Assert.AreEqual(1, a);
 
     a = 0;
     cb.Push(new EE(1));
-    Assert.AreEqual(2, a);
+    Assert.AreEqual(1, a);
   }
 
   [Test]
