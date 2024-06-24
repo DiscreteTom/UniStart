@@ -28,6 +28,8 @@ namespace DT.UniStart {
 
     public void UpdateWithDelta() => this.Update(Time.deltaTime);
 
+    public void Mount(IWatchable target) => target.AddListener(this.UpdateWithDelta);
+
     public void Stop() {
       this.stopped = true;
     }
