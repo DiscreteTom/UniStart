@@ -14,5 +14,7 @@ namespace DT.UniStart {
       this.shadow.Invoke();
       this.shadow.RemoveAllListeners();
     }
+
+    public void Mount(IWatchable target) => target.AddListener(this.Execute);
   }
 }
