@@ -801,24 +801,23 @@ using UnityEngine;
 
 namespace Project {
   // define commands & events
-  public record SimpleCommand : ICommand;
-  public record SomeCommand(int a, int b) : ICommand;
-  public record SomeEvent(int a, int b) : IEvent;
+  public record MyCommand(int a, int b) : ICommand;
+  public record MyEvent(int a, int b) : IEvent;
 
+  // store states in readonly model
   public class Model : StateManager {
-    // store states in readonly model
-    public readonly IState<int> count;
+    public readonly IValueState<int> count;
 
     public Model(ICommandRepo cb, IEventInvoker eb) {
       // init states, get writable responsive containers
       var count = this.Init(ref this.count, 0);
 
       // register model-related commands
-      cb.Add<SomeCommand>((e) => {
-        // update model in commands
+      cb.Add<MyCommand>((e) => {
+        // update state in commands
         count.Value = e.a + e.b;
-        // publish event to controllers
-        eb.Invoke(new SomeEvent(e.a, e.b));
+        // publish events to controllers
+        eb.Invoke(new MyEvent(e.a, e.b));
       });
     }
   }
@@ -826,15 +825,13 @@ namespace Project {
   // attach the entry script to the root game object
   public class App : Entry {
     void Awake() {
-      // init context
-      var eb = new EventBus();
-      var cb = new CommandBus();
-      var model = new ModelManager(cb, eb);
-
       // register context
+      var eb = new EventBus();
+      var cb = new DelayedCommandCenter().Mount(this.onUpdate);
+
       this.AddCommandBus(cb, debug: true);
       this.AddEventBus(eb, debug: true);
-      this.Add<Model>(model);
+      this.Add(new Model(cb, eb));
     }
   }
 
@@ -849,7 +846,7 @@ namespace Project {
       // update view when model changes
       // or when events are published
       this.Watch(model.count, (v) => print(v));
-      this.Watch(eb, (SomeEvent e) => print(e));
+      this.Watch(eb, (MyEvent e) => print(e));
 
       // read model values each frame
       this.onUpdate.AddListener(() => print(model.count.Value));
@@ -858,7 +855,7 @@ namespace Project {
       this.onUpdate.AddListener(() => {
         if (Input.GetKeyDown(KeyCode.Space)) {
           // send commands
-          cb.Push(new SomeCommand(1, 2));
+          cb.Push(new MyCommand(1, 2));
         }
       });
     }
