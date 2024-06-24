@@ -8,22 +8,18 @@ namespace UniSnake.Scene.Play {
     Pause,
     GameOver,
   }
-  public class Model {
-    public IReadOnlyList<Vector2Int> wallPositions { get; protected set; }
-    public IListState<Vector2Int> snakePositions { get; protected set; }
-    public IState<Vector2Int> snakeDirection { get; protected set; }
-    public IState<Vector2Int> foodPosition { get; protected set; }
-    public IEnumState<GameState> gameState { get; protected set; }
 
-    // prevent external instantiation
-    protected Model() { }
-  }
+  public class Model : StateManager {
+    public readonly IReadOnlyList<Vector2Int> wallPositions;
+    public readonly IListState<Vector2Int> snakePositions;
+    public readonly IValueState<Vector2Int> snakeDirection;
+    public readonly IValueState<Vector2Int> foodPosition;
+    public readonly IEnumState<GameState> gameState;
 
-  public class ModelManager : Model, IStateManager {
-    public ModelManager(GameConfig config, ICommandRepo cb, IEventInvoker eb) {
+    public Model(GameConfig config, ICommandRepo cb, IEventInvoker eb) {
       // init wall positions by config.wall dimensions
       var wallDimensions = new Vector2Int(config.mapDimensions.x + 2, config.mapDimensions.y + 2);
-      this.wallPositions = this.AddConstArray<Vector2Int>(out var wallPositions, (wallDimensions.x + wallDimensions.y) * 2 - 4);
+      var wallPositions = this.Init(ref this.wallPositions, (wallDimensions.x + wallDimensions.y) * 2 - 4);
       var wallIndex = 0;
       for (var x = 0; x < wallDimensions.x; x++) {
         for (var y = 0; y < wallDimensions.y; y++) {
@@ -35,13 +31,13 @@ namespace UniSnake.Scene.Play {
       }
 
       // init snake positions
-      this.snakePositions = this.AddList<Vector2Int>(out var snakePositions);
+      var snakePositions = this.Init(ref this.snakePositions);
       snakePositions.Add(new Vector2Int(config.mapDimensions.x / 2, config.mapDimensions.y / 2));
 
       // init others
-      this.snakeDirection = this.Add(out var snakeDirection, new Vector2Int(0, 1));
-      this.foodPosition = this.Add(out var foodPosition, new Vector2Int(0, 0)); // give a random position later
-      this.gameState = this.AddEnum(out var gameState, GameState.Playing);
+      var snakeDirection = this.Init(ref this.snakeDirection, new Vector2Int(0, 1));
+      var foodPosition = this.Init(ref this.foodPosition, new Vector2Int(0, 0)); // give a random position later
+      var gameState = this.Init(ref this.gameState, GameState.Playing);
 
       // util functions
       var checkCollision = UniStart.Fn((Vector2Int target) => {

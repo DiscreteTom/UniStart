@@ -5,21 +5,21 @@ namespace UniSnake.Scene.Play {
   public class Play : Entry {
     void Awake() {
       var config = this.GetComponent<GameConfig>();
-      var eb = new DebugEventBus();
-      var cb = new DebugCommandBus();
-      var model = new ModelManager(config, cb, eb);
-      var tm = new TimerManager(this);
+
+      var eb = new EventBus();
+      var cb = new CommandCenter();
+      var model = new Model(config, cb, eb);
 
       this.Add(config);
-      this.Add<IEventListener>(eb);
-      this.Add<ICommandBus>(cb);
-      this.Add<Model>(model);
-      this.Add(tm);
+      this.AddEventBus(eb, debug: true);
+      this.AddCommandBus(cb, debug: true);
+      this.Add(model);
 
       // move snake when not paused
-      var timer = tm.AddRepeated(this, config.moveInterval, () => cb.Push<MoveSnakeCommand>());
-      model.gameState.OnEnter(GameState.Playing, () => timer.Start());
-      model.gameState.OnExit(GameState.Playing, () => timer.Stop());
+      var timer = new RepeatedTimer(config.moveInterval, () => cb.Push<MoveSnakeCommand>());
+      this.onUpdate.AddListener(timer.UpdateWithDelta);
+      model.gameState.OnEnter(GameState.Playing).AddListener(() => timer.Start());
+      model.gameState.OnExit(GameState.Playing).AddListener(() => timer.Stop());
 
       // pause game when space is pressed
       this.onUpdate.AddListener(() => {
