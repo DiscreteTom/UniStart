@@ -15,6 +15,9 @@ namespace DT.UniStart {
       this.shadow.RemoveAllListeners();
     }
 
-    public void Mount(IWatchable target) => target.AddListener(this.Execute);
+    public DelayedCommandCenter Mount(IWatchable target) {
+      target.AddListener(this.Execute);
+      return this;
+    }
   }
 }
