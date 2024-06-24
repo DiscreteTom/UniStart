@@ -18,6 +18,7 @@
 - **_Breaking Change_**: rewrite `StateManager`.
 - **_Breaking Change_**: remove echoed `Watch` for InputSystem events.
 - **_Breaking Change_**: use `List` to store timers in `TimerManager` to make sure callbacks are called in the order they are added.
+- **_Breaking Change_**: remove `TimerManager`.
 - Feat: add interface `IReadonlyIoC`.
 - Feat: add `ComponentExtension.GetOrAddComponent`.
 - Feat: add `IReadonlyIoC.GetEventBus`, `IReadonlyIoC.GetCommandBus`, `IReadonlyIoC.GetStepExecutor`, `IIoCC.AddEventBus`, `IIoCC.AddCommandBus` and `IIoCC.AddStepExecutor`.
@@ -30,8 +31,6 @@
 - Feat: add `IGetValue.GetValue`.
 - Feat: add `IArrayState`, make `WatchArray` implement `IArrayState`.
 - Feat: add `Timer.UpdateWithDelta`.
-- Feat: add `TimerManager.UpdateWithDelta/Unmount`.
-- Feat: make `TimerManager.Update` virtual.
 - Fix: `AdvancedEvent` will call actions and once actions by the order they are added.
   - Previously all once actions will be called after repeated actions.
 - Fix: `AdvancedEvent` allow adding listeners or remove listeners during the invocation.
