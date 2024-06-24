@@ -1,0 +1,68 @@
+<mxfile modified="2024-06-24T13:31:05.631Z" host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.2.5 Chrome/120.0.6099.109 Electron/28.1.0 Safari/537.36" etag="kvLXpo-4mplP1trZxFLH" version="24.2.5" type="device">
+  <diagram id="Ht1M8jgEwFfnCIfOTk4-" name="Page-1">
+    <mxGraphModel dx="588" dy="593" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="0SKBkDAov2P__DOtF0w_-17" value="Controllers : CBC&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Update Views&lt;/div&gt;&lt;div&gt;Accept Inputs&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="780" y="160" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="0SKBkDAov2P__DOtF0w_-16" value="Controllers : CBC&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Update Views&lt;/div&gt;&lt;div&gt;Accept Inputs&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="770" y="170" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="0SKBkDAov2P__DOtF0w_-15" value="&amp;nbsp;Init&amp;nbsp;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="0SKBkDAov2P__DOtF0w_-1" target="0SKBkDAov2P__DOtF0w_-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="0SKBkDAov2P__DOtF0w_-1" value="App : Entry&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Register Contexts&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="550" y="320" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="0SKBkDAov2P__DOtF0w_-14" value="Notification&lt;div&gt;(Event)&lt;/div&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="0SKBkDAov2P__DOtF0w_-2" target="0SKBkDAov2P__DOtF0w_-17">
+          <mxGeometry x="0.3571" relative="1" as="geometry">
+            <mxPoint x="840" y="140" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="680" y="220" />
+              <mxPoint x="680" y="140" />
+              <mxPoint x="860" y="140" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="0SKBkDAov2P__DOtF0w_-2" value="Controllers : CBC&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Update Views&lt;/div&gt;&lt;div&gt;Accept Inputs&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="760" y="180" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="0SKBkDAov2P__DOtF0w_-3" value="Model : StateManager&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Expose States&lt;/div&gt;&lt;div&gt;Handle Commands&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="760" y="320" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="0SKBkDAov2P__DOtF0w_-4" value="Read&lt;div&gt;Add Listener&lt;/div&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="800.12" y="260" as="sourcePoint" />
+            <mxPoint x="800" y="320" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="800" y="300" />
+              <mxPoint x="800" y="300" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="0SKBkDAov2P__DOtF0w_-5" value="Notification&lt;div&gt;(Event)&lt;/div&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="0SKBkDAov2P__DOtF0w_-3" target="0SKBkDAov2P__DOtF0w_-17">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="880" y="320" as="sourcePoint" />
+            <mxPoint x="880" y="280" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="970" y="360" />
+              <mxPoint x="970" y="200" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="0SKBkDAov2P__DOtF0w_-6" value="Update&lt;div&gt;(Command)&lt;/div&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="880" y="260" as="sourcePoint" />
+            <mxPoint x="880" y="320" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="880.25" y="301" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
