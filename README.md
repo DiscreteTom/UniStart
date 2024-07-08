@@ -610,11 +610,7 @@ Usually we need to manage the state (or `Model`) of the game across components o
 Unlike those responsive containers, we don't want the state to be changed by other classes, only the state manager can commit changes to the state.
 
 ```cs
-// define commands to update the model.
-// you can also make these commands local to the model class
-record MyCommand : ICommand;
-
-// inherit from StateManager to use helper methods
+// inherit from StateManager to manage states
 public class Model : StateManager {
   // state is readonly and watchable
   public readonly IValueState<int> count;
@@ -640,9 +636,10 @@ public class Model : StateManager {
   // properties are readonly but not watchable.
   public int property => this.count.Value;
 
-  ICommandBus cb;
+  // mutations using UnityAction
+  public readonly UnityAction<int> UpdateState;
 
-  public Model(ICommandCenter cc, IEventInvoker eb) {
+  public Model(IEventInvoker eb) {
     // you can use responsive containers as the state,
     // you can also use your custom classes as long as the state interface is implemented
     this.count = new Watch<int>(0);
@@ -652,10 +649,12 @@ public class Model : StateManager {
     // if you want to modify states in commands,
     // you need to use the responsive containers directly
     var count = new Watch<int>(0); // this is mutable
-    cc.Add<SimpleCommand>(() => {
-      // you can update state values in commands
-      count.Value = 123;
-    });
+    this.UpdateState = (n) => {
+      // you can update state values in mutations
+      // but don't assign mutations directly like this
+      // we will explain how to init mutations later
+      count.Value = n;
+    };
     this.count = count; // this.count is readonly
 
     // the helper `StateManager.Init` will init the state
@@ -674,47 +673,32 @@ public class Model : StateManager {
     var stateArray = this.Init(ref this.stateArray, 10); // Watch<int>[]
     var enumArray = this.Init(ref this.enumArray, 10); // StateMachine<GameState>[]
 
-    // now you can update states in commands
-    cc.Add<MyCommand>(() => {
-      list.Add(1); // make changes
-      eb.Invoke<EventWithoutParams>(); // publish events
-    });
-
     // computed values are already readonly,
     // you can use them directly
     this.computed = new Computed<int>(() => this.count.Value * 2).Watch(this.count);
     this.lazyComputed = new LazyComputed<int>(() => this.count.Value * 2).Watch(this.count);
 
-    this.cb = cc;
-  }
-
-  // you can also add methods for better intellisense in IDE
-  public void MyCommand() {
-    // command can be inspect by DebugCommandBus
-    // so we will know what happened to the model.
-    // commands can also be delayed to prevent side effect
-    this.cb.Push<MyCommand>();
+    // now you can update states in mutations.
+    // just like states, you should init mutations using `Init`.
+    // this will make mutations "lazy" and not be executed immediately when called.
+    // the lazy mutation is helpful to prevent recursive updates.
+    this.Init(ref this.UpdateState, (n) => {
+      list.Add(n); // make changes
+      eb.Invoke<EventWithoutParams>(); // publish events
+    });
   }
 }
 
 public class ModelAppEntry : Entry {
   void Awake() {
-    // use DelayedCommandCenter to prevent side effect
-    // when updating the model
-    var cb = new DelayedCommandCenter();
-    // execute all commands in the next frame
-    this.onUpdate.AddListener(() => cb.Execute());
-
-    // enable debug mode to see what happened to the model
-    this.AddCommandBus(cb, debug: true);
     // register model to the app
-    this.Add(new Model(cb, new EventBus()));
+    // and execute mutations on late update
+    this.Add(new Model(new EventBus())).Mount(this.onLateUpdate);
   }
 }
 
 public class ModelApp : CBC {
   void Start() {
-    var cb = this.GetCommandBus();
     // get readonly model from app
     var model = this.Get<Model>();
 
@@ -724,12 +708,8 @@ public class ModelApp : CBC {
     // check model value
     this.onUpdate.AddListener(() => print(model.count.Value));
 
-    // use commands to update model
-    cb.Push<MyCommand>();
-
-    // or use methods to update model
-    // so that IDE can check if the command exists
-    model.MyCommand();
+    // use methods to update states
+    model.UpdateState(123);
   }
 }
 ```
@@ -796,28 +776,27 @@ Finally, keep the architecture diagram in mind, and put all the pieces together.
 ![architecture](img/architecture.png)
 
 ```cs
-using DT.UniStart;
-using UnityEngine;
-
 namespace Project {
   // define commands & events
-  public record MyCommand(int a, int b) : ICommand;
   public record MyEvent(int a, int b) : IEvent;
 
   // store states in readonly model
   public class Model : StateManager {
+    // states
     public readonly IValueState<int> count;
+    // mutations
+    public readonly UnityAction<int> UpdateState;
 
-    public Model(ICommandRepo cb, IEventInvoker eb) {
+    public Model(IEventInvoker eb) {
       // init states, get writable responsive containers
       var count = this.Init(ref this.count, 0);
 
       // register model-related commands
-      cb.Add<MyCommand>((e) => {
-        // update state in commands
-        count.Value = e.a + e.b;
+      this.Init(ref this.UpdateState, (n) => {
+        // update state in mutations
+        count.Value = n;
         // publish events to controllers
-        eb.Invoke(new MyEvent(e.a, e.b));
+        eb.Invoke(new MyEvent(1, 2));
       });
     }
   }
@@ -826,12 +805,8 @@ namespace Project {
   public class App : Entry {
     void Awake() {
       // register context
-      var eb = new EventBus();
-      var cb = new DelayedCommandCenter().Mount(this.onUpdate);
-
-      this.AddCommandBus(cb, debug: true);
-      this.AddEventBus(eb, debug: true);
-      this.Add(new Model(cb, eb));
+      var eb = this.AddEventBus(debug: true);
+      this.Add(new Model(eb)).Mount(this.onLateUpdate);
     }
   }
 
@@ -839,7 +814,6 @@ namespace Project {
   public class Controller : CBC {
     void Start() {
       // get context
-      var cb = this.GetCommandBus();
       var eb = this.GetEventBus();
       var model = this.Get<Model>();
 
@@ -854,8 +828,8 @@ namespace Project {
       // update model when user input
       this.onUpdate.AddListener(() => {
         if (Input.GetKeyDown(KeyCode.Space)) {
-          // send commands
-          cb.Push(new MyCommand(1, 2));
+          // update states
+          model.UpdateState(123);
         }
       });
     }
