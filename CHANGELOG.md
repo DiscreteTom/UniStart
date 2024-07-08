@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v13.1.0
+
+- Fix: `ICommand` no longer inherits `IEvent`. [#44](https://github.com/DiscreteTom/UniStart/issues/44)
+
 ## v13.0.0
 
 - **_Breaking Change_**: remove all `RemoveOnceListener` methods.

@@ -1,7 +1,7 @@
 using UnityEngine.Events;
 
 namespace DT.UniStart {
-  public interface ICommand : IEvent { }
+  public interface ICommand { }
 
   public interface ICommandRepo {
     UnityAction Add<T>(UnityAction command) where T : ICommand;
