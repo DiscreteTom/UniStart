@@ -3,6 +3,7 @@
 ## v13.1.0
 
 - Fix: `ICommand` no longer inherits `IEvent`. [#44](https://github.com/DiscreteTom/UniStart/issues/44)
+- Fix: `ICommandBus.Push` will throw exception if the command is not registered. [#45](https://github.com/DiscreteTom/UniStart/issues/45)
 
 ## v13.0.0
 

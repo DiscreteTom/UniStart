@@ -30,7 +30,7 @@ namespace DT.UniStart {
       return this;
     }
 
-    public virtual void Push<T>(T arg) where T : ICommand => (this.dict.GetOrDefault(typeof(T)) as AdvancedEvent<T>)?.Invoke(arg);
+    public virtual void Push<T>(T arg) where T : ICommand => (this.dict[typeof(T)] as AdvancedEvent<T>).Invoke(arg);
 
     void AddCommon<T>(Action<AdvancedEvent<T>> decorator) {
       var e = new AdvancedEvent<T>();
