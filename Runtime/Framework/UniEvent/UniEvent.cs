@@ -128,11 +128,11 @@ namespace DT.UniStart {
 
     public UnityAction AddOnceListener(UnityAction action) {
       this.core.AddOnceListener(new UniAction0<T0, object, object, object>(action));
-      return this.AddListener(action);
+      return action;
     }
     public UnityAction<T0> AddOnceListener(UnityAction<T0> action) {
       this.core.AddOnceListener(new UniAction1<T0, object, object, object>(action));
-      return this.AddListener(action);
+      return action;
     }
 
     public UnityAction RemoveListener(UnityAction action) {
@@ -172,15 +172,15 @@ namespace DT.UniStart {
 
     public UnityAction AddOnceListener(UnityAction action) {
       this.core.AddOnceListener(new UniAction0<T0, T1, object, object>(action));
-      return this.AddListener(action);
+      return action;
     }
     public UnityAction<T0> AddOnceListener(UnityAction<T0> action) {
       this.core.AddOnceListener(new UniAction1<T0, T1, object, object>(action));
-      return this.AddListener(action);
+      return action;
     }
     public UnityAction<T0, T1> AddOnceListener(UnityAction<T0, T1> action) {
       this.core.AddOnceListener(new UniAction2<T0, T1, object, object>(action));
-      return this.AddListener(action);
+      return action;
     }
 
     public UnityAction RemoveListener(UnityAction action) {
@@ -229,19 +229,19 @@ namespace DT.UniStart {
 
     public UnityAction AddOnceListener(UnityAction action) {
       this.core.AddOnceListener(new UniAction0<T0, T1, T2, object>(action));
-      return this.AddListener(action);
+      return action;
     }
     public UnityAction<T0> AddOnceListener(UnityAction<T0> action) {
       this.core.AddOnceListener(new UniAction1<T0, T1, T2, object>(action));
-      return this.AddListener(action);
+      return action;
     }
     public UnityAction<T0, T1> AddOnceListener(UnityAction<T0, T1> action) {
       this.core.AddOnceListener(new UniAction2<T0, T1, T2, object>(action));
-      return this.AddListener(action);
+      return action;
     }
     public UnityAction<T0, T1, T2> AddOnceListener(UnityAction<T0, T1, T2> action) {
       this.core.AddOnceListener(new UniAction3<T0, T1, T2, object>(action));
-      return this.AddListener(action);
+      return action;
     }
 
     public UnityAction RemoveListener(UnityAction action) {
@@ -299,23 +299,23 @@ namespace DT.UniStart {
 
     public UnityAction AddOnceListener(UnityAction action) {
       this.core.AddOnceListener(new UniAction0<T0, T1, T2, T3>(action));
-      return this.AddListener(action);
+      return action;
     }
     public UnityAction<T0> AddOnceListener(UnityAction<T0> action) {
       this.core.AddOnceListener(new UniAction1<T0, T1, T2, T3>(action));
-      return this.AddListener(action);
+      return action;
     }
     public UnityAction<T0, T1> AddOnceListener(UnityAction<T0, T1> action) {
       this.core.AddOnceListener(new UniAction2<T0, T1, T2, T3>(action));
-      return this.AddListener(action);
+      return action;
     }
     public UnityAction<T0, T1, T2> AddOnceListener(UnityAction<T0, T1, T2> action) {
       this.core.AddOnceListener(new UniAction3<T0, T1, T2, T3>(action));
-      return this.AddListener(action);
+      return action;
     }
     public UnityAction<T0, T1, T2, T3> AddOnceListener(UnityAction<T0, T1, T2, T3> action) {
       this.core.AddOnceListener(new UniAction4<T0, T1, T2, T3>(action));
-      return this.AddListener(action);
+      return action;
     }
 
     public UnityAction RemoveListener(UnityAction action) {
