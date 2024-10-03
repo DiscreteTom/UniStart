@@ -2,14 +2,14 @@ using NUnit.Framework;
 using DT.UniStart;
 using UnityEngine.Events;
 
-public class AdvancedEventTest {
+public class UniEventTest {
   [Test]
   public void EchoedAddListenerTest() {
-    var e0 = new AdvancedEvent();
-    var e1 = new AdvancedEvent<int>();
-    var e2 = new AdvancedEvent<int, int>();
-    var e3 = new AdvancedEvent<int, int, int>();
-    var e4 = new AdvancedEvent<int, int, int, int>();
+    var e0 = new UniEvent();
+    var e1 = new UniEvent<int>();
+    var e2 = new UniEvent<int, int>();
+    var e3 = new UniEvent<int, int, int>();
+    var e4 = new UniEvent<int, int, int, int>();
     var n = 0;
 
     n = 0;
@@ -35,11 +35,11 @@ public class AdvancedEventTest {
 
   [Test]
   public void CompatibleAddListenerTest() {
-    var e0 = new AdvancedEvent();
-    var e1 = new AdvancedEvent<int>();
-    var e2 = new AdvancedEvent<int, int>();
-    var e3 = new AdvancedEvent<int, int, int>();
-    var e4 = new AdvancedEvent<int, int, int, int>();
+    var e0 = new UniEvent();
+    var e1 = new UniEvent<int>();
+    var e2 = new UniEvent<int, int>();
+    var e3 = new UniEvent<int, int, int>();
+    var e4 = new UniEvent<int, int, int, int>();
     var n = 0;
 
     n = 0;
@@ -73,11 +73,11 @@ public class AdvancedEventTest {
 
   [Test]
   public void RemoveListenerTest() {
-    var e0 = new AdvancedEvent();
-    var e1 = new AdvancedEvent<int>();
-    var e2 = new AdvancedEvent<int, int>();
-    var e3 = new AdvancedEvent<int, int, int>();
-    var e4 = new AdvancedEvent<int, int, int, int>();
+    var e0 = new UniEvent();
+    var e1 = new UniEvent<int>();
+    var e2 = new UniEvent<int, int>();
+    var e3 = new UniEvent<int, int, int>();
+    var e4 = new UniEvent<int, int, int, int>();
     var n = 0;
 
     n = 0;
@@ -138,11 +138,11 @@ public class AdvancedEventTest {
 
   [Test]
   public void AddOnceListenerTest() {
-    var e0 = new AdvancedEvent();
-    var e1 = new AdvancedEvent<int>();
-    var e2 = new AdvancedEvent<int, int>();
-    var e3 = new AdvancedEvent<int, int, int>();
-    var e4 = new AdvancedEvent<int, int, int, int>();
+    var e0 = new UniEvent();
+    var e1 = new UniEvent<int>();
+    var e2 = new UniEvent<int, int>();
+    var e3 = new UniEvent<int, int, int>();
+    var e4 = new UniEvent<int, int, int, int>();
     var n = 0;
 
     n = 0;
@@ -218,11 +218,11 @@ public class AdvancedEventTest {
 
   [Test]
   public void RemoveOnceListenerTest() {
-    var e0 = new AdvancedEvent();
-    var e1 = new AdvancedEvent<int>();
-    var e2 = new AdvancedEvent<int, int>();
-    var e3 = new AdvancedEvent<int, int, int>();
-    var e4 = new AdvancedEvent<int, int, int, int>();
+    var e0 = new UniEvent();
+    var e1 = new UniEvent<int>();
+    var e2 = new UniEvent<int, int>();
+    var e3 = new UniEvent<int, int, int>();
+    var e4 = new UniEvent<int, int, int, int>();
     var n = 0;
 
     n = 0;
@@ -283,11 +283,11 @@ public class AdvancedEventTest {
 
   [Test]
   public void RemoveAllListenerTest() {
-    var e0 = new AdvancedEvent();
-    var e1 = new AdvancedEvent<int>();
-    var e2 = new AdvancedEvent<int, int>();
-    var e3 = new AdvancedEvent<int, int, int>();
-    var e4 = new AdvancedEvent<int, int, int, int>();
+    var e0 = new UniEvent();
+    var e1 = new UniEvent<int>();
+    var e2 = new UniEvent<int, int>();
+    var e3 = new UniEvent<int, int, int>();
+    var e4 = new UniEvent<int, int, int, int>();
     var n = 0;
 
     n = 0;
@@ -348,11 +348,11 @@ public class AdvancedEventTest {
 
   [Test]
   public void InvokeTest() {
-    var e0 = new AdvancedEvent();
-    var e1 = new AdvancedEvent<int>();
-    var e2 = new AdvancedEvent<int, int>();
-    var e3 = new AdvancedEvent<int, int, int>();
-    var e4 = new AdvancedEvent<int, int, int, int>();
+    var e0 = new UniEvent();
+    var e1 = new UniEvent<int>();
+    var e2 = new UniEvent<int, int>();
+    var e3 = new UniEvent<int, int, int>();
+    var e4 = new UniEvent<int, int, int, int>();
     var n = 0;
 
     n = 0;
@@ -403,7 +403,7 @@ public class AdvancedEventTest {
 
   [Test]
   public void StableInvokeTest() {
-    var e = new AdvancedEvent();
+    var e = new UniEvent();
     var n = 0;
     UnityAction a = () => n++;
 
