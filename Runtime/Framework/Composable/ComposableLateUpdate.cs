@@ -5,7 +5,7 @@ namespace DT.UniStart.Composable {
     /// <summary>
     /// Called every time when LateUpdate is called.
     /// </summary>
-    public AdvancedEvent @event { get; } = new AdvancedEvent();
+    public UniEvent @event { get; } = new UniEvent();
 
     void LateUpdate() {
       this.@event.Invoke();

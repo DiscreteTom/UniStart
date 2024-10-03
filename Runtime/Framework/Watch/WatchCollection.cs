@@ -11,7 +11,7 @@ namespace DT.UniStart {
   public class WatchIList<L, T> : IList<T>, IReadOnlyList<T>, IGetValue<ReadOnlyCollection<T>>, IWatchable<ReadOnlyCollection<T>> where L : IList<T> {
     protected readonly L value;
     public ReadOnlyCollection<T> Value { get; private set; }
-    readonly AdvancedEvent<ReadOnlyCollection<T>> onChange = new();
+    readonly UniEvent<ReadOnlyCollection<T>> onChange = new();
 
     public WatchIList(L value) {
       this.value = value;
@@ -89,7 +89,7 @@ namespace DT.UniStart {
   public class WatchIDictionary<D, K, V> : IDictionary<K, V>, IReadOnlyDictionary<K, V>, IGetValue<ReadOnlyDictionary<K, V>>, IWatchable<ReadOnlyDictionary<K, V>>, IDictionaryState<K, V> where D : IDictionary<K, V> {
     protected readonly D value;
     public ReadOnlyDictionary<K, V> Value { get; private set; }
-    readonly AdvancedEvent<ReadOnlyDictionary<K, V>> onChange = new();
+    readonly UniEvent<ReadOnlyDictionary<K, V>> onChange = new();
 
     public WatchIDictionary(D value) {
       this.value = value;

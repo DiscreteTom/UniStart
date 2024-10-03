@@ -5,7 +5,7 @@ namespace DT.UniStart.Composable {
     /// <summary>
     /// Called every time when Reset is called.
     /// </summary>
-    public AdvancedEvent @event { get; } = new AdvancedEvent();
+    public UniEvent @event { get; } = new UniEvent();
 
     void Reset() {
       this.@event.Invoke();

@@ -21,7 +21,7 @@ namespace DT.UniStart {
       return this;
     }
 
-    public AdvancedEvent On(S step) {
+    public UniEvent On(S step) {
       Debug.Log($"{this.name}.On: step = {step}");
       return this.exe.On(step);
     }
@@ -51,7 +51,7 @@ namespace DT.UniStart {
       return this;
     }
 
-    public AdvancedEvent<T> On(S step) {
+    public UniEvent<T> On(S step) {
       Debug.Log($"{this.name}.On: step = {step}");
       return this.exe.On(step);
     }

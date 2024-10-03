@@ -5,7 +5,7 @@ namespace DT.UniStart.Composable {
     /// <summary>
     /// Called every time when OnBecameVisible is called.
     /// </summary>
-    public AdvancedEvent @event { get; } = new AdvancedEvent();
+    public UniEvent @event { get; } = new UniEvent();
 
     void OnBecameVisible() {
       this.@event.Invoke();

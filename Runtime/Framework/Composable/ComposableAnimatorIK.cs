@@ -5,7 +5,7 @@ namespace DT.UniStart.Composable {
     /// <summary>
     /// Called every time when OnAnimatorIK is called.
     /// </summary>
-    public AdvancedEvent<int> @event { get; } = new AdvancedEvent<int>();
+    public UniEvent<int> @event { get; } = new UniEvent<int>();
 
     void OnAnimatorIK(int arg0) {
       this.@event.Invoke(arg0);

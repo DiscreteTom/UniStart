@@ -5,7 +5,7 @@ namespace DT.UniStart.Composable {
     /// <summary>
     /// Called every time when OnJointBreak is called.
     /// </summary>
-    public AdvancedEvent<float> @event { get; } = new AdvancedEvent<float>();
+    public UniEvent<float> @event { get; } = new UniEvent<float>();
 
     void OnJointBreak(float arg0) {
       this.@event.Invoke(arg0);

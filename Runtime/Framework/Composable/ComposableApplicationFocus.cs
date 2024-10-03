@@ -5,7 +5,7 @@ namespace DT.UniStart.Composable {
     /// <summary>
     /// Called every time when OnApplicationFocus is called.
     /// </summary>
-    public AdvancedEvent<bool> @event { get; } = new AdvancedEvent<bool>();
+    public UniEvent<bool> @event { get; } = new UniEvent<bool>();
 
     void OnApplicationFocus(bool arg0) {
       this.@event.Invoke(arg0);

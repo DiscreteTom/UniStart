@@ -5,7 +5,7 @@ namespace DT.UniStart.Composable {
     /// <summary>
     /// Called every time when OnApplicationPause is called.
     /// </summary>
-    public AdvancedEvent<bool> @event { get; } = new AdvancedEvent<bool>();
+    public UniEvent<bool> @event { get; } = new UniEvent<bool>();
 
     void OnApplicationPause(bool arg0) {
       this.@event.Invoke(arg0);

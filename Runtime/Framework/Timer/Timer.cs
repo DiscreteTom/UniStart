@@ -6,7 +6,7 @@ namespace DT.UniStart {
     public readonly float duration;
     public float elapsed { get; private set; } = 0;
     public bool stopped { get; private set; } = false;
-    public readonly AdvancedEvent onFinished = new();
+    public readonly UniEvent onFinished = new();
 
     public float progress => Mathf.Clamp01(this.elapsed / this.duration);
     public bool finished => this.elapsed >= this.duration;

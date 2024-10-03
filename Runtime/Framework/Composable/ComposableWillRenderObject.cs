@@ -5,7 +5,7 @@ namespace DT.UniStart.Composable {
     /// <summary>
     /// Called every time when OnWillRenderObject is called.
     /// </summary>
-    public AdvancedEvent @event { get; } = new AdvancedEvent();
+    public UniEvent @event { get; } = new UniEvent();
 
     void OnWillRenderObject() {
       this.@event.Invoke();

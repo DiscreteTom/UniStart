@@ -5,7 +5,7 @@ namespace DT.UniStart.Composable {
     /// <summary>
     /// Called every time when OnTriggerStay is called.
     /// </summary>
-    public AdvancedEvent<Collider> @event { get; } = new AdvancedEvent<Collider>();
+    public UniEvent<Collider> @event { get; } = new UniEvent<Collider>();
 
     void OnTriggerStay(Collider arg0) {
       this.@event.Invoke(arg0);

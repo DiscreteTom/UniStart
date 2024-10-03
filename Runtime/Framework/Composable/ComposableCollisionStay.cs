@@ -5,7 +5,7 @@ namespace DT.UniStart.Composable {
     /// <summary>
     /// Called every time when OnCollisionStay is called.
     /// </summary>
-    public AdvancedEvent<Collision> @event { get; } = new AdvancedEvent<Collision>();
+    public UniEvent<Collision> @event { get; } = new UniEvent<Collision>();
 
     void OnCollisionStay(Collision arg0) {
       this.@event.Invoke(arg0);

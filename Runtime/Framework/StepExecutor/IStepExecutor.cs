@@ -2,10 +2,10 @@ using System;
 
 namespace DT.UniStart {
   public interface IStepListener<S> where S : IConvertible {
-    AdvancedEvent On(S step);
+    UniEvent On(S step);
   }
   public interface IStepListener<S, T> where S : IConvertible {
-    AdvancedEvent<T> On(S step);
+    UniEvent<T> On(S step);
   }
 
   public interface IStepInvoker<S> where S : IConvertible {

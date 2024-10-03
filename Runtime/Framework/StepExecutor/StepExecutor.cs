@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace DT.UniStart {
   public class StepExecutor<S> : IStepExecutor<S> where S : IConvertible {
-    readonly SortedList<int, AdvancedEvent> actions = new();
+    readonly SortedList<int, UniEvent> actions = new();
 
-    public virtual AdvancedEvent On(S step) {
+    public virtual UniEvent On(S step) {
       return this.actions.GetOrAdd((int)(step as IConvertible), () => new());
     }
 
@@ -13,9 +13,9 @@ namespace DT.UniStart {
   }
 
   public class StepExecutor<S, T> : IStepExecutor<S, T> where S : IConvertible {
-    readonly SortedList<int, AdvancedEvent<T>> actions = new();
+    readonly SortedList<int, UniEvent<T>> actions = new();
 
-    public virtual AdvancedEvent<T> On(S step) {
+    public virtual UniEvent<T> On(S step) {
       return this.actions.GetOrAdd((int)(step as IConvertible), () => new());
     }
 

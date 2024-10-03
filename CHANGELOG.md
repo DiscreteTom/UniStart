@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v14.0.0
+
+- **_Breaking Change_**: remove `AdvancedEvent`, add `UniEvent`, the interface is the same and the performance is better.
+
 ## v13.1.0
 
 - Feat: add new `StateManager.Init` to init mutations using `UnityAction`.

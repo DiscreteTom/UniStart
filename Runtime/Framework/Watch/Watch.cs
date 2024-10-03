@@ -10,7 +10,7 @@ namespace DT.UniStart {
   [Serializable]
   public class Watch<T> : IWatchable<T, T>, IGetSetValue<T>, IValueState<T> {
     [SerializeField] protected T value;
-    readonly AdvancedEvent<T, T> onChange = new();
+    readonly UniEvent<T, T> onChange = new();
 
     public Watch(T value) {
       this.value = value;
@@ -44,7 +44,7 @@ namespace DT.UniStart {
   [Serializable]
   public class WatchRef<T> : IWatchable<WatchRef<T>>, ISetValue<T> {
     [SerializeField] protected T value;
-    readonly AdvancedEvent<WatchRef<T>> onChange = new();
+    readonly UniEvent<WatchRef<T>> onChange = new();
 
     public WatchRef(T value) {
       this.value = value;

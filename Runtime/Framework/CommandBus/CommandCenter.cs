@@ -30,10 +30,10 @@ namespace DT.UniStart {
       return this;
     }
 
-    public virtual void Push<T>(T arg) where T : ICommand => (this.dict[typeof(T)] as AdvancedEvent<T>).Invoke(arg);
+    public virtual void Push<T>(T arg) where T : ICommand => (this.dict[typeof(T)] as UniEvent<T>).Invoke(arg);
 
-    void AddCommon<T>(Action<AdvancedEvent<T>> decorator) {
-      var e = new AdvancedEvent<T>();
+    void AddCommon<T>(Action<UniEvent<T>> decorator) {
+      var e = new UniEvent<T>();
       decorator(e);
       if (!this.dict.TryAdd(typeof(T), e)) {
         throw new InvalidOperationException($"Command of type {typeof(T)} already exists!");
