@@ -394,7 +394,7 @@ Besides, there are 2 base interface of `IEventBus`: `IEventListener` and `IEvent
 
 ### Orchestration - Command Bus
 
-`EventBus` lets you add listeners anywhere, but you may have some pre-defined `Commands` which should be listened centrally. `CommandBus` is designed for this.
+`EventBus` lets you add listeners anywhere, but you may have some pre-defined `Command`s which should be handled centrally. `CommandBus` is designed for this.
 
 ```cs
 // define commands
@@ -413,7 +413,12 @@ public class CommandBusEntry : Entry {
     );
     // or use the helper method `AddCommandBus` to register `ICommandBus`
     // just like `AddEventBus`
-    this.AddCommandBus(cb, debug: true);
+    this.AddCommandBus(
+      new CommandCenter()
+        .With<SimpleCommand>(() => print(1))
+        .With<ComplexCommand>((e) => print(e.a)),
+      debug: true // enable debug in editor mode
+    );
   }
 }
 
@@ -457,7 +462,7 @@ public class DelayedCommandBusApp : Entry {
 
     // execute all commands from the last frame
     this.onUpdate.AddListener(cc.Execute);
-    // or use the helper method
+    // or use the helper method to auto execute all commands from the last frame
     cc.Mount(this.onUpdate);
 
     // this is safe because the command will be executed in the next frame
