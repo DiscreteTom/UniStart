@@ -18,7 +18,7 @@ namespace DT.UniStart {
     }
 
     public void Push<T>(T cmd) where T : ICommand<Ctx> {
-      Debug.Log($"{this.name}.Push: command = {typeof(T)}, parameter = {cmd}");
+      Debug.Log($"{this.name}.Push: command = {cmd}");
       this.bus.Push(cmd);
     }
   }
