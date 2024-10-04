@@ -587,7 +587,7 @@ public class ResponsiveApp : MonoBehaviour {
 }
 ```
 
-Besides, we also provide `WatchRef`, `WatchIList` and `WatchIDictionary` for you to build your own responsive containers.
+Besides, we also provide `WatchIList` and `WatchIDictionary` for you to build your own responsive containers.
 
 > This is inspired by [QFramework](https://github.com/liangxiegame/QFramework)'s `BindableProperty`.
 
