@@ -6,7 +6,7 @@ namespace DT.UniStart {
   /// <summary>
   /// The base class for Entry and CBC.
   /// </summary>
-  public abstract class UniStartBehaviour<Ctx> : ComposableBehaviour, IReadonlyIoCC where Ctx : IIoCC {
+  public abstract class UniStartBehaviour<Ctx> : ComposableBehaviour, IReadonlyIoCC where Ctx : IReadonlyIoCC {
     #region Re-expose Fn methods
     // see https://github.com/DiscreteTom/UniStart/issues/5
     // use these for auto type inference
