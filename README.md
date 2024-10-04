@@ -323,8 +323,8 @@ You can register `EventBus` to app to realize cross-component communication. `Ev
 
 ```cs
 // define your own event types
-public record EventWithoutParams : IEvent;
-public record EventWithParams(int a, int b) : IEvent;
+public record EventWithoutParams;
+public record EventWithParams(int a, int b);
 
 public class EventBusApp : Entry {
   // use Awake instead of Start to initialize your app
@@ -791,7 +791,7 @@ Finally, keep the architecture diagram in mind, and put all the pieces together.
 ```cs
 namespace Project {
   // define commands & events
-  public record MyEvent(int a, int b) : IEvent;
+  public record MyEvent(int a, int b);
 
   // store states in readonly model
   public class Model : StateManager {

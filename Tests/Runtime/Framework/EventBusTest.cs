@@ -2,8 +2,8 @@ using NUnit.Framework;
 using DT.UniStart;
 
 public class EventBusTest {
-  record E : IEvent;
-  record EE(int a) : IEvent;
+  record E;
+  record EE(int a);
 
   [Test]
   public void BasicTest() {
