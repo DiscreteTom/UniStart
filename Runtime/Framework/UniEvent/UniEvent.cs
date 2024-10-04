@@ -29,6 +29,7 @@ namespace DT.UniStart {
 
     readonly List<A> actions = new();
     List<AfterInvoke> after = new();
+    List<AfterInvoke> swap = new();
     bool invoking = false;
 
     void DoAddListener(A action) {
@@ -85,11 +86,11 @@ namespace DT.UniStart {
 
       if (this.after.Count > 0) {
         // swap `this.after` so that it is mutable during the iteration
-        var after = this.after;
-        this.after = new();
-        foreach (var a in after) {
+        (this.swap, this.after) = (this.after, this.swap);
+        foreach (var a in this.swap) {
           a.Invoke(this);
         }
+        this.swap.Clear();
       }
     }
   }
