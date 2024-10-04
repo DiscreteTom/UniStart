@@ -33,41 +33,37 @@ using DT.UniStart;
 Before we start, let's take a look at the fundamental building block of UniStart: `UniEvent`
 
 ```cs
-public class UniEventApp : MonoBehaviour {
-  void Start() {
-    // you can use UniEvent just like UnityEvent
-    new UniEvent();
-    new UniEvent<int>();
-    new UniEvent<int, int>();
-    new UniEvent<int, int, int>();
-    new UniEvent<int, int, int, int>();
+// you can use UniEvent just like UnityEvent
+new UniEvent();
+new UniEvent<int>();
+new UniEvent<int, int>();
+new UniEvent<int, int, int>();
+new UniEvent<int, int, int, int>();
 
-    // AddListener will return the listener
-    // so you can call it immediately
-    var e = new UniEvent<int>();
-    e.AddListener((a) => print(a)).Invoke(1);
-    // or store it and remove it later
-    var listener = e.AddListener((a) => print(a));
-    e.RemoveListener(listener);
+// AddListener will return the listener
+// so you can invoke it immediately if needed
+var e = new UniEvent<int>();
+e.AddListener((a) => print(a)).Invoke(1);
+// or store it and remove it later
+var listener = e.AddListener((a) => print(a));
+e.RemoveListener(listener);
 
-    // listeners with fewer params are also acceptable
-    var ee = new UniEvent<int, int, int, int>();
-    ee.AddListener(() => print(1));
-    ee.AddListener((a) => print(1));
-    ee.AddListener((a, b) => print(1));
-    ee.AddListener((a, b, c) => print(1));
+// listeners with fewer params are also acceptable
+var ee = new UniEvent<int, int, int, int>();
+ee.AddListener(() => print(1));
+ee.AddListener((a) => print(1));
+ee.AddListener((a, b) => print(1));
+ee.AddListener((a, b, c) => print(1));
 
-    // listeners that will only be invoked once
-    var once = e.AddOnceListener(() => print(1));
-    // still use RemoveListener to remove it
-    e.RemoveListener(once);
-  }
-}
+// listeners that will only be invoked once
+var once = e.AddOnceListener(() => print(1));
+// once listeners can be removed just like normal listeners
+e.RemoveListener(once);
 ```
 
-As you can see, the `UniEvent` encourages you to use closures instead of methods, and it's more flexible than `UnityEvent`.
+As you can see, `UniEvent` encourages you to use closures instead of methods, and it's more flexible than `UnityEvent`.
 
-Almost all events in UniStart will use `UniEvent` instead of `UnityEvent`.
+All the events in UniStart use `UniEvent` instead of `UnityEvent`.
 
 <details>
 <summary>Stability</summary>
@@ -75,11 +71,15 @@ Almost all events in UniStart will use `UniEvent` instead of `UnityEvent`.
 Listeners are ensured to be called in the order they are added (no matter it is a normal listener or once listener or listeners with less parameters).
 
 ```cs
-var e = new UniEvent<int>();
-e.AddListener(() => print(1));
-e.AddOnceListener(() => print(2));
-e.AddListener((a) => print(a));
-e.Invoke(3); // guaranteed to print 1, 2, 3
+var list = new List<int>();
+var e1 = new UniEvent<int>();
+
+e1.AddListener(() => list.Add(1));
+e1.AddOnceListener(() => list.Add(2));
+e1.AddListener((a) => list.Add(a));
+
+e1.Invoke(3);
+Assert.AreEqual(new List<int> { 1, 2, 3 }, list);
 ```
 
 You can add/remove listeners during the invocation, but they will only take effect after the current invocation.
@@ -87,21 +87,33 @@ You can add/remove listeners during the invocation, but they will only take effe
 Here are examples to demonstrate this:
 
 ```cs
-// add listeners during invocation
+var list = new List<int>();
 var e = new UniEvent();
-e.AddOnceListener(() => e.AddOnceListener(() => print(1)));
+
+// add listeners during invocation
+e.AddOnceListener(() => e.AddOnceListener(() => list.Add(1)));
+
 e.Invoke(); // this will add the second once listener, but won't invoke it
-e.Invoke(); // this will print 1
+Assert.AreEqual(new List<int>(), list);
+
+e.Invoke(); // this will invoke the second once listener, which will add 1 to the list
+Assert.AreEqual(new List<int> { 1 }, list);
 ```
 
 ```cs
-// remove listeners during invocation
-UnityAction a = () => print(1);
+var list = new List<int>();
 var e = new UniEvent();
+UnityAction a = () => list.Add(1);
+
+// remove listeners during invocation
 e.AddListener(() => e.RemoveListener(a));
 e.AddListener(a);
-e.Invoke(); // this will remove listener 'a' but still will print 1
-e.Invoke(); // this will not print 1
+
+e.Invoke(); // this will remove listener 'a' but only take effect on the next invocation
+Assert.AreEqual(new List<int> { 1 }, list); // so 'a' will still be called in this invocation
+
+e.Invoke(); // now 'a' should be removed
+Assert.AreEqual(new List<int> { 1 }, list); // list should not be modified
 ```
 
 </details>
