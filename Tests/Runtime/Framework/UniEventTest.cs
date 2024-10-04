@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using DT.UniStart;
 using UnityEngine.Events;
+using System.Collections.Generic;
 
 public class UniEventTest {
   [Test]
@@ -433,5 +434,50 @@ public class UniEventTest {
     Assert.AreEqual(1, n);
     e.Invoke();
     Assert.AreEqual(1, n);
+  }
+
+  [Test]
+  public void StableInvokeOrderTest() {
+    var list = new List<int>();
+    var e1 = new UniEvent<int>();
+
+    e1.AddListener(() => list.Add(1));
+    e1.AddOnceListener(() => list.Add(2));
+    e1.AddListener((a) => list.Add(a));
+
+    e1.Invoke(3);
+    Assert.AreEqual(new List<int> { 1, 2, 3 }, list);
+  }
+
+  [Test]
+  public void StableInvokeAddListenerTest() {
+    var list = new List<int>();
+    var e = new UniEvent();
+
+    // add listeners during invocation
+    e.AddOnceListener(() => e.AddOnceListener(() => list.Add(1)));
+
+    e.Invoke(); // this will add the second once listener, but won't invoke it
+    Assert.AreEqual(new List<int>(), list);
+
+    e.Invoke(); // this will invoke the second once listener, which will add 1 to the list
+    Assert.AreEqual(new List<int> { 1 }, list);
+  }
+
+  [Test]
+  public void StableInvokeRemoveListenerTest() {
+    var list = new List<int>();
+    var e = new UniEvent();
+    UnityAction a = () => list.Add(1);
+
+    // remove listeners during invocation
+    e.AddListener(() => e.RemoveListener(a));
+    e.AddListener(a);
+
+    e.Invoke(); // this will remove listener 'a' but only take effect on the next invocation
+    Assert.AreEqual(new List<int> { 1 }, list); // so 'a' will still be called in this invocation
+
+    e.Invoke(); // now 'a' should be removed
+    Assert.AreEqual(new List<int> { 1 }, list); // list should not be modified
   }
 }
