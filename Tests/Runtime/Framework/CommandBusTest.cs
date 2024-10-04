@@ -38,4 +38,23 @@ public class CommandBusTest {
     cb.Execute();
     Assert.AreEqual(1, a.Value);
   }
+
+  public class RecursiveCommandContext {
+    public ICommandBus<RecursiveCommandContext> bus;
+  }
+  public record RecursiveCommand(int a) : ICommand<RecursiveCommandContext> {
+    public void Invoke(RecursiveCommandContext ctx) {
+      ctx.bus.Push(new RecursiveCommand(a + 1));
+    }
+  }
+  [Test]
+  public void RecursiveTest() {
+    var ctx = new RecursiveCommandContext();
+    var cb = new DelayedCommandBus<RecursiveCommandContext>(ctx);
+    ctx.bus = cb;
+
+    cb.Push(new RecursiveCommand(0));
+
+    cb.Execute();
+  }
 }
