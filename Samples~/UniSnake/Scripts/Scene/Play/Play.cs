@@ -10,6 +10,8 @@ namespace UniSnake.Scene.Play {
       var ctx = new CommandContext(model, config, eb);
       var cb = this.AddCommandBus(ctx, debug: true);
 
+      cb.Push(new MoveFoodCommand());
+
       // move snake when not paused
       var timer = new RepeatedTimer(config.moveInterval, () => cb.Push<MoveSnakeCommand>());
       this.onUpdate.AddListener(timer.UpdateWithDelta);
