@@ -28,30 +28,30 @@ using DT.UniStart;
 
 ## Get Started
 
-### Basics - AdvancedEvent
+### Basics - UniEvent
 
-Before we start, let's take a look at the fundamental building block of UniStart: `AdvancedEvent`
+Before we start, let's take a look at the fundamental building block of UniStart: `UniEvent`
 
 ```cs
-public class AdvancedEventApp : MonoBehaviour {
+public class UniEventApp : MonoBehaviour {
   void Start() {
-    // you can use AdvancedEvent just like UnityEvent
-    new AdvancedEvent();
-    new AdvancedEvent<int>();
-    new AdvancedEvent<int, int>();
-    new AdvancedEvent<int, int, int>();
-    new AdvancedEvent<int, int, int, int>();
+    // you can use UniEvent just like UnityEvent
+    new UniEvent();
+    new UniEvent<int>();
+    new UniEvent<int, int>();
+    new UniEvent<int, int, int>();
+    new UniEvent<int, int, int, int>();
 
     // AddListener will return the listener
     // so you can call it immediately
-    var e = new AdvancedEvent<int>();
+    var e = new UniEvent<int>();
     e.AddListener((a) => print(a)).Invoke(1);
     // or store it and remove it later
     var listener = e.AddListener((a) => print(a));
     e.RemoveListener(listener);
 
     // listeners with fewer params are also acceptable
-    var ee = new AdvancedEvent<int, int, int, int>();
+    var ee = new UniEvent<int, int, int, int>();
     ee.AddListener(() => print(1));
     ee.AddListener((a) => print(1));
     ee.AddListener((a, b) => print(1));
@@ -65,9 +65,9 @@ public class AdvancedEventApp : MonoBehaviour {
 }
 ```
 
-As you can see, the `AdvancedEvent` encourages you to use closures instead of methods, and it's more flexible than `UnityEvent`.
+As you can see, the `UniEvent` encourages you to use closures instead of methods, and it's more flexible than `UnityEvent`.
 
-Almost all events in UniStart will use `AdvancedEvent` instead of `UnityEvent`.
+Almost all events in UniStart will use `UniEvent` instead of `UnityEvent`.
 
 <details>
 <summary>Stability</summary>
@@ -75,7 +75,7 @@ Almost all events in UniStart will use `AdvancedEvent` instead of `UnityEvent`.
 Listeners are ensured to be called in the order they are added (no matter it is a normal listener or once listener or listeners with less parameters).
 
 ```cs
-var e = new AdvancedEvent<int>();
+var e = new UniEvent<int>();
 e.AddListener(() => print(1));
 e.AddOnceListener(() => print(2));
 e.AddListener((a) => print(a));
@@ -88,7 +88,7 @@ Here are examples to demonstrate this:
 
 ```cs
 // add listeners during invocation
-var e = new AdvancedEvent();
+var e = new UniEvent();
 e.AddOnceListener(() => e.AddOnceListener(() => print(1)));
 e.Invoke(); // this will add the second once listener, but won't invoke it
 e.Invoke(); // this will print 1
@@ -97,7 +97,7 @@ e.Invoke(); // this will print 1
 ```cs
 // remove listeners during invocation
 UnityAction a = () => print(1);
-var e = new AdvancedEvent();
+var e = new UniEvent();
 e.AddListener(() => e.RemoveListener(a));
 e.AddListener(a);
 e.Invoke(); // this will remove listener 'a' but still will print 1
@@ -125,7 +125,7 @@ public class ComposableApp : ComposableBehaviour {
     // E.g. onNextUpdate = onUpdate.AddOnceListener
     this.onNextUpdate(() => print("Test.onNextUpdate"));
 
-    // All events are AdvancedEvent,
+    // All events are UniEvent,
     // so listeners with zero params are always acceptable,
     // you can also invoke them immediately.
     this.onCollisionEnter.AddListener(() => print(1)).Invoke();
@@ -149,7 +149,7 @@ public class ComposableApp : ComposableBehaviour {
 }
 ```
 
-By using `AdvancedEvent` and closures, you can write your logic **_at the same place_**, instead of spreading your logic in many different locations.
+By using `UniEvent` and closures, you can write your logic **_at the same place_**, instead of spreading your logic in many different locations.
 
 > This is inspired by [Vue Composition API](https://vuejs.org/guide/extras/composition-api-faq.html#more-flexible-code-organization).
 
