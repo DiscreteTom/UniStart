@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using PlasticPipe.PlasticProtocol.Messages;
 using UnityEngine;
 
 namespace DT.UniStart {
@@ -31,7 +32,7 @@ namespace DT.UniStart {
     /// <summary>
     /// Get the registered `ICommandBus`.
     /// </summary>
-    public static ICommandBus GetCommandBus(this IReadonlyIoCC ioc) => ioc.Get<ICommandBus>();
+    public static ICommandBus<Ctx> GetCommandBus<Ctx>(this IReadonlyIoCC ioc) => ioc.Get<ICommandBus<Ctx>>();
     /// <summary>
     /// Get the registered `IStepExecutor` with no context.
     /// </summary>
@@ -71,7 +72,7 @@ namespace DT.UniStart {
     /// Register an `ICommandBus`.
     /// If `debug` is `true`, the provided `ICommandBus` will be wrapped with `DebugCommandBus` in editor mode.
     /// </summary>
-    public static ICommandBus AddCommandBus(this IIoCC ioc, ICommandBus cb, bool debug = false) => ioc.Add((debug && Application.isEditor) ? new DebugCommandBus(cb) : cb);
+    public static ICommandBus<Ctx> AddCommandBus<Ctx>(this IIoCC ioc, ICommandBus<Ctx> cb, bool debug = false) => ioc.Add((debug && Application.isEditor) ? new DebugCommandBus<Ctx>(cb) : cb);
 
     /// <summary>
     /// Register an `IStepExecutor`. If the `IStepExecutor` is not provided, a new instance of `StepExecutor` will be created.
@@ -91,7 +92,6 @@ namespace DT.UniStart {
       return ioc.Add((debug && Application.isEditor) ? new DebugStepExecutor<S, T>(exe) : exe);
     }
   }
-
 
   /// <summary>
   /// IoC Container.
