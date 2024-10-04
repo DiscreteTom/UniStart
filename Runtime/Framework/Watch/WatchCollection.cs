@@ -2,14 +2,17 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using UnityEngine;
 using UnityEngine.Events;
 
 namespace DT.UniStart {
   /// <summary>
   /// Watch a list-like type for changes.
   /// </summary>
+  [Serializable]
   public class WatchIList<L, T> : IList<T>, IReadOnlyList<T>, IGetValue<ReadOnlyCollection<T>>, IWatchable<ReadOnlyCollection<T>> where L : IList<T> {
-    protected readonly L value;
+    [SerializeField]
+    protected L value;
     public ReadOnlyCollection<T> Value { get; private set; }
     readonly UniEvent<ReadOnlyCollection<T>> onChange = new();
 
@@ -86,7 +89,9 @@ namespace DT.UniStart {
   /// <summary>
   /// Watch a dictionary-like type for changes.
   /// </summary>
+  [Serializable]
   public class WatchIDictionary<D, K, V> : IDictionary<K, V>, IReadOnlyDictionary<K, V>, IGetValue<ReadOnlyDictionary<K, V>>, IWatchable<ReadOnlyDictionary<K, V>> where D : IDictionary<K, V> {
+    [SerializeField]
     protected readonly D value;
     public ReadOnlyDictionary<K, V> Value { get; private set; }
     readonly UniEvent<ReadOnlyDictionary<K, V>> onChange = new();
