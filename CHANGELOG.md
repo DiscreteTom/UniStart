@@ -8,6 +8,7 @@
 - **_Breaking Change_**: rewrite `CommandBus` family.
 - **_Breaking Change_**: remove `WatchRef`.
 - **_Breaking Change_**: remove `State` family and `StateManager`.
+- Feat: add `IIoCC.AddICommandBus`.
 
 ## v13.1.0
 

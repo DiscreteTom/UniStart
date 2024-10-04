@@ -69,10 +69,19 @@ namespace DT.UniStart {
     }
 
     /// <summary>
-    /// Register an `ICommandBus`.
+    /// Register an `ICommandBus` with the provided context.
     /// If `debug` is `true`, the provided `ICommandBus` will be wrapped with `DebugCommandBus` in editor mode.
     /// </summary>
-    public static ICommandBus<Ctx> AddCommandBus<Ctx>(this IIoCC ioc, ICommandBus<Ctx> cb, bool debug = false) => ioc.Add((debug && Application.isEditor) ? new DebugCommandBus<Ctx>(cb) : cb);
+    public static ICommandBus<Ctx> AddCommandBus<Ctx>(this IIoCC ioc, Ctx ctx, bool debug = false) {
+      var cb = new CommandBus<Ctx>(ctx);
+      return ioc.Add<ICommandBus<Ctx>>((debug && Application.isEditor) ? new DebugCommandBus<Ctx>(cb) : cb);
+    }
+
+    /// <summary>
+    /// Register an `ICommandBus` with the provided command bus.
+    /// If `debug` is `true`, the provided `ICommandBus` will be wrapped with `DebugCommandBus` in editor mode.
+    /// </summary>
+    public static ICommandBus<Ctx> AddICommandBus<Ctx>(this IIoCC ioc, ICommandBus<Ctx> cb, bool debug = false) => ioc.Add((debug && Application.isEditor) ? new DebugCommandBus<Ctx>(cb) : cb);
 
     /// <summary>
     /// Register an `IStepExecutor`. If the `IStepExecutor` is not provided, a new instance of `StepExecutor` will be created.
