@@ -39,65 +39,6 @@ namespace DT.UniStart {
   }
 
   /// <summary>
-  /// Watch a **reference** type for changes.
-  /// </summary>
-  [Serializable]
-  public class WatchRef<T> : IWatchable<WatchRef<T>>, ISetValue<T> {
-    [SerializeField] protected T value;
-    readonly UniEvent<WatchRef<T>> onChange = new();
-
-    public WatchRef(T value) {
-      this.value = value;
-    }
-
-    public T Value {
-      set {
-        this.value = value;
-        this.InvokeEvent();
-      }
-    }
-
-    /// <summary>
-    /// Make changes and trigger the onChange event once.
-    /// </summary>
-    public void Commit(UnityAction<T> f) {
-      f.Invoke(this.value);
-      this.InvokeEvent();
-    }
-
-    /// <summary>
-    /// Make changes and trigger the onChange event once.
-    /// </summary>
-    public R Commit<R>(Func<T, R> f) {
-      var result = f.Invoke(this.value);
-      this.InvokeEvent();
-      return result;
-    }
-
-    /// <summary>
-    /// Make changes without trigger the onChange event.
-    /// </summary>
-    public void MutedCommit(UnityAction<T> f) => f.Invoke(this.value);
-
-    /// <summary>
-    /// Make changes without trigger the onChange event.
-    /// </summary>
-    public R MutedCommit<R>(Func<T, R> f) => f.Invoke(this.value);
-
-    public UnityAction AddListener(UnityAction f) => this.onChange.AddListener(f);
-    public UnityAction RemoveListener(UnityAction f) => this.onChange.RemoveListener(f);
-    public UnityAction AddOnceListener(UnityAction f) => this.onChange.AddOnceListener(f);
-    public UnityAction<WatchRef<T>> AddListener(UnityAction<WatchRef<T>> f) => this.onChange.AddListener(f);
-    public UnityAction<WatchRef<T>> RemoveListener(UnityAction<WatchRef<T>> f) => this.onChange.RemoveListener(f);
-    public UnityAction<WatchRef<T>> AddOnceListener(UnityAction<WatchRef<T>> f) => this.onChange.AddOnceListener(f);
-
-    /// <summary>
-    /// Invoke all events.
-    /// </summary>
-    public virtual void InvokeEvent() => this.onChange.Invoke(this);
-  }
-
-  /// <summary>
   /// Immediately calculate a value when a watchable changes.
   /// The result should be immutable.
   /// </summary>
