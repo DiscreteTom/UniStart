@@ -116,6 +116,11 @@ namespace DT.UniStart {
     /// Register a type with an existing instance.
     /// </summary>
     public T Add<T>(T instance) {
+#if UNITY_EDITOR
+      if (this.dict.ContainsKey(typeof(T))) {
+        throw new Exception($"Type {typeof(T)} is already registered!");
+      }
+#endif
       this.dict.Add(typeof(T), instance);
       return instance;
     }
