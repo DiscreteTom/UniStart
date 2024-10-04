@@ -5,15 +5,15 @@ using UnityEngine.Events;
 namespace DT.UniStart {
   [Flags]
   public enum DebugEventBusMode {
-    None = 0,
-    AddListener = 1,
-    RemoveListener = 2,
-    Invoke = 4,
+    None = 0b000,
+    AddListener = 0b001,
+    RemoveListener = 0b010,
+    Invoke = 0b100,
     All = AddListener | RemoveListener | Invoke
   }
 
   /// <summary>
-  /// DebugEventBus is a wrapper around an IEventBus which logs all calls to AddListener, RemoveListener and Invoke.
+  /// DebugEventBus is a wrapper around an IEventBus which optionally logs all calls to AddListener, RemoveListener and Invoke.
   /// </summary>
   public class DebugEventBus : IEventBus {
     public string name = "DebugEventBus";
@@ -29,9 +29,9 @@ namespace DT.UniStart {
     public DebugEventBus(IEventBus bus = null, DebugEventBusMode mode = DebugEventBusMode.Invoke) {
       this.bus = bus ?? new EventBus();
       this.mode = mode;
-      this.isAddListenerModeEnabled = (this.mode & DebugEventBusMode.AddListener) == DebugEventBusMode.AddListener;
-      this.isRemoveListenerModeEnabled = (this.mode & DebugEventBusMode.RemoveListener) == DebugEventBusMode.RemoveListener;
-      this.isInvokeModeEnabled = (this.mode & DebugEventBusMode.Invoke) == DebugEventBusMode.Invoke;
+      this.isAddListenerModeEnabled = (this.mode & DebugEventBusMode.AddListener) != 0;
+      this.isRemoveListenerModeEnabled = (this.mode & DebugEventBusMode.RemoveListener) != 0;
+      this.isInvokeModeEnabled = (this.mode & DebugEventBusMode.Invoke) != 0;
     }
 
     /// <summary>
@@ -44,57 +44,47 @@ namespace DT.UniStart {
 
     public UnityAction AddListener<T>(UnityAction action) {
       this.LogAddListener<T>();
-      this.bus.AddListener<T>(action);
-      return action;
-    }
-
-    public UnityAction RemoveListener<T>(UnityAction action) {
-      this.LogRemoveListener<T>();
-      this.bus.RemoveListener<T>(action);
-      return action;
+      return this.bus.AddListener<T>(action);
     }
 
     public UnityAction AddOnceListener<T>(UnityAction action) {
       this.LogAddOnceListener<T>();
-      this.bus.AddOnceListener<T>(action);
-      return action;
+      return this.bus.AddOnceListener<T>(action);
+    }
+
+    public UnityAction RemoveListener<T>(UnityAction action) {
+      this.LogRemoveListener<T>();
+      return this.bus.RemoveListener<T>(action);
     }
 
     public UnityAction<T> AddListener<T>(UnityAction<T> action) {
       this.LogAddListener<T>();
-      this.bus.AddListener(action);
-      return action;
-    }
-
-    public UnityAction<T> RemoveListener<T>(UnityAction<T> action) {
-      this.LogRemoveListener<T>();
-      this.bus.RemoveListener(action);
-      return action;
+      return this.bus.AddListener(action);
     }
 
     public UnityAction<T> AddOnceListener<T>(UnityAction<T> action) {
       this.LogAddOnceListener<T>();
-      this.bus.AddOnceListener(action);
-      return action;
+      return this.bus.AddOnceListener(action);
+    }
+
+    public UnityAction<T> RemoveListener<T>(UnityAction<T> action) {
+      this.LogRemoveListener<T>();
+      return this.bus.RemoveListener(action);
     }
 
     public void Invoke<T>(T e) {
-      if (this.isInvokeModeEnabled)
-        Debug.Log($"{this.name}.Invoke: event = {typeof(T)}, parameter = {e}");
+      if (this.isInvokeModeEnabled) Debug.Log($"{this.name}.Invoke: event = {typeof(T)}, parameter = {e}");
       this.bus.Invoke(e);
     }
 
     void LogAddListener<T>() {
-      if (this.isAddListenerModeEnabled)
-        Debug.Log($"{this.name}.AddListener: event = {typeof(T)}");
-    }
-    void LogRemoveListener<T>() {
-      if (this.isRemoveListenerModeEnabled)
-        Debug.Log($"{this.name}.RemoveListener: event = {typeof(T)}");
+      if (this.isAddListenerModeEnabled) Debug.Log($"{this.name}.AddListener: event = {typeof(T)}");
     }
     void LogAddOnceListener<T>() {
-      if (this.isAddListenerModeEnabled)
-        Debug.Log($"{this.name}.AddOnceListener: event = {typeof(T)}");
+      if (this.isAddListenerModeEnabled) Debug.Log($"{this.name}.AddOnceListener: event = {typeof(T)}");
+    }
+    void LogRemoveListener<T>() {
+      if (this.isRemoveListenerModeEnabled) Debug.Log($"{this.name}.RemoveListener: event = {typeof(T)}");
     }
   }
 }
