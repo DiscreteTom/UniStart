@@ -609,8 +609,8 @@ public class StateMachineApp : CBC {
 
     // listen for state changes
     sm.AddListener(() => print(1));
-    sm.OnEnter(GameState.Playing).AddListener(() => print(1));
-    sm.OnExit(GameState.Playing).AddListener(() => print(1));
+    sm.OnEnter(GameState.Playing).AddListener((current, prev) => print(1));
+    sm.OnExit(GameState.Playing).AddListener((current, prev) => print(1));
 
     // read value
     this.onUpdate.AddListener(() => print(sm.Value));
