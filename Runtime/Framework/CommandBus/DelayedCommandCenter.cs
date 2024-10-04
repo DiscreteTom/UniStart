@@ -1,20 +1,15 @@
-using UnityEngine.Events;
-
 namespace DT.UniStart {
   public class DelayedCommandCenter : CommandCenter {
-    UnityEvent delayed = new();
-    UnityEvent shadow = new();
+    // use UniEvent instead of UnityEvent to support stable invoke
+    readonly UniEvent delayed = new();
 
     public override void Push<T>(T e) => this.delayed.AddListener(() => base.Push(e));
 
-    public virtual void Execute() {
-      // swap delayed and shadow to prevent modifying the delayed list while executing
-      (this.delayed, this.shadow) = (this.shadow, this.delayed);
+    public virtual void Execute() => this.delayed.Invoke();
 
-      this.shadow.Invoke();
-      this.shadow.RemoveAllListeners();
-    }
-
+    /// <summary>
+    /// Mount this to a watchable object to auto execute the delayed commands.
+    /// </summary>
     public DelayedCommandCenter Mount(IWatchable target) {
       target.AddListener(this.Execute);
       return this;

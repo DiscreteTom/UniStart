@@ -2,8 +2,14 @@ using UnityEngine.Events;
 
 namespace DT.UniStart {
   public interface ICommandRepo {
-    UnityAction Add<T>(UnityAction command);
-    UnityAction<T> Add<T>(UnityAction<T> command);
+    /// <summary>
+    /// Register a command with a handler.
+    /// </summary>
+    UnityAction Add<T>(UnityAction handler);
+    /// <summary>
+    /// Register a command with a handler.
+    /// </summary>
+    UnityAction<T> Add<T>(UnityAction<T> handler);
   }
 
   public interface ICommandBus {

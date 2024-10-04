@@ -6,27 +6,27 @@ namespace DT.UniStart {
   public class CommandCenter : ICommandCenter {
     readonly Dictionary<Type, object> dict = new();
 
-    public virtual UnityAction Add<T>(UnityAction command) {
-      this.AddCommon<T>(e => e.AddListener(command));
-      return command;
+    public virtual UnityAction Add<T>(UnityAction handler) {
+      this.AddCommon<T>(e => e.AddListener(handler));
+      return handler;
     }
-    public virtual UnityAction<T> Add<T>(UnityAction<T> command) {
-      this.AddCommon<T>(e => e.AddListener(command));
-      return command;
+    public virtual UnityAction<T> Add<T>(UnityAction<T> handler) {
+      this.AddCommon<T>(e => e.AddListener(handler));
+      return handler;
     }
 
     /// <summary>
-    /// Add a command to the CommandCenter and return the CommandCenter for chaining.
+    /// Register a command with a handler to the CommandCenter and return the CommandCenter for chaining.
     /// </summary>
-    public virtual CommandCenter With<T>(UnityAction command) {
-      this.Add<T>(command);
+    public virtual CommandCenter With<T>(UnityAction handler) {
+      this.Add<T>(handler);
       return this;
     }
     /// <summary>
-    /// Add a command to the CommandCenter and return the CommandCenter for chaining.
+    /// Register a command with a handler to the CommandCenter and return the CommandCenter for chaining.
     /// </summary>
-    public virtual CommandCenter With<T>(UnityAction<T> command) {
-      this.Add(command);
+    public virtual CommandCenter With<T>(UnityAction<T> handler) {
+      this.Add(handler);
       return this;
     }
 
