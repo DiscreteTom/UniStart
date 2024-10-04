@@ -394,39 +394,46 @@ Besides, there are 2 base interface of `IEventBus`: `IEventListener` and `IEvent
 
 ### Orchestration - Command Bus
 
-`EventBus` lets you add listeners anywhere, but you may have some pre-defined `Command`s which should be handled centrally. `CommandBus` is designed for this.
+`CommandBus` lets you to split your game logics into commands and reuse them in different views.
 
 ```cs
+public class CommandContext {
+  // define context
+  public int a;
+  public int b;
+}
+
 // define commands
-public record SimpleCommand;
-public record ComplexCommand(int a, int b);
+public record SimpleCommand : ICommand<CommandContext> {
+  public void Invoke(CommandContext ctx) {
+    Debug.Log(ctx.a);
+  }
+}
+public record ComplexCommand(int a, int b) : ICommand<CommandContext> {
+  public void Invoke(CommandContext ctx) {
+    ctx.a = a;
+    ctx.b = b;
+  }
+}
 
 public class CommandBusEntry : Entry {
   void Awake() {
-    // register command bus into app as the readonly ICommandBus
-    var cb = this.Add<ICommandBus>(
-      // CommandCenter is writable,
-      // so we register all commands here centrally
-      new CommandCenter()
-        .With<SimpleCommand>(() => print(1))
-        .With<ComplexCommand>((e) => print(e.a))
-    );
+    var ctx = new CommandContext();
+    // register command bus into app
+    this.Add<ICommandBus<CommandContext>>(new CommandBus<CommandContext>(ctx));
     // or use the helper method `AddCommandBus` to register `ICommandBus`
     // just like `AddEventBus`
-    this.AddCommandBus(
-      new CommandCenter()
-        .With<SimpleCommand>(() => print(1))
-        .With<ComplexCommand>((e) => print(e.a)),
-      debug: true // enable debug in editor mode
-    );
+    this.AddCommandBus(ctx, debug: true);
+    // for custom command bus
+    this.AddICommandBus(new MyCommandBus<CommandContext>(ctx), debug: true);
   }
 }
 
 public class CommandBusApp : CBC {
   void Start() {
-    var cb = this.Get<ICommandBus>();
+    var cb = this.Get<ICommandBus<CommandContext>>();
     // or use the helper method
-    cb = this.GetCommandBus();
+    cb = this.GetCommandBus<CommandContext>();
 
     // push commands to bus
     cb.Push<SimpleCommand>();
@@ -435,40 +442,48 @@ public class CommandBusApp : CBC {
 }
 ```
 
-Thus, you can separate your game logics in the `CommandBus` from the views in `CBC`. If you modify your view in `CBC` you can still reuse your logics in `CommandBus`.
-
 Commands are often used in state management with CQRS pattern. We will introduce how to manage state with UniStart later.
 
-The default `CommandCenter` will execute commands immediately, but you can also use `DelayedCommandCenter` to delay the execution. This is useful to prevent side-effect in a responsive system.
+The default `CommandBus` will execute commands immediately, but you can also use `DelayedCommandBus` to delay the execution. This is useful to prevent side-effect in a responsive system.
 
 ```cs
+public class RecursiveCommandContext {
+  public ICommandBus<RecursiveCommandContext> bus;
+}
+public record RecursiveCommand(int a) : ICommand<RecursiveCommandContext> {
+  public void Invoke(RecursiveCommandContext ctx) {
+    ctx.bus.Push(new RecursiveCommand(a + 1));
+  }
+}
+
 public class RecursiveCommandBusApp : Entry {
   void Awake() {
-    // the default command center will execute the command immediately
-    var cc = new CommandCenter();
-
-    // when this command is executed, it will recursively execute itself!
-    cc.Add<SimpleCommand>(() => cc.Push<SimpleCommand>());
+    var ctx = new RecursiveCommandContext();
+    // the default command bus will execute the command immediately
+    var cb = this.AddCommandBus(ctx, debug: true);
+    ctx.bus = cb;
 
     // start the recursion
-    cc.Push<SimpleCommand>();
+    cb.Push(new RecursiveCommand(0));
   }
 }
 
 public class DelayedCommandBusApp : Entry {
   void Awake() {
-    // the delayed command center will execute all buffered commands when `Execute` is called
-    var cc = new DelayedCommandCenter();
+    // the delayed command bus will execute all buffered commands when `Execute` is called
+    var ctx = new RecursiveCommandContext();
+    var cb = new DelayedCommandBus<RecursiveCommandContext>(ctx);
+    ctx.bus = cb;
 
-    // execute all commands from the last frame
-    this.onUpdate.AddListener(cc.Execute);
-    // or use the helper method to auto execute all commands from the last frame
-    cc.Mount(this.onUpdate);
+    // manually execute the commands
+    cb.Execute();
+    // execute all commands in LateUpdate
+    this.onLateUpdate.AddListener(cb.Execute);
+    // or use the helper method
+    cb.Mount(this.onLateUpdate);
 
-    // this is safe because the command will be executed in the next frame
-    cc.Add<SimpleCommand>(() => cc.Push<SimpleCommand>());
-
-    cc.Push<SimpleCommand>();
+    // this is safe because the recursively added command will be executed in the next frame
+    cb.Push(new RecursiveCommand(0));
   }
 }
 ```
@@ -625,99 +640,33 @@ public class StateMachineApp : CBC {
 
 Usually we need to manage the state (or `Model`) of the game across components or game objects, we also want to watch for changes of the state, and commit changes to the state.
 
-Unlike those responsive containers, we don't want the state to be changed by other classes, only the state manager can commit changes to the state.
-
 ```cs
-// inherit from StateManager to manage states
-public class Model : StateManager {
-  // state is readonly and watchable
-  public readonly IValueState<int> count;
-  public readonly IEnumState<GameState> gameState;
-  public readonly IListState<int> list;
-  public readonly IArrayState<bool> array;
-  public readonly IDictionaryState<string, int> dict;
+public class Model : CBC {
+  public readonly Watch<int> count = new(0);
+  public readonly StateMachine<GameState> gameState = new(GameState.Start);
+  public readonly WatchList<int> list = new();
+  public readonly WatchArray<bool> array = new(1);
+  public readonly WatchDictionary<string, int> dict = new();
+}
 
-  // you can also use System.Collections.Generic types.
-  // use this if they are const values since they are not watchable
-  public readonly IReadOnlyList<int> constArray;
-  public readonly IReadOnlyDictionary<string, int> constDict;
-
-  // or, a list of state, which is also readonly and watchable
-  // use this if the list's length is fixed
-  public readonly IReadOnlyList<IValueState<int>> stateArray;
-  public readonly IReadOnlyList<IEnumState<GameState>> enumArray;
-
-  // computed values are also readonly
-  public readonly Computed<int> computed;
-  public readonly LazyComputed<int> lazyComputed;
-
-  // properties are readonly but not watchable.
-  public int property => this.count.Value;
-
-  // mutations using UnityAction
-  public readonly UnityAction<int> UpdateState;
-
-  public Model(IEventInvoker eb) {
-    // you can use responsive containers as the state,
-    // you can also use your custom classes as long as the state interface is implemented
-    this.count = new Watch<int>(0);
-    this.list = new WatchList<int>();
-
-    // when you assign values to states, they are readonly.
-    // if you want to modify states in commands,
-    // you need to use the responsive containers directly
-    var count = new Watch<int>(0); // this is mutable
-    this.UpdateState = (n) => {
-      // you can update state values in mutations
-      // but don't assign mutations directly like this
-      // we will explain how to init mutations later
-      count.Value = n;
-    };
-    this.count = count; // this.count is readonly
-
-    // the helper `StateManager.Init` will init the state
-    // and return the default mutable container.
-    count = this.Init(ref this.count, 0); // Watch<int>
-
-    // you only need to remember one method called `Init`
-    // to init all types of states with the default responsive container.
-    // all generic types are inferred!
-    var gameState = this.Init(ref this.gameState, GameState.Start); // StateMachine
-    var list = this.Init(ref this.list); // WatchList
-    var array = this.Init(ref this.array, 1); // WatchArray
-    var dict = this.Init(ref this.dict); // WatchDictionary
-    var constArray = this.Init(ref this.constArray, 10); // int[]
-    var constDict = this.Init(ref this.constDict); // Dictionary<string, int>
-    var stateArray = this.Init(ref this.stateArray, 10); // Watch<int>[]
-    var enumArray = this.Init(ref this.enumArray, 10); // StateMachine<GameState>[]
-
-    // computed values are already readonly,
-    // you can use them directly
-    this.computed = new Computed<int>(() => this.count.Value * 2).Watch(this.count);
-    this.lazyComputed = new LazyComputed<int>(() => this.count.Value * 2).Watch(this.count);
-
-    // now you can update states in mutations.
-    // just like states, you should init mutations using `Init`.
-    // this will make mutations "lazy" and not be executed immediately when called.
-    // the lazy mutation is helpful to prevent recursive updates.
-    this.Init(ref this.UpdateState, (n) => {
-      list.Add(n); // make changes
-      eb.Invoke<EventWithoutParams>(); // publish events
-    });
+public record MyCommand(int a) : ICommand<Model> {
+  public void Invoke(Model model) {
+    model.count.Value += a;
   }
 }
 
 public class ModelAppEntry : Entry {
   void Awake() {
     // register model to the app
-    // and execute mutations on late update
-    this.Add(new Model(new EventBus())).Mount(this.onLateUpdate);
+    var model = this.Add(this.GetOrAddComponent<Model>());
+    // use commands to mutate the model
+    this.AddCommandBus(model, debug: true);
   }
 }
 
 public class ModelApp : CBC {
   void Start() {
-    // get readonly model from app
+    // get model from app
     var model = this.Get<Model>();
 
     // watch model for changes
@@ -726,8 +675,9 @@ public class ModelApp : CBC {
     // check model value
     this.onUpdate.AddListener(() => print(model.count.Value));
 
-    // use methods to update states
-    model.UpdateState(123);
+    // use commands to mutate the model
+    var cb = this.GetCommandBus<Model>();
+    cb.Push(new MyCommand(1));
   }
 }
 ```
@@ -795,27 +745,17 @@ Finally, keep the architecture diagram in mind, and put all the pieces together.
 
 ```cs
 namespace Project {
+  // store states in model
+  public class Model : CBC {
+    // states
+    public readonly Watch<int> count = new(0);
+  }
+
   // define commands & events
   public record MyEvent(int a, int b);
-
-  // store states in readonly model
-  public class Model : StateManager {
-    // states
-    public readonly IValueState<int> count;
-    // mutations
-    public readonly UnityAction<int> UpdateState;
-
-    public Model(IEventInvoker eb) {
-      // init states, get writable responsive containers
-      var count = this.Init(ref this.count, 0);
-
-      // register model-related commands
-      this.Init(ref this.UpdateState, (n) => {
-        // update state in mutations
-        count.Value = n;
-        // publish events to controllers
-        eb.Invoke(new MyEvent(1, 2));
-      });
+  public record MyCommand : ICommand<Model> {
+    public void Invoke(Model model) {
+      model.count.Value++;
     }
   }
 
@@ -823,8 +763,9 @@ namespace Project {
   public class App : Entry {
     void Awake() {
       // register context
+      var model = this.Add(this.GetOrAddComponent<Model>());
+      var cb = this.AddCommandBus(model, debug: true);
       var eb = this.AddEventBus(debug: true);
-      this.Add(new Model(eb)).Mount(this.onLateUpdate);
     }
   }
 
@@ -832,8 +773,9 @@ namespace Project {
   public class Controller : CBC {
     void Start() {
       // get context
-      var eb = this.GetEventBus();
       var model = this.Get<Model>();
+      var eb = this.GetEventBus();
+      var cb = this.GetCommandBus<Model>();
 
       // update view when model changes
       // or when events are published
@@ -847,7 +789,7 @@ namespace Project {
       this.onUpdate.AddListener(() => {
         if (Input.GetKeyDown(KeyCode.Space)) {
           // update states
-          model.UpdateState(123);
+          cb.Push(new MyCommand());
         }
       });
     }
@@ -907,9 +849,9 @@ See [this](https://github.com/DiscreteTom/UniStart/tree/main/Runtime/Extensions)
 
 See [this](https://github.com/DiscreteTom/UniStart/tree/main/Runtime/Utils) folder.
 
-## Sample Game
+## Example Game
 
-See [UniSnake](https://github.com/DiscreteTom/UniStart/tree/main/Samples~/UniSnake). You can also import this sample via Unity3D's package manager.
+See [UniSnake](https://github.com/DiscreteTom/UniStart/tree/main/Samples~/UniSnake). You can also import this example via Unity3D's package manager.
 
 ## Related
 
