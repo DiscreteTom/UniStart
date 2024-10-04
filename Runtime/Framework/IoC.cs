@@ -25,19 +25,19 @@ namespace DT.UniStart {
     public static T GetOrDefault<T>(this IReadonlyIoC ioc) => ioc.TryGet<T>(out var instance) ? instance : default;
 
     /// <summary>
-    /// Get the `IEventBus`.
+    /// Get the registered `IEventBus`.
     /// </summary>
     public static IEventBus GetEventBus(this IReadonlyIoC ioc) => ioc.Get<IEventBus>();
     /// <summary>
-    /// Get the `ICommandBus`.
+    /// Get the registered `ICommandBus`.
     /// </summary>
     public static ICommandBus GetCommandBus(this IReadonlyIoC ioc) => ioc.Get<ICommandBus>();
     /// <summary>
-    /// Get the `IStepExecutor` with no context.
+    /// Get the registered `IStepExecutor` with no context.
     /// </summary>
     public static IStepExecutor<S> GetStepExecutor<S>(this IReadonlyIoC ioc) where S : IConvertible => ioc.Get<IStepExecutor<S>>();
     /// <summary>
-    /// Get the `IStepExecutor` with context `T`.
+    /// Get the registered `IStepExecutor` with context `T`.
     /// </summary>
     public static IStepExecutor<S, T> GetStepExecutor<S, T>(this IReadonlyIoC ioc) where S : IConvertible => ioc.Get<IStepExecutor<S, T>>();
   }
@@ -54,7 +54,7 @@ namespace DT.UniStart {
 
   public static class IIoCCExtension {
     /// <summary>
-    /// Register a type and auto create an instance.
+    /// Register a type with a new instance.
     /// </summary>
     public static T Add<T>(this IIoCC ioc) where T : new() => ioc.Add(new T());
 
