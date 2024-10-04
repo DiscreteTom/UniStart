@@ -1,7 +1,7 @@
 namespace DT.UniStart {
   public class DelayedEventBus : EventBus {
     // use UniEvent instead of UnityEvent to support stable invoke
-    UniEvent delayed = new();
+    readonly UniEvent delayed = new();
 
     public override void Invoke<T>(T e) => this.delayed.AddListener(() => base.Invoke(e));
 
