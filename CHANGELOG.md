@@ -10,6 +10,7 @@
 - **_Breaking Change_**: remove `State` family and `StateManager`.
 - Feat: add `IIoCC.AddICommandBus`.
 - Feat: throw error in editor mode if `IoCC.Add` with the same key.
+- Feat: show `StateMachine` in the inspector.
 
 ## v13.1.0
 
