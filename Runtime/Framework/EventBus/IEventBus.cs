@@ -1,7 +1,6 @@
 using UnityEngine.Events;
 
 namespace DT.UniStart {
-
   public interface IEventListener {
     UnityAction AddListener<T>(UnityAction action);
     UnityAction RemoveListener<T>(UnityAction action);
