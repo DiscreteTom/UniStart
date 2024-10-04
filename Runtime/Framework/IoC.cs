@@ -117,9 +117,8 @@ namespace DT.UniStart {
     /// </summary>
     public T Add<T>(T instance) {
 #if UNITY_EDITOR
-      if (this.dict.ContainsKey(typeof(T))) {
-        throw new Exception($"Type {typeof(T)} is already registered!");
-      }
+      if (this.dict.ContainsKey(typeof(T))) throw new Exception($"Type {typeof(T)} is already registered!");
+      if (instance == null) Debug.LogWarning($"Type {typeof(T)} is registered with a null instance!");
 #endif
       this.dict.Add(typeof(T), instance);
       return instance;
