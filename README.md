@@ -398,8 +398,8 @@ Besides, there are 2 base interface of `IEventBus`: `IEventListener` and `IEvent
 
 ```cs
 // define commands
-public record SimpleCommand : ICommand;
-public record ComplexCommand(int a, int b) : ICommand;
+public record SimpleCommand;
+public record ComplexCommand(int a, int b);
 
 public class CommandBusEntry : Entry {
   void Awake() {

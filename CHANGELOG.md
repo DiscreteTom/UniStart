@@ -4,6 +4,7 @@
 
 - **_Breaking Change_**: remove `AdvancedEvent`, add `UniEvent`, the interface is the same and the performance is better.
 - **_Breaking Change_**: rename `IReadonlyIoC` to `IReadOnlyIoCC`.
+- **_Breaking Change_**: remove `ICommand` and `IEvent` to simplify code.
 
 ## v13.1.0
 

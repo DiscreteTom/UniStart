@@ -42,43 +42,43 @@ namespace DT.UniStart {
       return this;
     }
 
-    public UnityAction AddListener<T>(UnityAction action) where T : IEvent {
+    public UnityAction AddListener<T>(UnityAction action) {
       this.LogAddListener<T>();
       this.bus.AddListener<T>(action);
       return action;
     }
 
-    public UnityAction RemoveListener<T>(UnityAction action) where T : IEvent {
+    public UnityAction RemoveListener<T>(UnityAction action) {
       this.LogRemoveListener<T>();
       this.bus.RemoveListener<T>(action);
       return action;
     }
 
-    public UnityAction AddOnceListener<T>(UnityAction action) where T : IEvent {
+    public UnityAction AddOnceListener<T>(UnityAction action) {
       this.LogAddOnceListener<T>();
       this.bus.AddOnceListener<T>(action);
       return action;
     }
 
-    public UnityAction<T> AddListener<T>(UnityAction<T> action) where T : IEvent {
+    public UnityAction<T> AddListener<T>(UnityAction<T> action) {
       this.LogAddListener<T>();
       this.bus.AddListener(action);
       return action;
     }
 
-    public UnityAction<T> RemoveListener<T>(UnityAction<T> action) where T : IEvent {
+    public UnityAction<T> RemoveListener<T>(UnityAction<T> action) {
       this.LogRemoveListener<T>();
       this.bus.RemoveListener(action);
       return action;
     }
 
-    public UnityAction<T> AddOnceListener<T>(UnityAction<T> action) where T : IEvent {
+    public UnityAction<T> AddOnceListener<T>(UnityAction<T> action) {
       this.LogAddOnceListener<T>();
       this.bus.AddOnceListener(action);
       return action;
     }
 
-    public void Invoke<T>(T e) where T : IEvent {
+    public void Invoke<T>(T e) {
       if (this.isInvokeModeEnabled)
         Debug.Log($"{this.name}.Invoke: event = {typeof(T)}, parameter = {e}");
       this.bus.Invoke(e);

@@ -210,33 +210,33 @@ namespace DT.UniStart {
 
     #region Helper Methods for IEventListener
     // watch with remover
-    public static UnityAction Watch<T>(this ComposableBehaviour self, IEventListener eventBus, IWatchable remover, UnityAction action) where T : IEvent {
+    public static UnityAction Watch<T>(this ComposableBehaviour self, IEventListener eventBus, IWatchable remover, UnityAction action) {
       eventBus.AddListener<T>(action);
       remover.AddOnceListener(() => eventBus.RemoveListener<T>(action));
       return action;
     }
-    public static UnityAction<T> Watch<T>(this ComposableBehaviour self, IEventListener eventBus, IWatchable remover, UnityAction<T> action) where T : IEvent {
+    public static UnityAction<T> Watch<T>(this ComposableBehaviour self, IEventListener eventBus, IWatchable remover, UnityAction<T> action) {
       eventBus.AddListener(action);
       remover.AddOnceListener(() => eventBus.RemoveListener(action));
       return action;
     }
     // watch once with remover
-    public static UnityAction OnceWatch<T>(this ComposableBehaviour self, IEventListener eventBus, IWatchable remover, UnityAction action) where T : IEvent {
+    public static UnityAction OnceWatch<T>(this ComposableBehaviour self, IEventListener eventBus, IWatchable remover, UnityAction action) {
       eventBus.AddOnceListener<T>(action);
       remover.AddOnceListener(() => eventBus.RemoveListener<T>(action));
       return action;
     }
-    public static UnityAction<T> OnceWatch<T>(this ComposableBehaviour self, IEventListener eventBus, IWatchable remover, UnityAction<T> action) where T : IEvent {
+    public static UnityAction<T> OnceWatch<T>(this ComposableBehaviour self, IEventListener eventBus, IWatchable remover, UnityAction<T> action) {
       eventBus.AddOnceListener(action);
       remover.AddOnceListener(() => eventBus.RemoveListener(action));
       return action;
     }
     // remove listener on destroy
-    public static UnityAction Watch<T>(this ComposableBehaviour self, IEventListener eventBus, UnityAction action) where T : IEvent => self.Watch<T>(eventBus, self.onDestroy, action);
-    public static UnityAction<T> Watch<T>(this ComposableBehaviour self, IEventListener eventBus, UnityAction<T> action) where T : IEvent => self.Watch(eventBus, self.onDestroy, action);
+    public static UnityAction Watch<T>(this ComposableBehaviour self, IEventListener eventBus, UnityAction action) => self.Watch<T>(eventBus, self.onDestroy, action);
+    public static UnityAction<T> Watch<T>(this ComposableBehaviour self, IEventListener eventBus, UnityAction<T> action) => self.Watch(eventBus, self.onDestroy, action);
     // remove once listener on destroy
-    public static UnityAction OnceWatch<T>(this ComposableBehaviour self, IEventListener eventBus, UnityAction action) where T : IEvent => self.OnceWatch<T>(eventBus, self.onDestroy, action);
-    public static UnityAction<T> OnceWatch<T>(this ComposableBehaviour self, IEventListener eventBus, UnityAction<T> action) where T : IEvent => self.OnceWatch(eventBus, self.onDestroy, action);
+    public static UnityAction OnceWatch<T>(this ComposableBehaviour self, IEventListener eventBus, UnityAction action) => self.OnceWatch<T>(eventBus, self.onDestroy, action);
+    public static UnityAction<T> OnceWatch<T>(this ComposableBehaviour self, IEventListener eventBus, UnityAction<T> action) => self.OnceWatch(eventBus, self.onDestroy, action);
     #endregion
 
     #region Helper Methods for Action

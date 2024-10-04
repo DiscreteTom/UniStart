@@ -6,11 +6,11 @@ namespace DT.UniStart {
   public class CommandCenter : ICommandCenter {
     readonly Dictionary<Type, object> dict = new();
 
-    public virtual UnityAction Add<T>(UnityAction command) where T : ICommand {
+    public virtual UnityAction Add<T>(UnityAction command) {
       this.AddCommon<T>(e => e.AddListener(command));
       return command;
     }
-    public virtual UnityAction<T> Add<T>(UnityAction<T> command) where T : ICommand {
+    public virtual UnityAction<T> Add<T>(UnityAction<T> command) {
       this.AddCommon<T>(e => e.AddListener(command));
       return command;
     }
@@ -18,19 +18,19 @@ namespace DT.UniStart {
     /// <summary>
     /// Add a command to the CommandCenter and return the CommandCenter for chaining.
     /// </summary>
-    public virtual CommandCenter With<T>(UnityAction command) where T : ICommand {
+    public virtual CommandCenter With<T>(UnityAction command) {
       this.Add<T>(command);
       return this;
     }
     /// <summary>
     /// Add a command to the CommandCenter and return the CommandCenter for chaining.
     /// </summary>
-    public virtual CommandCenter With<T>(UnityAction<T> command) where T : ICommand {
+    public virtual CommandCenter With<T>(UnityAction<T> command) {
       this.Add(command);
       return this;
     }
 
-    public virtual void Push<T>(T arg) where T : ICommand => (this.dict[typeof(T)] as UniEvent<T>).Invoke(arg);
+    public virtual void Push<T>(T arg) => (this.dict[typeof(T)] as UniEvent<T>).Invoke(arg);
 
     void AddCommon<T>(Action<UniEvent<T>> decorator) {
       var e = new UniEvent<T>();

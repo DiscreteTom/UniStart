@@ -2,8 +2,8 @@ using NUnit.Framework;
 using DT.UniStart;
 
 public class CommandBusTest {
-  record E : ICommand;
-  record EE(int a) : ICommand;
+  record E;
+  record EE(int a);
 
   [Test]
   public void BasicTest() {
