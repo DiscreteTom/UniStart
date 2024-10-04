@@ -131,6 +131,7 @@ public class ComposableApp : ComposableBehaviour {
     this.onUpdate.AddListener(() => print("Test.onUpdate"));
 
     // Other events are also available, even with parameters.
+    // The parameter type is auto inferred from the listener's signature.
     this.onCollisionEnter.AddListener((collision) => print("Test.onCollisionEnter"));
 
     // We also have helper methods for common use cases.
@@ -154,7 +155,7 @@ public class ComposableApp : ComposableBehaviour {
     this.onEnable.AddListener(() => print("enable")).Invoke();
 
     // you can also manage children's lifecycle easily
-    // without creating a new class.
+    // without creating a new class file.
     var child = this.transform.Find("Child").gameObject;
     child.GetOrAddComponent<ComposableBehaviour>().onUpdate.AddListener(() => { });
   }
@@ -177,19 +178,19 @@ public class WithMonoBehaviour : MonoBehaviour {
   SpriteRenderer sr;
 
   void Start() {
-    // init vars at start
+    // init vars in Start
     this.rb = this.GetComponent<Rigidbody>();
     this.sr = this.GetComponent<SpriteRenderer>();
   }
 
   void Update() {
-    // update logic
+    // write logic in Update
     this.rb.AddForce(Vector3.up * 10);
     this.sr.color = Color.red;
   }
 
   void OnDestroy() {
-    // clean up
+    // clean up if needed
     Destroy(this.rb);
     Destroy(this.sr);
   }
@@ -200,7 +201,7 @@ public class WithMonoBehaviour : MonoBehaviour {
 public class WithComposableBehaviour : ComposableBehaviour {
   void Start() {
     // define vars as local variables,
-    // init them with auto type inference when define them,
+    // init them with auto type inference,
     // and you will never forget to clean them up.
     var rb = this.GetComponent<Rigidbody>();
     this.onDestroy.AddListener(() => Destroy(rb));
@@ -215,7 +216,7 @@ public class WithComposableBehaviour : ComposableBehaviour {
 
 </details>
 
-Another thing to mention is that, during your development with this `ComposableBehaviour`, your `Start` function will get bigger and bigger, so you may need to split it into multiple modules when you are ready. This is a progressive process, and you can do it at any time. You can also abstract your logic into many files and use them in different classes.
+Another thing to mention is that, during your development with `ComposableBehaviour`, your `Start` function will get bigger and bigger, so you may need to split it into multiple modules when you are ready. This is a progressive process, and you can do it at any time. You can also abstract your logic into many files and use them in different classes.
 
 ```cs
 public class Logics {
@@ -238,7 +239,7 @@ public class Test2 : ComposableBehaviour {
 }
 ```
 
-What's more, to use this with other frameworks, you can also use `ComposableBehaviour` as a component, and add it to any `GameObject` you want. For example, if you are using Mirror for networking, you can inherit from `NetworkBehaviour` and use `ComposableBehaviour` as a component.
+What's more, to use this with other frameworks, you can also use `ComposableBehaviour` as a component, and add it to any `GameObject` you want. For example, if you are using [Mirror](https://mirror-networking.com/) for networking, you can inherit from `NetworkBehaviour` and use `ComposableBehaviour` as a component.
 
 ```cs
 public class ComposableComponentApp : NetworkBehaviour {
@@ -289,10 +290,10 @@ To get those context, you can use the static method `Entry.GetContext`, but we h
 // CBC: ComposableBehaviour with Context injected.
 public class WithContext : CBC {
   void Start() {
-    // First, you can use the injected context.
+    // You can use the injected context directly.
     var config = this.Get<Config>();
 
-    // Second, this is a ComposableBehaviour, so you can use composable methods like onUpdate.
+    // CBC is a ComposableBehaviour, so you can use composable methods like onUpdate.
     this.onUpdate.AddListener(() => print("WithContext.onUpdate"));
   }
 }
@@ -300,7 +301,7 @@ public class WithContext : CBC {
 
 You can replace all your `MonoBehaviour` with `CBC` to use the context injection, except the `Entry` class since the `Entry` class is responsible for initializing the context.
 
-With this design, you will have an explicit place to initialize your context, instead of using singletons or other static variables.
+With this design, you will have an explicit place to initialize your context, instead of using singletons or other static variables. You can also have many `Entry` if needed.
 
 Just like the `ComposableBehaviour`, you can also use `CBC` as a component, and add it to any `GameObject` you want.
 
