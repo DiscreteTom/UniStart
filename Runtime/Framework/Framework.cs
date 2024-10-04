@@ -41,7 +41,7 @@ namespace DT.UniStart {
     public T Add<T>(T instance) => this.context.Add(instance);
 
     /// <summary>
-    /// Get the global context in the scene.
+    /// Try to get the global context from the parent object, root object, or the whole scene.
     /// Throw an error if the context is not found.
     /// </summary>
     public static Ctx GetContext(GameObject obj) {
@@ -51,9 +51,7 @@ namespace DT.UniStart {
       if (entry != null) return entry.context;
 
       // second, try to find the context in the root object
-      if (obj.transform.root.TryGetComponent(out entry)) {
-        return entry.context;
-      }
+      if (obj.transform.root.TryGetComponent(out entry)) return entry.context;
 
       Debug.LogWarning("Can't find context in the parent or root object!");
 
