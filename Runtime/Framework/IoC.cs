@@ -6,7 +6,7 @@ namespace DT.UniStart {
   /// <summary>
   /// Readonly IoC Container Interface.
   /// </summary>
-  public interface IReadonlyIoC {
+  public interface IReadonlyIoCC {
     /// <summary>
     /// Get the instance of a type.
     /// </summary>
@@ -16,36 +16,36 @@ namespace DT.UniStart {
   }
 
   public static class IReadonlyIoCExtension {
-    public static bool Contains<T>(this IReadonlyIoC ioc) => ioc.TryGet<T>(out var _);
+    public static bool Contains<T>(this IReadonlyIoCC ioc) => ioc.TryGet<T>(out var _);
 
     /// <summary>
     /// Try to get the instance of a type.
     /// If the type is not registered, return `default(T)` which is usually `null`.
     /// </summary>
-    public static T GetOrDefault<T>(this IReadonlyIoC ioc) => ioc.TryGet<T>(out var instance) ? instance : default;
+    public static T GetOrDefault<T>(this IReadonlyIoCC ioc) => ioc.TryGet<T>(out var instance) ? instance : default;
 
     /// <summary>
     /// Get the registered `IEventBus`.
     /// </summary>
-    public static IEventBus GetEventBus(this IReadonlyIoC ioc) => ioc.Get<IEventBus>();
+    public static IEventBus GetEventBus(this IReadonlyIoCC ioc) => ioc.Get<IEventBus>();
     /// <summary>
     /// Get the registered `ICommandBus`.
     /// </summary>
-    public static ICommandBus GetCommandBus(this IReadonlyIoC ioc) => ioc.Get<ICommandBus>();
+    public static ICommandBus GetCommandBus(this IReadonlyIoCC ioc) => ioc.Get<ICommandBus>();
     /// <summary>
     /// Get the registered `IStepExecutor` with no context.
     /// </summary>
-    public static IStepExecutor<S> GetStepExecutor<S>(this IReadonlyIoC ioc) where S : IConvertible => ioc.Get<IStepExecutor<S>>();
+    public static IStepExecutor<S> GetStepExecutor<S>(this IReadonlyIoCC ioc) where S : IConvertible => ioc.Get<IStepExecutor<S>>();
     /// <summary>
     /// Get the registered `IStepExecutor` with context `T`.
     /// </summary>
-    public static IStepExecutor<S, T> GetStepExecutor<S, T>(this IReadonlyIoC ioc) where S : IConvertible => ioc.Get<IStepExecutor<S, T>>();
+    public static IStepExecutor<S, T> GetStepExecutor<S, T>(this IReadonlyIoCC ioc) where S : IConvertible => ioc.Get<IStepExecutor<S, T>>();
   }
 
   /// <summary>
   /// IoC Container Interface.
   /// </summary>
-  public interface IIoCC : IReadonlyIoC {
+  public interface IIoCC : IReadonlyIoCC {
     /// <summary>
     /// Register a type with an existing instance.
     /// </summary>
