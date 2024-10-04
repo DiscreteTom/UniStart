@@ -7,6 +7,9 @@ namespace DT.UniStart {
 
     public virtual void InvokeDelayed() => this.delayed.Invoke();
 
+    /// <summary>
+    /// Mount this to a watchable object to auto invoke the delayed events.
+    /// </summary>
     public DelayedEventBus Mount(IWatchable target) {
       target.AddListener(this.InvokeDelayed);
       return this;
