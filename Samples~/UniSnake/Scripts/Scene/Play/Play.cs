@@ -4,16 +4,11 @@ using UnityEngine;
 namespace UniSnake.Scene.Play {
   public class Play : Entry {
     void Awake() {
-      var config = this.GetComponent<GameConfig>();
-
-      var eb = new EventBus();
-      var cb = new CommandCenter();
-      var model = new Model(config, cb, eb);
-
-      this.Add(config);
-      this.AddEventBus(eb, debug: true);
-      this.AddCommandBus(cb, debug: true);
-      this.Add(model);
+      var config = this.Add(this.GetComponent<GameConfig>());
+      var model = this.Add(this.GetOrAddComponent<Model>().Init(config));
+      var eb = this.AddEventBus(debug: true);
+      var ctx = new CommandContext(model, config, eb);
+      var cb = this.AddCommandBus(ctx, debug: true);
 
       // move snake when not paused
       var timer = new RepeatedTimer(config.moveInterval, () => cb.Push<MoveSnakeCommand>());
