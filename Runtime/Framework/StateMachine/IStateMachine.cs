@@ -1,7 +1,7 @@
 using System;
 
 namespace DT.UniStart {
-  public interface IReadOnlyStateMachine<T> : IWatchable<T, T>, IGetValue<T>, IValueState<T> where T : Enum {
+  public interface IReadOnlyStateMachine<T> : IWatchable<T, T>, IGetValue<T> where T : Enum {
     /// <summary>
     /// Get the next state round-robin.
     /// </summary>

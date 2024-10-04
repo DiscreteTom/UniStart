@@ -7,6 +7,7 @@
 - **_Breaking Change_**: remove `IEvent` to simplify code.
 - **_Breaking Change_**: rewrite `CommandBus` family.
 - **_Breaking Change_**: remove `WatchRef`.
+- **_Breaking Change_**: remove `State` family and `StateManager`.
 
 ## v13.1.0
 

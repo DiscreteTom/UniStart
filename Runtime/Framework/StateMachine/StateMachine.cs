@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 
 namespace DT.UniStart {
-  public class StateMachine<T> : Watch<T>, IStateMachine<T>, IEnumState<T> where T : Enum {
+  public class StateMachine<T> : Watch<T>, IStateMachine<T> where T : Enum {
     static readonly T[] values = Enum.GetValues(typeof(T)) as T[];
     readonly Dictionary<T, UniEvent<T, T>> onEnter = new();
     readonly Dictionary<T, UniEvent<T, T>> onExit = new();
