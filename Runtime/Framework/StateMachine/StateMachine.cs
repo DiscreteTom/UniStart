@@ -9,8 +9,8 @@ namespace DT.UniStart {
 
     public StateMachine(T initialState) : base(initialState) { }
 
-    public UniEvent<T, T> OnEnter(T value) => this.onEnter.GetOrAdd(value, () => new());
-    public UniEvent<T, T> OnExit(T value) => this.onExit.GetOrAdd(value, () => new());
+    public UniEvent<T, T> OnEnter(T value) => this.onEnter.GetOrAddNew(value);
+    public UniEvent<T, T> OnExit(T value) => this.onExit.GetOrAddNew(value);
 
     public T GetNextState() => values[(values.IndexOf(this.value) + 1) % values.Length];
 
