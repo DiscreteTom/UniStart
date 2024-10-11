@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## Next
+## v14.1.0
 
 - Feat: add `Watch.SetChecked`.
 - Feat: `Timer/RepeatedTimer.Mount` will return self. [#46](https://github.com/DiscreteTom/UniStart/issues/46)
