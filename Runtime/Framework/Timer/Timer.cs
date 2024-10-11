@@ -11,9 +11,10 @@ namespace DT.UniStart {
     public float progress => Mathf.Clamp01(this.elapsed / this.duration);
     public bool finished => this.elapsed >= this.duration;
 
-    public Timer(float duration, UnityAction cb = null) {
+    public Timer(float duration, UnityAction cb = null, bool stop = false) {
       this.duration = duration;
       if (cb != null) this.onFinished.AddListener(cb);
+      if (stop) this.Stop();
     }
 
     public virtual void Update(float deltaTime) {
@@ -45,7 +46,7 @@ namespace DT.UniStart {
   }
 
   public class RepeatedTimer : Timer {
-    public RepeatedTimer(float duration, UnityAction cb = null) : base(duration, cb) { }
+    public RepeatedTimer(float duration, UnityAction cb = null, bool stop = false) : base(duration, cb, stop) { }
 
     public override void Update(float deltaTime) {
       base.Update(deltaTime);
