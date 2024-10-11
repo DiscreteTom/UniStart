@@ -569,6 +569,9 @@ public class ResponsiveApp : MonoBehaviour {
     count.AddListener(() => print(count.Value));
     count.AddListener((value) => print(value));
     count.AddListener((value, oldValue) => print(value));
+    // Only set the value if it is different from the current value,
+    // this is to prevent unnecessary change events.
+    count.SetChecked(1);
 
     // For collections, there are 2 AddListener overloads:
     list.AddListener(() => print(list.Value));
