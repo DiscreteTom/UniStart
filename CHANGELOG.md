@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Next
+
+- Feat: add `Watch.SetChecked`.
+
 ## v14.0.0
 
 - **_Breaking Change_**: remove `AdvancedEvent`, add `UniEvent`, the interface is the same and the performance is better.

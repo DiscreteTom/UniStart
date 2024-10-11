@@ -25,6 +25,17 @@ namespace DT.UniStart {
       }
     }
 
+    /// <summary>
+    ///  Set the value if it is different from the current value.
+    ///  Returns the latest value.
+    /// </summary>
+    public virtual T SetChecked(T newValue) {
+      if (!this.value.Equals(newValue)) {
+        this.Value = newValue;
+      }
+      return this.value;
+    }
+
     public virtual UnityAction AddListener(UnityAction f) => this.onChange.AddListener(f);
     public virtual UnityAction RemoveListener(UnityAction f) => this.onChange.RemoveListener(f);
     public virtual UnityAction AddOnceListener(UnityAction f) => this.onChange.AddOnceListener(f);
