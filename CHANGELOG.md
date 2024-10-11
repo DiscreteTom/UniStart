@@ -3,6 +3,7 @@
 ## Next
 
 - Feat: add `Watch.SetChecked`.
+- Feat: `Timer/RepeatedTimer.Mount` will return self. [#46](https://github.com/DiscreteTom/UniStart/issues/46)
 - Feat: add parameter `stop` in `Timer/RepeatedTimer`'s constructor. [#47](https://github.com/DiscreteTom/UniStart/issues/47)
 
 ## v14.0.0

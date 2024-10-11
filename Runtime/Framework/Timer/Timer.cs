@@ -29,7 +29,10 @@ namespace DT.UniStart {
 
     public void UpdateWithDelta() => this.Update(Time.deltaTime);
 
-    public void Mount(IWatchable target) => target.AddListener(this.UpdateWithDelta);
+    public Timer Mount(IWatchable target) {
+      target.AddListener(this.UpdateWithDelta);
+      return this;
+    }
 
     public void Stop() {
       this.stopped = true;
@@ -53,6 +56,11 @@ namespace DT.UniStart {
       if (this.finished) {
         this.Reset();
       }
+    }
+
+    public new RepeatedTimer Mount(IWatchable target) {
+      base.Mount(target);
+      return this;
     }
   }
 }
