@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v14.1.2
+
+- Fix: remove unused files.
+
 ## v14.1.1
 
 - Fix: remove unused dependencies.
