@@ -3,6 +3,7 @@
 ## v14.1.2
 
 - Fix: remove unused files.
+- Fix: fix `UniStart.ExitGame`.
 
 ## v14.1.1
 
