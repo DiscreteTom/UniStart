@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v14.1.1
+
+- Fix: remove unused dependencies.
+
 ## v14.1.0
 
 - Feat: add `Watch.SetChecked`.
